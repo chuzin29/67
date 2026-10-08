@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>67 - Álgebra Vectorial y Números Complejos</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --bg: #0b1120;
+  --card: #151d2e;
+  --card2: #1e2a3f;
+  --text: #e2e8f0;
+  --muted: #8892a4;
+  --accent: #4f9cf9;
+  --accent2: #7c6ff0;
+  --success: #34d399;
+  --error: #f87171;
+  --warning: #fbbf24;
+  --border: #2a3548;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+.header {
+  text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%);
+  border-radius: 20px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.header h1 {
+  font-size: clamp(1.6em, 5vw, 2.4em);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.header p { color: var(--muted); font-size: 1.05em; }
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nav-tab {
+  padding: 10px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+.nav-tab:hover { border-color: var(--accent); }
+.nav-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.card h2 {
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+.card h3 {
+  color: var(--accent2);
+  margin: 14px 0 10px;
+  font-size: 1.15em;
+  font-weight: 600;
+}
+.card p { margin-bottom: 10px; }
+.card ul, .card ol { margin-left: 20px; margin-bottom: 10px; }
+.card li { margin-bottom: 6px; }
+
+.formula {
+  background: var(--card2);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 10px 10px 0;
+  font-size: 1.05em;
+  overflow-x: auto;
+}
+.formula .label {
+  display: block;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.92em;
+}
+th, td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+th {
+  background: var(--card2);
+  color: var(--accent);
+  font-weight: 600;
+}
+tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+.exercise {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.exercise-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--accent);
+}
+.badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-facil { background: rgba(52,211,153,0.15); color: var(--success); }
+.badge-intermedio { background: rgba(251,191,36,0.15); color: var(--warning); }
+.badge-dificil { background: rgba(248,113,113,0.15); color: var(--error); }
+
+.exercise-data {
+  background: var(--card2);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+.exercise-data h4 { color: var(--accent2); margin-bottom: 6px; font-size: 0.95em; }
+.exercise-formula {
+  background: rgba(79,156,249,0.08);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 1.15em;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.input-group label {
+  font-weight: 500;
+  color: var(--muted);
+  min-width: 100px;
+  font-size: 0.9em;
+}
+.input-group input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 14px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1em;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-secondary {
+  background: var(--card2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+.feedback {
+  padding: 14px;
+  border-radius: 10px;
+  margin-top: 14px;
+  display: none;
+}
+.feedback.correct {
+  background: rgba(52,211,153,0.12);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+.feedback.incorrect {
+  background: rgba(248,113,113,0.12);
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+.feedback.show { display: block; }
+
+.steps {
+  background: var(--card2);
+  padding: 14px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.steps h4 { color: var(--accent); margin-bottom: 10px; font-size: 0.95em; }
+.steps ol { margin-left: 20px; }
+.steps li { margin-bottom: 6px; }
+
+.progress-container {
+  background: var(--card2);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.score-display {
+  text-align: center;
+  padding: 32px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.score-display h2 { font-size: 1.6em; margin-bottom: 12px; }
+.score-number {
+  font-size: 3.5em;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tip {
+  background: rgba(251,191,36,0.08);
+  border-left: 3px solid var(--warning);
+  padding: 12px 16px;
+  margin: 14px 0;
+  border-radius: 0 8px 8px 0;
+}
+.tip .label {
+  color: var(--warning);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.concept-card {
+  background: var(--card2);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.concept-card h4 {
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+@media (max-width: 640px) {
+  .container { padding: 12px; }
+  .header { padding: 32px 16px; }
+  .header h1 { font-size: 1.5em; }
+  .nav-tab { padding: 8px 14px; font-size: 0.85em; }
+  .card { padding: 16px; }
+  .exercise { padding: 16px; }
+  .input-group { flex-direction: column; align-items: stretch; }
+  .input-group label { min-width: auto; }
+  table { font-size: 0.82em; }
+  th, td { padding: 8px 6px; }
+  .exercise-formula { font-size: 1em; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Álgebra Vectorial y Números Complejos</h1>
+    <p>Clase completa con teoría, métodos, ejercicios y modo examen interactivo</p>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('teoria', this)">Teoría</button>
+    <button class="nav-tab" onclick="showSection('vectores', this)">Vectores</button>
+    <button class="nav-tab" onclick="showSection('complejos', this)">Complejos</button>
+    <button class="nav-tab" onclick="showSection('ejercicios', this)">Ejercicios</button>
+    <button class="nav-tab" onclick="showSection('examen', this)">Modo Examen</button>
+  </div>
+
+  <div id="teoria" class="section active">
+    <div class="card">
+      <h2>Conceptos Fundamentales</h2>
+      
+      <h3>¿Qué es un Vector?</h3>
+      <p>Un <strong>vector</strong> es una magnitud que tiene dirección, sentido y módulo (longitud). En el plano, se representa como un par ordenado \((x, y)\).</p>
+      
+      <div class="formula">
+        <span class="label">Notación de un vector en ℝ²</span>
+        \(\vec{v} = (x, y)\) donde \(x\) es la componente horizontal y \(y\) es la componente vertical
+      </div>
+
+      <h3>¿Qué es un Número Complejo?</h3>
+      <p>Un <strong>número complejo</strong> es de la forma \(z = a + bi\), donde:</p>
+      <ul>
+        <li>\(a\) es la <strong>parte real</strong></li>
+        <li>\(b\) es la <strong>parte imaginaria</strong></li>
+        <li>\(i\) es la <strong>unidad imaginaria</strong>, donde \(i^2 = -1\)</li>
+      </ul>
+
+      <div class="tip">
+        <span class="label">Dato importante</span>
+        Los números complejos generalizan a los números reales. Todo número real es un complejo con parte imaginaria igual a cero.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Operaciones con Vectores</h2>
+      
+      <h3>1. Suma de Vectores</h3>
+      <p>Para sumar dos vectores, se suman sus componentes correspondientes:</p>
+      <div class="formula">
+        <span class="label">Suma de vectores</span>
+        \(\vec{a} + \vec{b} = (a_1 + b_1, a_2 + b_2)\)
+      </div>
+
+      <h3>2. Resta de Vectores</h3>
+      <p>Para restar dos vectores, se restan sus componentes correspondientes:</p>
+      <div class="formula">
+        <span class="label">Resta de vectores</span>
+        \(\vec{a} - \vec{b} = (a_1 - b_1, a_2 - b_2)\)
+      </div>
+
+      <h3>3. Multiplicación por Escalar</h3>
+      <p>Multiplicar un vector por un número (escalar) multiplica cada componente:</p>
+      <div class="formula">
+        <span class="label">Multiplicación por escalar</span>
+        \(k \cdot \vec{a} = (k \cdot a_1, k \cdot a_2)\)
+      </div>
+
+      <h3>4. Norma (Módulo) de un Vector</h3>
+      <p>La norma es la longitud del vector, calculada con el teorema de Pitágoras:</p>
+      <div class="formula">
+        <span class="label">Norma de un vector</span>
+        \(\|\vec{a}\| = \sqrt{a_1^2 + a_2^2}\)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Operaciones con Números Complejos</h2>
+      
+      <h3>1. Suma de Complejos</h3>
+      <p>Se suman las partes reales entre sí y las partes imaginarias entre sí:</p>
+      <div class="formula">
+        <span class="label">Suma de complejos</span>
+        \((a + bi) + (c + di) = (a + c) + (b + d)i\)
+      </div>
+
+      <h3>2. Resta de Complejos</h3>
+      <p>Se restan las partes reales entre sí y las partes imaginarias entre sí:</p>
+      <div class="formula">
+        <span class="label">Resta de complejos</span>
+        \((a + bi) - (c + di) = (a - c) + (b - d)i\)
+      </div>
+
+      <h3>3. Multiplicación de Complejos</h3>
+      <p>Se usa la propiedad distributiva y se recuerda que \(i^2 = -1\):</p>
+      <div class="formula">
+        <span class="label">Multiplicación de complejos</span>
+        \((a + bi)(c + di) = (ac - bd) + (ad + bc)i\)
+      </div>
+
+      <h3>4. Conjugado de un Complejo</h3>
+      <p>El conjugado cambia el signo de la parte imaginaria:</p>
+      <div class="formula">
+        <span class="label">Conjugado</span>
+        \(\overline{a + bi} = a - bi\)
+      </div>
+
+      <h3>5. Módulo de un Complejo</h3>
+      <p>El módulo es la distancia del origen al punto en el plano complejo:</p>
+      <div class="formula">
+        <span class="label">Módulo de un complejo</span>
+        \(|z| = \sqrt{a^2 + b^2}\)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Tablas de Referencia Rápida</h2>
+      
+      <h3>Vectores en ℝ²</h3>
+      <table>
+        <tr><th>Operación</th><th>Fórmula</th><th>Ejemplo</th></tr>
+        <tr><td>Suma</td><td>\((a_1+b_1, a_2+b_2)\)</td><td>\((1,2) + (3,4) = (4,6)\)</td></tr>
+        <tr><td>Resta</td><td>\((a_1-b_1, a_2-b_2)\)</td><td>\((5,3) - (2,1) = (3,2)\)</td></tr>
+        <tr><td>Escalar</td><td>\((k \cdot a_1, k \cdot a_2)\)</td><td>\(3 \cdot (2,1) = (6,3)\)</td></tr>
+        <tr><td>Norma</td><td>\(\sqrt{a_1^2 + a_2^2}\)</td><td>\(\|(3,4)\| = 5\)</td></tr>
+      </table>
+
+      <h3>Números Complejos</h3>
+      <table>
+        <tr><th>Operación</th><th>Fórmula</th><th>Ejemplo</th></tr>
+        <tr><td>Suma</td><td>\((a+c) + (b+d)i\)</td><td>\((1+2i) + (3+4i) = 4+6i\)</td></tr>
+        <tr><td>Resta</td><td>\((a-c) + (b-d)i\)</td><td>\((5+3i) - (2+i) = 3+2i\)</td></tr>
+        <tr><td>Producto</td><td>\((ac-bd) + (ad+bc)i\)</td><td>\((1+2i)(3+4i) = -5+10i\)</td></tr>
+        <tr><td>Conjugado</td><td>\(a - bi\)</td><td>\(\overline{3+4i} = 3-4i\)</td></tr>
+        <tr><td>Módulo</td><td>\(\sqrt{a^2 + b^2}\)</td><td>\(|3+4i| = 5\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="vectores" class="section">
+    <div class="card">
+      <h2>Lista de Vectores (a-z)</h2>
+      <p>Estos son los vectores que usaremos en los ejercicios:</p>
+      <table>
+        <tr><th>Vector</th><th>Coordenadas</th><th>Vector</th><th>Coordenadas</th></tr>
+        <tr><td>\(\vec{a}\)</td><td>\((3, -7)\)</td><td>\(\vec{n}\)</td><td>\((-\sqrt{5}, 0.6)\)</td></tr>
+        <tr><td>\(\vec{b}\)</td><td>\((-4.5, 2.8)\)</td><td>\(\vec{o}\)</td><td>\((\frac{9}{2}, -\sqrt{3})\)</td></tr>
+        <tr><td>\(\vec{c}\)</td><td>\((\frac{1}{2}, -\frac{3}{4})\)</td><td>\(\vec{p}\)</td><td>\((-1.5, -\frac{5}{6})\)</td></tr>
+        <tr><td>\(\vec{d}\)</td><td>\((\sqrt{2}, -5)\)</td><td>\(\vec{q}\)</td><td>\((10, -0.01)\)</td></tr>
+        <tr><td>\(\vec{e}\)</td><td>\((-\sqrt{3}, \frac{5}{2})\)</td><td>\(\vec{r}\)</td><td>\((-\sqrt{17}, \frac{3}{8})\)</td></tr>
+        <tr><td>\(\vec{f}\)</td><td>\((0.75, -1.2)\)</td><td>\(\vec{s}\)</td><td>\((0, -\frac{7}{3})\)</td></tr>
+        <tr><td>\(\vec{g}\)</td><td>\((-8, \frac{2}{3})\)</td><td>\(\vec{t}\)</td><td>\((-4.8, \sqrt{15})\)</td></tr>
+        <tr><td>\(\vec{h}\)</td><td>\((\sqrt{7}, -\sqrt{11})\)</td><td>\(\vec{u}\)</td><td>\((\frac{1}{10}, -3.5)\)</td></tr>
+        <tr><td>\(\vec{i}\)</td><td>\((-\frac{7}{5}, 3.14)\)</td><td>\(\vec{v}\)</td><td>\((-12, \sqrt{3})\)</td></tr>
+        <tr><td>\(\vec{j}\)</td><td>\((6, -\sqrt{6})\)</td><td>\(\vec{w}\)</td><td>\((5.4, -\frac{13}{3})\)</td></tr>
+        <tr><td>\(\vec{k}\)</td><td>\((-2.25, -\sqrt{10})\)</td><td>\(\vec{x}\)</td><td>\((-\sqrt{23}, 1.8)\)</td></tr>
+        <tr><td>\(\vec{l}\)</td><td>\((\frac{4}{3}, -0.9)\)</td><td>\(\vec{y}\)</td><td>\((\frac{8}{7}, -\sqrt{7})\)</td></tr>
+        <tr><td>\(\vec{m}\)</td><td>\((15, -\frac{11}{4})\)</td><td>\(\vec{z}\)</td><td>\((-14, -\frac{1}{6})\)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Calculadora de Vectores</h2>
+      <p>Usa esta calculadora para practicar operaciones con vectores:</p>
+      
+      <div class="input-group">
+        <label>Vector 1 (x, y):</label>
+        <input type="text" id="v1" placeholder="Ej: 3, -7" value="3, -7">
+      </div>
+      <div class="input-group">
+        <label>Vector 2 (x, y):</label>
+        <input type="text" id="v2" placeholder="Ej: 1, 2" value="1, 2">
+      </div>
+      <div class="input-group">
+        <label>Escalar (k):</label>
+        <input type="text" id="scalar" placeholder="Ej: 3" value="3">
+      </div>
+      
+      <button class="btn btn-primary" onclick="calcularVectores()">Calcular</button>
+      
+      <div id="resultadoVectores"></div>
+    </div>
+  </div>
+
+  <div id="complejos" class="section">
+    <div class="card">
+      <h2>Lista de Números Complejos (z₁-z₃₀)</h2>
+      <p>Estos son los números complejos que usaremos en los ejercicios:</p>
+      <table>
+        <tr><th>Número</th><th>Valor</th><th>Número</th><th>Valor</th></tr>
+        <tr><td>\(z_1\)</td><td>\(5 - 3i\)</td><td>\(z_{16}\)</td><td>\(15 + \sqrt{13}i\)</td></tr>
+        <tr><td>\(z_2\)</td><td>\(-2.4 + 6.1i\)</td><td>\(z_{17}\)</td><td>\(-0.04 - \frac{9}{4}i\)</td></tr>
+        <tr><td>\(z_3\)</td><td>\(\frac{3}{4} - \frac{1}{2}i\)</td><td>\(z_{18}\)</td><td>\(\sqrt{15} - \sqrt{2}i\)</td></tr>
+        <tr><td>\(z_4\)</td><td>\(\sqrt{2} + 7i\)</td><td>\(z_{19}\)</td><td>\(-\frac{13}{5} + 6.3i\)</td></tr>
+        <tr><td>\(z_5\)</td><td>\(-\sqrt{5} - \frac{2}{3}i\)</td><td>\(z_{20}\)</td><td>\(8 - \sqrt{17}i\)</td></tr>
+        <tr><td>\(z_6\)</td><td>\(0.8 - \sqrt{3}i\)</td><td>\(z_{21}\)</td><td>\(-7.2 - 11i\)</td></tr>
+        <tr><td>\(z_7\)</td><td>\(-9 + \frac{5}{8}i\)</td><td>\(z_{22}\)</td><td>\(\frac{5}{9} + \frac{7}{2}i\)</td></tr>
+        <tr><td>\(z_8\)</td><td>\(-3.15 - 4.2i\)</td><td>\(z_{23}\)</td><td>\(-\sqrt{19} + \frac{1}{3}i\)</td></tr>
+        <tr><td>\(z_9\)</td><td>\(\frac{7}{3} + \sqrt{7}i\)</td><td>\(z_{24}\)</td><td>\(3.33 - \sqrt{5}i\)</td></tr>
+        <tr><td>\(z_{10}\)</td><td>\(\sqrt{11} - 0.5i\)</td><td>\(z_{25}\)</td><td>\(-16 + 0.9i\)</td></tr>
+        <tr><td>\(z_{11}\)</td><td>\(-12 - \frac{4}{5}i\)</td><td>\(z_{26}\)</td><td>\(\frac{17}{4} - \sqrt{23}i\)</td></tr>
+        <tr><td>\(z_{12}\)</td><td>\(4.6 + \sqrt{6}i\)</td><td>\(z_{27}\)</td><td>\(-\sqrt{21} - \frac{8}{3}i\)</td></tr>
+        <tr><td>\(z_{13}\)</td><td>\(-\frac{1}{6} - 8i\)</td><td>\(z_{28}\)</td><td>\(0.12 + 14i\)</td></tr>
+        <tr><td>\(z_{14}\)</td><td>\(-\sqrt{10} + 2.7i\)</td><td>\(z_{29}\)</td><td>\(-\frac{2}{7} - 5.5i\)</td></tr>
+        <tr><td>\(z_{15}\)</td><td>\(\frac{11}{2} - \frac{3}{7}i\)</td><td>\(z_{30}\)</td><td>\(\sqrt{29} + \frac{10}{3}i\)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Calculadora de Números Complejos</h2>
+      <p>Usa esta calculadora para practicar operaciones con números complejos:</p>
+      
+      <div class="input-group">
+        <label>Complejo 1 (a, b):</label>
+        <input type="text" id="c1" placeholder="Ej: 5, -3" value="5, -3">
+      </div>
+      <div class="input-group">
+        <label>Complejo 2 (a, b):</label>
+        <input type="text" id="c2" placeholder="Ej: 1, 2" value="1, 2">
+      </div>
+      <div class="input-group">
+        <label>Escalar (k):</label>
+        <input type="text" id="cscalar" placeholder="Ej: 3" value="3">
+      </div>
+      
+      <button class="btn btn-primary" onclick="calcularComplejos()">Calcular</button>
+      
+      <div id="resultadoComplejos"></div>
+    </div>
+  </div>
+
+  <div id="ejercicios" class="section">
+    <div class="card">
+      <h2>Ejercicios Resueltos Paso a Paso</h2>
+      <p>Cada ejercicio muestra el proceso completo de resolución. Intenta resolverlo antes de ver la solución.</p>
+    </div>
+    <div id="listaEjercicios"></div>
+  </div>
+
+  <div id="examen" class="section">
+    <div class="card">
+      <h2>Modo Examen</h2>
+      <p>Responde las preguntas. Si te equivocas, se te mostrará el proceso correcto.</p>
+      
+      <div class="progress-container">
+        <div class="progress-text">
+          <span>Progreso: <span id="progresoActual">0</span>/<span id="progresoTotal">0</span></span>
+          <span>Aciertos: <span id="aciertos">0</span></span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <div id="examenContainer"></div>
+      
+      <div id="examenResultado"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ejercicios = [
+  { id: 'j1v1', juego: 1, parte: 'vectores', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y suma', datos: { a: [3, -7], d: [Math.sqrt(2), -5], k: 3 }, formula: 'k·\\vec{a} + \\vec{d}', pasos: ['k·\\vec{a} = 3·(3, -7) = (9, -21)', 'k·\\vec{a} + \\vec{d} = (9, -21) + (\\sqrt{2}, -5) = (9+\\sqrt{2}, -26)', 'Resultado: (9+\\sqrt{2}, -26) ≈ (10.41, -26)'], respuesta: [10.414213562373096, -26], tipo: 'vector' },
+  { id: 'j1v2', juego: 1, parte: 'vectores', nivel: 'intermedio', titulo: 'Ejercicio 2: Norma de una combinación lineal', datos: { e: [-Math.sqrt(3), 2.5], b: [-4.5, 2.8], n: 2 }, formula: '\\|n·\\vec{e} - \\vec{b}\\|', pasos: ['n·\\vec{e} = 2·(-\\sqrt{3}, 5/2) = (-2\\sqrt{3}, 5)', 'n·\\vec{e} - \\vec{b} = (-2\\sqrt{3}, 5) - (-4.5, 2.8) = (-2\\sqrt{3}+4.5, 2.2)', '\\|n·\\vec{e} - \\vec{b}\\| = \\sqrt{(-2\\sqrt{3}+4.5)^2 + 2.2^2} = \\sqrt{1.036 + 4.84} = \\sqrt{5.876} ≈ 2.43'], respuesta: 2.43168366852274, tipo: 'escalar' },
+  { id: 'j1v3', juego: 1, parte: 'vectores', nivel: 'dificil', titulo: 'Ejercicio 3: Norma de combinación lineal con tres vectores', datos: { c: [0.5, -0.75], f: [0.75, -1.2], g: [-8, 2/3], k1: 2, k2: 4 }, formula: '\\|k_1·\\vec{c} - k_2·\\vec{f} + \\vec{g}\\|', pasos: ['k_1·\\vec{c} = 2·(1/2, -3/4) = (1, -1.5)', 'k_2·\\vec{f} = 4·(0.75, -1.2) = (3, -4.8)', 'k_1·\\vec{c} - k_2·\\vec{f} = (1-3, -1.5+4.8) = (-2, 3.3)', 'k_1·\\vec{c} - k_2·\\vec{f} + \\vec{g} = (-2-8, 3.3+2/3) = (-10, 3.967)', '\\|...\\| = \\sqrt{100 + 15.73} = \\sqrt{115.73} ≈ 10.76'], respuesta: 10.757994443410187, tipo: 'escalar' },
+  { id: 'j1c1', juego: 1, parte: 'complejos', nivel: 'facil', titulo: 'Ejercicio 1: Conjugado y multiplicación por escalar', datos: { z1: [5, -3], z4: [Math.sqrt(2), 7], n: 2 }, formula: 'n·\\overline{z_1} - z_4', pasos: ['\\overline{z_1} = 5+3i', 'n·\\overline{z_1} = 2·(5+3i) = (10, 6)', 'n·\\overline{z_1} - z_4 = (10-\\sqrt{2}, 6-7) = (10-\\sqrt{2}, -1)', 'Resultado: (10-\\sqrt{2}, -1) ≈ (8.59, -1)'], respuesta: [8.585786437626904, -1], tipo: 'vector' },
+  { id: 'j1c2', juego: 1, parte: 'complejos', nivel: 'intermedio', titulo: 'Ejercicio 2: Producto de conjugado por complejo', datos: { z2: [-2.4, 6.1], z5: [-Math.sqrt(5), -2/3] }, formula: '\\overline{z_2}·z_5', pasos: ['\\overline{z_2} = -2.4-6.1i', '\\overline{z_2}·z_5 = (-2.4-6.1i)·(-\\sqrt{5}-2/3i)', '= 2.4\\sqrt{5} + 1.6i + 6.1\\sqrt{5}·i + 4.067i^2', '= (2.4\\sqrt{5} - 4.067) + (1.6 + 6.1\\sqrt{5})i', '≈ (1.30, 15.24)'], respuesta: [1.299896479332829, 15.240014662748717], tipo: 'vector' },
+  { id: 'j1c3', juego: 1, parte: 'complejos', nivel: 'dificil', titulo: 'Ejercicio 3: Módulo de combinación lineal', datos: { z3: [0.75, -0.5], z6: [0.8, -Math.sqrt(3)], k: 3 }, formula: '|k·\\overline{z_3} + z_6|', pasos: ['\\overline{z_3} = 3/4+1/2i', 'k·\\overline{z_3} = 3·(3/4+1/2i) = (9/4, 3/2)', 'k·\\overline{z_3} + z_6 = (9/4+0.8, 3/2-\\sqrt{3}) = (3.05, -0.232)', '|...| = \\sqrt{3.05^2 + (-0.232)^2} = \\sqrt{9.3025 + 0.054} = \\sqrt{9.356} ≈ 3.06'], respuesta: 3.0588147340584992, tipo: 'escalar' },
+  { id: 'j2v1', juego: 2, parte: 'vectores', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y resta', datos: { h: [Math.sqrt(7), -Math.sqrt(11)], k: [-2.25, -Math.sqrt(10)], k: 2 }, formula: 'k·\\vec{h} - \\vec{k}', pasos: ['k·\\vec{h} = 2·(\\sqrt{7}, -\\sqrt{11}) = (2\\sqrt{7}, -2\\sqrt{11})', 'k·\\vec{h} - \\vec{k} = (2\\sqrt{7}+2.25, -2\\sqrt{11}+\\sqrt{10})', 'Resultado: (2\\sqrt{7}+2.25, -2\\sqrt{11}+\\sqrt{10}) ≈ (7.54, -3.47)'], respuesta: [7.541502622129181, -3.47097192054242], tipo: 'vector' },
+  { id: 'j2v2', juego: 2, parte: 'vectores', nivel: 'intermedio', titulo: 'Ejercicio 2: Norma de combinación lineal', datos: { i: [-1.4, 3.14], l: [4/3, -0.9], n: 3 }, formula: '\\|n·\\vec{i} + \\vec{l}\\|', pasos: ['n·\\vec{i} = 3·(-7/5, 3.14) = (-21/5, 9.42)', 'n·\\vec{i} + \\vec{l} = (-21/5+4/3, 9.42-0.9) = (-2.867, 8.52)', '\\|n·\\vec{i} + \\vec{l}\\| = \\sqrt{(-2.867)^2 + 8.52^2} = \\sqrt{8.22 + 72.59} = \\sqrt{80.81} ≈ 8.99'], respuesta: 8.989336893107176, tipo: 'escalar' },
+  { id: 'j2v3', juego: 2, parte: 'vectores', nivel: 'dificil', titulo: 'Ejercicio 3: Norma de combinación lineal con tres vectores', datos: { j: [6, -Math.sqrt(6)], m: [15, -11/4], n: [-Math.sqrt(5), 0.6], k1: 3, k2: 2 }, formula: '\\|k_1·\\vec{j} - k_2·\\vec{m} - \\vec{n}\\|', pasos: ['k_1·\\vec{j} = 3·(6, -\\sqrt{6}) = (18, -3\\sqrt{6})', 'k_2·\\vec{m} = 2·(15, -11/4) = (30, -5.5)', 'k_1·\\vec{j} - k_2·\\vec{m} = (-12, -3\\sqrt{6}+5.5)', 'k_1·\\vec{j} - k_2·\\vec{m} - \\vec{n} = (-12+\\sqrt{5}, -3\\sqrt{6}+5.5-0.6) = (-9.764, -2.449)', '\\|...\\| = \\sqrt{(-9.764)^2 + (-2.449)^2} = \\sqrt{95.33 + 6.00} = \\sqrt{101.33} ≈ 10.07'], respuesta: 10.066249058223207, tipo: 'escalar' },
+  { id: 'j2c1', juego: 2, parte: 'complejos', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y suma de conjugado', datos: { z7: [-9, 5/8], z9: [7/3, Math.sqrt(7)], n: 4 }, formula: 'n·z_7 + \\overline{z_9}', pasos: ['n·z_7 = 4·(-9+5/8i) = (-36, 2.5)', '\\overline{z_9} = 7/3-\\sqrt{7}i', 'n·z_7 + \\overline{z_9} = (-36+7/3, 2.5-\\sqrt{7}) = (-33.667, -0.146)', 'Resultado: (-33.667, -0.146)'], respuesta: [-33.666666666666664, -0.14575131106459072], tipo: 'vector' },
+  { id: 'j2c2', juego: 2, parte: 'complejos', nivel: 'intermedio', titulo: 'Ejercicio 2: Producto de complejo por conjugado', datos: { z8: [-3.15, -4.2], z10: [Math.sqrt(11), -0.5] }, formula: 'z_8·\\overline{z_{10}}', pasos: ['\\overline{z_{10}} = \\sqrt{11}+0.5i', 'z_8·\\overline{z_{10}} = (-3.15-4.2i)·(\\sqrt{11}+0.5i)', '= -3.15\\sqrt{11} - 1.575i - 4.2\\sqrt{11}·i - 2.1i^2', '= (-3.15\\sqrt{11} + 2.1) + (-1.575 - 4.2\\sqrt{11})i', '≈ (-8.35, -15.50)'], respuesta: [-8.34736808961951, -15.50482411949268], tipo: 'vector' },
+  { id: 'j2c3', juego: 2, parte: 'complejos', nivel: 'dificil', titulo: 'Ejercicio 3: Módulo de combinación lineal', datos: { z11: [-12, -4/5], z12: [4.6, Math.sqrt(6)], k: 2 }, formula: '|k·\\overline{z_{11}} - z_{12}|', pasos: ['\\overline{z_{11}} = -12+4/5i', 'k·\\overline{z_{11}} = 2·(-12+4/5i) = (-24, 1.6)', 'k·\\overline{z_{11}} - z_{12} = (-24-4.6, 1.6-\\sqrt{6}) = (-28.6, -0.849)', '|...| = \\sqrt{(-28.6)^2 + (-0.849)^2} = \\sqrt{817.96 + 0.72} = \\sqrt{818.68} ≈ 28.61'], respuesta: 28.612613177112884, tipo: 'escalar' },
+  { id: 'j3v1', juego: 3, parte: 'vectores', nivel: 'facil', titulo: 'Ejercicio 1: Suma de vector con multiplicación por escalar', datos: { o: [4.5, -Math.sqrt(3)], r: [-Math.sqrt(17), 3/8], k: 4 }, formula: '\\vec{o} + k·\\vec{r}', pasos: ['k·\\vec{r} = 4·(-\\sqrt{17}, 3/8) = (-4\\sqrt{17}, 1.5)', '\\vec{o} + k·\\vec{r} = (9/2-4\\sqrt{17}, -\\sqrt{3}+1.5)', 'Resultado: (9/2-4\\sqrt{17}, -\\sqrt{3}+1.5) ≈ (-11.99, -0.23)'], respuesta: [-11.992422502470642, -0.2320508075688772], tipo: 'vector' },
+  { id: 'j3v2', juego: 3, parte: 'vectores', nivel: 'intermedio', titulo: 'Ejercicio 2: Norma de combinación lineal', datos: { p: [-1.5, -5/6], s: [0, -7/3], n: 2 }, formula: '\\|n·\\vec{p} - \\vec{s}\\|', pasos: ['n·\\vec{p} = 2·(-1.5, -5/6) = (-3, -5/3)', 'n·\\vec{p} - \\vec{s} = (-3, -5/3+7/3) = (-3, 2/3)', '\\|n·\\vec{p} - \\vec{s}\\| = \\sqrt{(-3)^2 + (2/3)^2} = \\sqrt{9 + 0.444} = \\sqrt{9.444} ≈ 3.07'], respuesta: 3.073181485764296, tipo: 'escalar' },
+  { id: 'j3v3', juego: 3, parte: 'vectores', nivel: 'dificil', titulo: 'Ejercicio 3: Norma de combinación lineal con tres vectores', datos: { q: [10, -0.01], t: [-4.8, Math.sqrt(15)], u: [0.1, -3.5], k1: 2, k2: 3 }, formula: '\\|k_1·\\vec{q} + k_2·\\vec{t} - \\vec{u}\\|', pasos: ['k_1·\\vec{q} = 2·(10, -0.01) = (20, -0.02)', 'k_2·\\vec{t} = 3·(-4.8, \\sqrt{15}) = (-14.4, 3\\sqrt{15})', 'k_1·\\vec{q} + k_2·\\vec{t} = (5.6, -0.02+3\\sqrt{15})', 'k_1·\\vec{q} + k_2·\\vec{t} - \\vec{u} = (5.6-0.1, -0.02+3\\sqrt{15}+3.5) = (5.5, 15.099)', '\\|...\\| = \\sqrt{5.5^2 + 15.099^2} = \\sqrt{30.25 + 227.98} = \\sqrt{258.23} ≈ 16.07'], respuesta: 16.06948326079003, tipo: 'escalar' },
+  { id: 'j3c1', juego: 3, parte: 'complejos', nivel: 'facil', titulo: 'Ejercicio 1: Resta con multiplicación de conjugado', datos: { z13: [-1/6, -8], z15: [11/2, -3/7], n: 3 }, formula: 'z_{13} - n·\\overline{z_{15}}', pasos: ['\\overline{z_{15}} = 11/2+3/7i', 'n·\\overline{z_{15}} = 3·(11/2+3/7i) = (33/2, 9/7)', 'z_{13} - n·\\overline{z_{15}} = (-1/6-33/2, -8-9/7) = (-16.667, -9.286)', 'Resultado: (-16.667, -9.286)'], respuesta: [-16.666666666666668, -9.285714285714285], tipo: 'vector' },
+  { id: 'j3c2', juego: 3, parte: 'complejos', nivel: 'intermedio', titulo: 'Ejercicio 2: Producto de conjugado por complejo', datos: { z14: [-Math.sqrt(10), 2.7], z16: [15, Math.sqrt(13)] }, formula: '\\overline{z_{14}}·z_{16}', pasos: ['\\overline{z_{14}} = -\\sqrt{10}-2.7i', '\\overline{z_{14}}·z_{16} = (-\\sqrt{10}-2.7i)·(15+\\sqrt{13}i)', '= -15\\sqrt{10} - \\sqrt{130}·i - 40.5i - 2.7\\sqrt{13}·i^2', '= (-15\\sqrt{10} + 2.7\\sqrt{13}) + (-\\sqrt{130} - 40.5)i', '≈ (-37.70, -51.90)'], respuesta: [-37.699176458772925, -51.90175425099138], tipo: 'vector' },
+  { id: 'j3c3', juego: 3, parte: 'complejos', nivel: 'dificil', titulo: 'Ejercicio 3: Módulo de combinación lineal', datos: { z17: [-0.04, -9/4], z18: [Math.sqrt(15), -Math.sqrt(2)], k: 4 }, formula: '|k·\\overline{z_{17}} - z_{18}|', pasos: ['\\overline{z_{17}} = -0.04+9/4i', 'k·\\overline{z_{17}} = 4·(-0.04+9/4i) = (-0.16, 9)', 'k·\\overline{z_{17}} - z_{18} = (-0.16-\\sqrt{15}, 9+\\sqrt{2}) = (-4.033, 10.414)', '|...| = \\sqrt{(-4.033)^2 + 10.414^2} = \\sqrt{16.27 + 108.45} = \\sqrt{124.72} ≈ 11.17'], respuesta: 11.167846649802375, tipo: 'escalar' },
+  { id: 'j4v1', juego: 4, parte: 'vectores', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y resta', datos: { v: [-12, Math.sqrt(3)], x: [-Math.sqrt(23), 1.8], k: 2 }, formula: 'k·\\vec{v} - \\vec{x}', pasos: ['k·\\vec{v} = 2·(-12, \\sqrt{3}) = (-24, 2\\sqrt{3})', 'k·\\vec{v} - \\vec{x} = (-24+\\sqrt{23}, 2\\sqrt{3}-1.8)', 'Resultado: (-24+\\sqrt{23}, 2\\sqrt{3}-1.8) ≈ (-19.20, 1.66)'], respuesta: [-19.20416847668728, 1.6641016151377543], tipo: 'vector' },
+  { id: 'j4v2', juego: 4, parte: 'vectores', nivel: 'intermedio', titulo: 'Ejercicio 2: Norma de combinación lineal', datos: { w: [5.4, -13/3], y: [8/7, -Math.sqrt(7)], n: 3 }, formula: '\\|n·\\vec{w} + \\vec{y}\\|', pasos: ['n·\\vec{w} = 3·(5.4, -13/3) = (16.2, -13)', 'n·\\vec{w} + \\vec{y} = (16.2+8/7, -13-\\sqrt{7}) = (17.343, -15.646)', '\\|n·\\vec{w} + \\vec{y}\\| = \\sqrt{17.343^2 + (-15.646)^2} = \\sqrt{300.78 + 244.80} = \\sqrt{545.58} ≈ 23.36'], respuesta: 23.35731636907867, tipo: 'escalar' },
+  { id: 'j4v3', juego: 4, parte: 'vectores', nivel: 'dificil', titulo: 'Ejercicio 3: Norma de combinación lineal con tres vectores', datos: { z: [-14, -1/6], a: [3, -7], c: [0.5, -0.75], k1: 3, k2: 2 }, formula: '\\|k_1·\\vec{z} - k_2·\\vec{a} + \\vec{c}\\|', pasos: ['k_1·\\vec{z} = 3·(-14, -1/6) = (-42, -0.5)', 'k_2·\\vec{a} = 2·(3, -7) = (6, -14)', 'k_1·\\vec{z} - k_2·\\vec{a} = (-48, 13.5)', 'k_1·\\vec{z} - k_2·\\vec{a} + \\vec{c} = (-48+1/2, 13.5-3/4) = (-47.5, 12.75)', '\\|...\\| = \\sqrt{(-47.5)^2 + 12.75^2} = \\sqrt{2256.25 + 162.56} = \\sqrt{2418.81} ≈ 49.18'], respuesta: 49.18142433887006, tipo: 'escalar' },
+  { id: 'j4c1', juego: 4, parte: 'complejos', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación de conjugado por escalar y suma', datos: { z19: [-13/5, 6.3], z21: [-7.2, -11], n: 2 }, formula: 'n·\\overline{z_{19}} + z_{21}', pasos: ['\\overline{z_{19}} = -13/5-6.3i', 'n·\\overline{z_{19}} = 2·(-13/5-6.3i) = (-26/5, -12.6)', 'n·\\overline{z_{19}} + z_{21} = (-26/5-7.2, -12.6-11) = (-12.4, -23.6)', 'Resultado: (-12.4, -23.6)'], respuesta: [-12.4, -23.6], tipo: 'vector' },
+  { id: 'j4c2', juego: 4, parte: 'complejos', nivel: 'intermedio', titulo: 'Ejercicio 2: Producto de complejo por conjugado', datos: { z20: [8, -Math.sqrt(17)], z22: [5/9, 7/2] }, formula: 'z_{20}·\\overline{z_{22}}', pasos: ['\\overline{z_{22}} = 5/9-7/2i', 'z_{20}·\\overline{z_{22}} = (8-\\sqrt{17}i)·(5/9-7/2i)', '= 40/9 - 28i - 5\\sqrt{17}/9·i + 7\\sqrt{17}/2·i^2', '= (40/9 - 7\\sqrt{17}/2) + (-28 - 5\\sqrt{17}/9)i', '≈ (-9.99, -30.29)'], respuesta: [-9.986425245217367, -30.290614236454257], tipo: 'vector' },
+  { id: 'j4c3', juego: 4, parte: 'complejos', nivel: 'dificil', titulo: 'Ejercicio 3: Módulo de combinación lineal', datos: { z23: [-Math.sqrt(19), 1/3], z25: [-16, 0.9], k: 3 }, formula: '|k·\\overline{z_{23}} - z_{25}|', pasos: ['\\overline{z_{23}} = -\\sqrt{19}-1/3i', 'k·\\overline{z_{23}} = 3·(-\\sqrt{19}-1/3i) = (-3\\sqrt{19}, -1)', 'k·\\overline{z_{23}} - z_{25} = (-3\\sqrt{19}+16, -1-0.9) = (2.923, -1.9)', '|...| = \\sqrt{2.923^2 + (-1.9)^2} = \\sqrt{8.54 + 3.61} = \\sqrt{12.15} ≈ 3.49'], respuesta: 3.4865027491879776, tipo: 'escalar' },
+  { id: 'j5v1', juego: 5, parte: 'vectores', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y suma', datos: { b: [-4.5, 2.8], g: [-8, 2/3], k: 3 }, formula: 'k·\\vec{b} + \\vec{g}', pasos: ['k·\\vec{b} = 3·(-4.5, 2.8) = (-13.5, 8.4)', 'k·\\vec{b} + \\vec{g} = (-13.5-8, 8.4+2/3) = (-21.5, 9.067)', 'Resultado: (-21.5, 9.067)'], respuesta: [-21.5, 9.066666666666665], tipo: 'vector' },
+  { id: 'j5v2', juego: 5, parte: 'vectores', nivel: 'intermedio', titulo: 'Ejercicio 2: Norma de combinación lineal', datos: { d: [Math.sqrt(2), -5], h: [Math.sqrt(7), -Math.sqrt(11)], n: 2 }, formula: '\\|n·\\vec{d} - \\vec{h}\\|', pasos: ['n·\\vec{d} = 2·(\\sqrt{2}, -5) = (2\\sqrt{2}, -10)', 'n·\\vec{d} - \\vec{h} = (2\\sqrt{2}-\\sqrt{7}, -10+\\sqrt{11}) = (0.183, -6.683)', '\\|n·\\vec{d} - \\vec{h}\\| = \\sqrt{0.183^2 + (-6.683)^2} = \\sqrt{0.033 + 44.66} = \\sqrt{44.69} ≈ 6.69'], respuesta: 6.6858712705074, tipo: 'escalar' },
+  { id: 'j5v3', juego: 5, parte: 'vectores', nivel: 'dificil', titulo: 'Ejercicio 3: Norma de combinación lineal con tres vectores', datos: { e: [-Math.sqrt(3), 2.5], i: [-1.4, 3.14], k: [-2.25, -Math.sqrt(10)], k1: 2, k2: 2 }, formula: '\\|k_1·\\vec{e} - k_2·\\vec{i} + \\vec{k}\\|', pasos: ['k_1·\\vec{e} = 2·(-\\sqrt{3}, 5/2) = (-2\\sqrt{3}, 5)', 'k_2·\\vec{i} = 2·(-7/5, 3.14) = (-14/5, 6.28)', 'k_1·\\vec{e} - k_2·\\vec{i} = (-2\\sqrt{3}+14/5, 5-6.28)', 'k_1·\\vec{e} - k_2·\\vec{i} + \\vec{k} = (-2\\sqrt{3}+14/5-2.25, 5-6.28-\\sqrt{10}) = (-2.914, -4.442)', '\\|...\\| = \\sqrt{(-2.914)^2 + (-4.442)^2} = \\sqrt{8.49 + 19.73} = \\sqrt{28.22} ≈ 5.31'], respuesta: 5.312797665390573, tipo: 'escalar' },
+  { id: 'j5c1', juego: 5, parte: 'complejos', nivel: 'facil', titulo: 'Ejercicio 1: Multiplicación por escalar y resta de conjugado', datos: { z24: [3.33, -Math.sqrt(5)], z26: [17/4, -Math.sqrt(23)], n: 3 }, formula: 'n·z_{24} - \\overline{z_{26}}', pasos: ['n·z_{24} = 3·(3.33-\\sqrt{5}i) = (9.99, -3\\sqrt{5})', '\\overline{z_{26}} = 17/4+\\sqrt{23}i', 'n·z_{24} - \\overline{z_{26}} = (9.99-17/4, -3\\sqrt{5}-\\sqrt{23}) = (5.74, -11.504)', 'Resultado: (5.74, -11.504)'], respuesta: [5.74, -11.504035455812089], tipo: 'vector' },
+  { id: 'j5c2', juego: 5, parte: 'complejos', nivel: 'intermedio', titulo: 'Ejercicio 2: Producto de conjugado por complejo', datos: { z27: [-Math.sqrt(21), -8/3], z29: [-2/7, -5.5] }, formula: '\\overline{z_{27}}·z_{29}', pasos: ['\\overline{z_{27}} = -\\sqrt{21}+8/3i', '\\overline{z_{27}}·z_{29} = (-\\sqrt{21}+8/3i)·(-2/7-5.5i)', '= 2\\sqrt{21}/7 + 5.5\\sqrt{21}·i - 16/21·i - 44/3·i^2', '= (2\\sqrt{21}/7 + 44/3) + (5.5\\sqrt{21} - 16/21)i', '≈ (15.98, 24.44)'], respuesta: [15.97597400808262, 24.442261560352357], tipo: 'vector' },
+  { id: 'j5c3', juego: 5, parte: 'complejos', nivel: 'dificil', titulo: 'Ejercicio 3: Módulo de combinación lineal', datos: { z28: [0.12, 14], z30: [Math.sqrt(29), 10/3], k: 2 }, formula: '|k·\\overline{z_{28}} + z_{30}|', pasos: ['\\overline{z_{28}} = 0.12-14i', 'k·\\overline{z_{28}} = 2·(0.12-14i) = (0.24, -28)', 'k·\\overline{z_{28}} + z_{30} = (0.24+\\sqrt{29}, -28+10/3) = (5.625, -24.667)', '|...| = \\sqrt{5.625^2 + (-24.667)^2} = \\sqrt{31.64 + 608.46} = \\sqrt{640.10} ≈ 25.30'], respuesta: 25.299939200556768, tipo: 'escalar' }
+];
+
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'ejercicios') renderEjercicios();
+  if (id === 'examen') iniciarExamen();
+}
+
+function renderEjercicios() {
+  const container = document.getElementById('listaEjercicios');
+  let html = '';
+  for (let juego = 1; juego <= 5; juego++) {
+    html += '<div class="card"><h2>Juego ' + juego + '</h2></div>';
+    html += '<div class="card"><h3>Parte 1: Vectores</h3></div>';
+    ejercicios.filter(e => e.juego === juego && e.parte === 'vectores').forEach(ej => { html += renderEjercicioCard(ej); });
+    html += '<div class="card"><h3>Parte 2: Números Complejos</h3></div>';
+    ejercicios.filter(e => e.juego === juego && e.parte === 'complejos').forEach(ej => { html += renderEjercicioCard(ej); });
+  }
+  container.innerHTML = html;
+}
+
+function renderEjercicioCard(ej) {
+  const badgeClass = ej.nivel === 'facil' ? 'badge-facil' : ej.nivel === 'intermedio' ? 'badge-intermedio' : 'badge-dificil';
+  const badgeText = ej.nivel === 'facil' ? 'Fácil' : ej.nivel === 'intermedio' ? 'Intermedio' : 'Difícil';
+  return '<div class="exercise" id="ej-' + ej.id + '">' +
+    '<div class="exercise-header"><span class="exercise-title">' + ej.titulo + '</span><span class="badge ' + badgeClass + '">' + badgeText + '</span></div>' +
+    '<div class="exercise-formula">\\(' + ej.formula + '\\)</div>' +
+    '<div class="exercise-data"><h4>Datos:</h4><p>' + formatDatos(ej.datos) + '</p></div>' +
+    '<button class="btn btn-secondary" onclick="toggleSolucion(\'' + ej.id + '\')">Ver solución paso a paso</button>' +
+    '<div id="solucion-' + ej.id + '" style="display:none;"><div class="steps"><h4>Proceso de resolución:</h4><ol>' +
+    ej.pasos.map(p => '<li>\\(' + p + '\\)</li>').join('') +
+    '</ol></div></div></div>';
+}
+
+function formatDatos(datos) {
+  const partes = [];
+  for (const [key, val] of Object.entries(datos)) {
+    if (Array.isArray(val)) {
+      partes.push('\\(' + key + ' = (' + formatNum(val[0]) + ', ' + formatNum(val[1]) + ')\\)');
+    } else {
+      partes.push('\\(' + key + ' = ' + formatNum(val) + '\\)');
+    }
+  }
+  return partes.join(', ');
+}
+
+function formatNum(n) {
+  if (typeof n === 'number') {
+    if (Number.isInteger(n)) return n.toString();
+    return n.toFixed(4).replace(/\.?0+$/, '');
+  }
+  return n;
+}
+
+function toggleSolucion(id) {
+  const el = document.getElementById('solucion-' + id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+let examenActual = [];
+let preguntaActual = 0;
+let aciertos = 0;
+
+function iniciarExamen() {
+  examenActual = [...ejercicios].sort(() => Math.random() - 0.5).slice(0, 10);
+  preguntaActual = 0;
+  aciertos = 0;
+  document.getElementById('progresoTotal').textContent = examenActual.length;
+  document.getElementById('aciertos').textContent = '0';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('examenResultado').innerHTML = '';
+  mostrarPregunta();
+}
+
+function mostrarPregunta() {
+  if (preguntaActual >= examenActual.length) { mostrarResultado(); return; }
+  const ej = examenActual[preguntaActual];
+  const container = document.getElementById('examenContainer');
+  document.getElementById('progresoActual').textContent = preguntaActual + 1;
+  document.getElementById('progressBar').style.width = (preguntaActual / examenActual.length * 100) + '%';
+  const badgeClass = ej.nivel === 'facil' ? 'badge-facil' : ej.nivel === 'intermedio' ? 'badge-intermedio' : 'badge-dificil';
+  const badgeText = ej.nivel === 'facil' ? 'Fácil' : ej.nivel === 'intermedio' ? 'Intermedio' : 'Difícil';
+  let inputHTML = '';
+  if (ej.tipo === 'vector') {
+    inputHTML = '<div class="input-group"><label>Componente x:</label><input type="number" id="respuesta-x" step="0.01" placeholder="Ej: 10.41"></div>' +
+      '<div class="input-group"><label>Componente y:</label><input type="number" id="respuesta-y" step="0.01" placeholder="Ej: -26"></div>';
+  } else {
+    inputHTML = '<div class="input-group"><label>Resultado:</label><input type="number" id="respuesta-escalar" step="0.01" placeholder="Ej: 2.43"></div>';
+  }
+  container.innerHTML = '<div class="exercise">' +
+    '<div class="exercise-header"><span class="exercise-title">Pregunta ' + (preguntaActual + 1) + ': ' + ej.titulo + '</span><span class="badge ' + badgeClass + '">' + badgeText + '</span></div>' +
+    '<div class="exercise-formula">\\(' + ej.formula + '\\)</div>' +
+    '<div class="exercise-data"><h4>Datos:</h4><p>' + formatDatos(ej.datos) + '</p></div>' +
+    inputHTML +
+    '<button class="btn btn-primary" onclick="verificarRespuesta()">Verificar respuesta</button>' +
+    '<div id="feedback-' + preguntaActual + '" class="feedback"></div></div>';
+}
+
+function verificarRespuesta() {
+  const ej = examenActual[preguntaActual];
+  const feedback = document.getElementById('feedback-' + preguntaActual);
+  let respuestaUsuario;
+  if (ej.tipo === 'vector') {
+    const x = parseFloat(document.getElementById('respuesta-x').value);
+    const y = parseFloat(document.getElementById('respuesta-y').value);
+    if (isNaN(x) || isNaN(y)) { feedback.className = 'feedback incorrect show'; feedback.textContent = 'Por favor ingresa ambos componentes del vector.'; return; }
+    respuestaUsuario = [x, y];
+  } else {
+    const val = parseFloat(document.getElementById('respuesta-escalar').value);
+    if (isNaN(val)) { feedback.className = 'feedback incorrect show'; feedback.textContent = 'Por favor ingresa un valor numérico.'; return; }
+    respuestaUsuario = val;
+  }
+  const tolerancia = 0.1;
+  let esCorrecta = false;
+  if (ej.tipo === 'vector') {
+    const diffX = Math.abs(respuestaUsuario[0] - ej.respuesta[0]);
+    const diffY = Math.abs(respuestaUsuario[1] - ej.respuesta[1]);
+    esCorrecta = diffX < tolerancia && diffY < tolerancia;
+  } else {
+    esCorrecta = Math.abs(respuestaUsuario - ej.respuesta) < tolerancia;
+  }
+  if (esCorrecta) {
+    aciertos++;
+    document.getElementById('aciertos').textContent = aciertos;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = '<strong>Correcto</strong><div class="steps"><h4>Proceso:</h4><ol>' + ej.pasos.map(p => '<li>\\(' + p + '\\)</li>').join('') + '</ol></div>';
+  } else {
+    feedback.className = 'feedback incorrect show';
+    const respuestaCorrecta = ej.tipo === 'vector' ? '(' + ej.respuesta[0].toFixed(4) + ', ' + ej.respuesta[1].toFixed(4) + ')' : ej.respuesta.toFixed(4);
+    feedback.innerHTML = '<strong>Incorrecto.</strong> La respuesta correcta es: <strong>' + respuestaCorrecta + '</strong><div class="steps"><h4>Proceso correcto:</h4><ol>' + ej.pasos.map(p => '<li>\\(' + p + '\\)</li>').join('') + '</ol></div>';
+  }
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.style.marginLeft = '10px';
+  btn.textContent = preguntaActual < examenActual.length - 1 ? 'Siguiente pregunta' : 'Ver resultado final';
+  btn.onclick = function() { preguntaActual++; mostrarPregunta(); };
+  feedback.appendChild(btn);
+}
+
+function mostrarResultado() {
+  const porcentaje = (aciertos / examenActual.length) * 100;
+  const container = document.getElementById('examenContainer');
+  const resultado = document.getElementById('examenResultado');
+  let mensaje, color;
+  if (porcentaje >= 90) { mensaje = 'Excelente! Dominas el tema.'; color = 'var(--success)'; }
+  else if (porcentaje >= 70) { mensaje = 'Buen trabajo! Puedes mejorar.'; color = 'var(--warning)'; }
+  else { mensaje = 'Necesitas repasar más la teoría.'; color = 'var(--error)'; }
+  container.innerHTML = '';
+  resultado.innerHTML = '<div class="score-display"><h2>Resultado del Examen</h2><div class="score-number">' + aciertos + '/' + examenActual.length + '</div><p style="font-size:1.3em;color:' + color + ';margin:20px 0;">' + mensaje + '</p><p style="color:var(--muted);">Porcentaje: ' + porcentaje.toFixed(1) + '%</p><button class="btn btn-primary" onclick="iniciarExamen()" style="margin-top:20px;">Repetir examen</button></div>';
+}
+
+function calcularVectores() {
+  const v1Str = document.getElementById('v1').value.split(',').map(s => parseFloat(s.trim()));
+  const v2Str = document.getElementById('v2').value.split(',').map(s => parseFloat(s.trim()));
+  const k = parseFloat(document.getElementById('scalar').value);
+  if (v1Str.length !== 2 || v2Str.length !== 2 || isNaN(v1Str[0]) || isNaN(v1Str[1]) || isNaN(v2Str[0]) || isNaN(v2Str[1]) || isNaN(k)) {
+    document.getElementById('resultadoVectores').innerHTML = '<div class="feedback incorrect show">Ingresa valores válidos.</div>';
+    return;
+  }
+  const v1 = v1Str, v2 = v2Str;
+  const suma = [v1[0] + v2[0], v1[1] + v2[1]];
+  const resta = [v1[0] - v2[0], v1[1] - v2[1]];
+  const escalar = [k * v1[0], k * v1[1]];
+  const norma1 = Math.sqrt(v1[0]**2 + v1[1]**2);
+  const norma2 = Math.sqrt(v2[0]**2 + v2[1]**2);
+  const punto = v1[0] * v2[0] + v1[1] * v2[1];
+  document.getElementById('resultadoVectores').innerHTML = '<div class="card" style="margin-top:20px;"><h3>Resultados:</h3><table><tr><th>Operación</th><th>Resultado</th></tr><tr><td>v₁ + v₂</td><td>(' + suma[0].toFixed(4) + ', ' + suma[1].toFixed(4) + ')</td></tr><tr><td>v₁ - v₂</td><td>(' + resta[0].toFixed(4) + ', ' + resta[1].toFixed(4) + ')</td></tr><tr><td>k · v₁</td><td>(' + escalar[0].toFixed(4) + ', ' + escalar[1].toFixed(4) + ')</td></tr><tr><td>‖v₁‖</td><td>' + norma1.toFixed(4) + '</td></tr><tr><td>‖v₂‖</td><td>' + norma2.toFixed(4) + '</td></tr><tr><td>v₁ · v₂ (producto punto)</td><td>' + punto.toFixed(4) + '</td></tr></table></div>';
+}
+
+function calcularComplejos() {
+  const c1Str = document.getElementById('c1').value.split(',').map(s => parseFloat(s.trim()));
+  const c2Str = document.getElementById('c2').value.split(',').map(s => parseFloat(s.trim()));
+  const k = parseFloat(document.getElementById('cscalar').value);
+  if (c1Str.length !== 2 || c2Str.length !== 2 || isNaN(c1Str[0]) || isNaN(c1Str[1]) || isNaN(c2Str[0]) || isNaN(c2Str[1]) || isNaN(k)) {
+    document.getElementById('resultadoComplejos').innerHTML = '<div class="feedback incorrect show">Ingresa valores válidos.</div>';
+    return;
+  }
+  const c1 = c1Str, c2 = c2Str;
+  const suma = [c1[0] + c2[0], c1[1] + c2[1]];
+  const resta = [c1[0] - c2[0], c1[1] - c2[1]];
+  const producto = [c1[0] * c2[0] - c1[1] * c2[1], c1[0] * c2[1] + c1[1] * c2[0]];
+  const conjugado1 = [c1[0], -c1[1]];
+  const conjugado2 = [c2[0], -c2[1]];
+  const modulo1 = Math.sqrt(c1[0]**2 + c1[1]**2);
+  const modulo2 = Math.sqrt(c2[0]**2 + c2[1]**2);
+  const escalar = [k * c1[0], k * c1[1]];
+  document.getElementById('resultadoComplejos').innerHTML = '<div class="card" style="margin-top:20px;"><h3>Resultados:</h3><table><tr><th>Operación</th><th>Resultado</th></tr><tr><td>z₁ + z₂</td><td>(' + suma[0].toFixed(4) + ', ' + suma[1].toFixed(4) + ')</td></tr><tr><td>z₁ - z₂</td><td>(' + resta[0].toFixed(4) + ', ' + resta[1].toFixed(4) + ')</td></tr><tr><td>z₁ · z₂</td><td>(' + producto[0].toFixed(4) + ', ' + producto[1].toFixed(4) + ')</td></tr><tr><td>z̄₁</td><td>(' + conjugado1[0].toFixed(4) + ', ' + conjugado1[1].toFixed(4) + ')</td></tr><tr><td>z̄₂</td><td>(' + conjugado2[0].toFixed(4) + ', ' + conjugado2[1].toFixed(4) + ')</td></tr><tr><td>|z₁|</td><td>' + modulo1.toFixed(4) + '</td></tr><tr><td>|z₂|</td><td>' + modulo2.toFixed(4) + '</td></tr><tr><td>k · z₁</td><td>(' + escalar[0].toFixed(4) + ', ' + escalar[1].toFixed(4) + ')</td></tr></table></div>';
+}
+
+document.addEventListener('DOMContentLoaded', function() { renderEjercicios(); });
+</script>
+</body>
+</html>
