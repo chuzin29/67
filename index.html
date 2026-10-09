@@ -1445,12 +1445,15 @@ function formatDatos(datos) {
 // Formato exacto: muestra √n para raíces, no el decimal
 function fmtExacto(n) {
   if (typeof n !== 'number') return String(n);
-  // Verificar si es una raíz cuadrada de un entero
+  // Primero verificar si es entero (incluyendo cuadrados perfectos como 3, 5, 7)
+  if (Number.isInteger(n)) return n.toString();
+  // Verificar si es una raíz de un entero NO cuadrado perfecto
   const cuadrado = n * n;
   if (Math.abs(cuadrado - Math.round(cuadrado)) < 0.0001 && Math.round(cuadrado) > 0 && Math.abs(n) > 0.001) {
     const entero = Math.round(cuadrado);
-    // Verificar que sea una raíz "bonita" (2-30)
-    if (entero >= 2 && entero <= 30 && Math.abs(n) - Math.sqrt(entero) < 0.0001) {
+    // Solo mostrar √ si NO es cuadrado perfecto
+    const esCuadradoPerfecto = Number.isInteger(Math.sqrt(entero));
+    if (!esCuadradoPerfecto && entero >= 2 && entero <= 30 && Math.abs(Math.abs(n) - Math.sqrt(entero)) < 0.0001) {
       return '<span class="math">' + (n < 0 ? '−' : '') + '√' + entero + '</span>';
     }
   }
@@ -1460,12 +1463,19 @@ function fmtExacto(n) {
     if (Math.abs(numerador - Math.round(numerador)) < 0.0001) {
       const num = Math.round(numerador);
       if (num !== 0 && Math.abs(num) <= 30) {
+        // Simplificar fracción si es posible (ej: 14/2 -> 7)
+        const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+        const divisor = gcd(Math.abs(num), den);
+        if (divisor > 1) {
+          const numSimp = num / divisor;
+          const denSimp = den / divisor;
+          if (denSimp === 1) return numSimp.toString();
+          return '<span class="math">' + (numSimp < 0 ? '−' : '') + Math.abs(numSimp) + '/' + denSimp + '</span>';
+        }
         return '<span class="math">' + (num < 0 ? '−' : '') + Math.abs(num) + '/' + den + '</span>';
       }
     }
   }
-  // Verificar si es entero
-  if (Number.isInteger(n)) return n.toString();
   // Verificar si tiene decimales bonitos
   const str = n.toFixed(4).replace(/\.?0+$/, '');
   return str;
