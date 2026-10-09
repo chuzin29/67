@@ -1390,7 +1390,9 @@ function showSection(id, btn) {
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
   if (id === 'ejercicios') renderEjercicios();
-  if (id === 'examen') iniciarExamen();
+  if (id === 'examen') {
+    document.getElementById('examenArea').style.display = 'none';
+  }
 }
 
 // ============================================
