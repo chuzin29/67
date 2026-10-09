@@ -21,6 +21,7 @@
   --glow-purple: rgba(168, 85, 247, 0.2);
   --glow-pink: rgba(236, 72, 153, 0.15);
   --glow-blue: rgba(99, 102, 241, 0.15);
+  --glow-cyan: rgba(6, 182, 212, 0.15);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -839,15 +840,15 @@ tr:hover { background: var(--glow-blue); }
       <h2>Modo Examen</h2>
       <p>Elige qué quieres practicar:</p>
       
-      <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;">
-        <button class="btn btn-primary" onclick="iniciarExamen('vectores')" style="flex: 1; min-width: 200px; padding: 20px;">
-          <span style="font-size: 1.3em; display: block; margin-bottom: 8px;">Vectores</span>
-          <span style="font-size: 0.85em; opacity: 0.9;">Practica con vectores</span>
-        </button>
-        <button class="btn btn-primary" onclick="iniciarExamen('complejos')" style="flex: 1; min-width: 200px; padding: 20px; background: linear-gradient(135deg, var(--accent3), var(--accent2));">
-          <span style="font-size: 1.3em; display: block; margin-bottom: 8px;">Imaginarios</span>
-          <span style="font-size: 0.85em; opacity: 0.9;">Practica con complejos</span>
-        </button>
+      <div class="examen-options">
+        <div class="examen-option vectores" onclick="iniciarExamen('vectores')">
+          <h3>Vectores</h3>
+          <p>Practica con vectores</p>
+        </div>
+        <div class="examen-option complejos" onclick="iniciarExamen('complejos')">
+          <h3>Imaginarios</h3>
+          <p>Practica con complejos</p>
+        </div>
       </div>
       
       <div id="examenArea" style="display: none;">
@@ -1516,6 +1517,52 @@ function mostrarMascota() {
   setTimeout(() => {
     tooltip.classList.remove('show');
   }, 2000);
+  // Sonido de pajarito
+  try {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    // Primer chirrido
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(2800, now);
+    osc1.frequency.exponentialRampToValueAtTime(3500, now + 0.08);
+    osc1.frequency.exponentialRampToValueAtTime(2200, now + 0.15);
+    gain1.gain.setValueAtTime(0.3, now);
+    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.15);
+    // Segundo chirrido
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(3200, now + 0.2);
+    osc2.frequency.exponentialRampToValueAtTime(4000, now + 0.28);
+    osc2.frequency.exponentialRampToValueAtTime(2500, now + 0.35);
+    gain2.gain.setValueAtTime(0.25, now + 0.2);
+    gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.2);
+    osc2.stop(now + 0.35);
+    // Tercer chirrido suave
+    const osc3 = audioCtx.createOscillator();
+    const gain3 = audioCtx.createGain();
+    osc3.type = 'sine';
+    osc3.frequency.setValueAtTime(3000, now + 0.45);
+    osc3.frequency.exponentialRampToValueAtTime(3800, now + 0.52);
+    osc3.frequency.exponentialRampToValueAtTime(2800, now + 0.6);
+    gain3.gain.setValueAtTime(0.2, now + 0.45);
+    gain3.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+    osc3.connect(gain3);
+    gain3.connect(audioCtx.destination);
+    osc3.start(now + 0.45);
+    osc3.stop(now + 0.6);
+  } catch(e) {
+    // Si no hay soporte de audio, no hacer nada
+  }
 }
 
 function mostrarPregunta() {
