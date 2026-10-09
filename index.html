@@ -1426,12 +1426,49 @@ function formatDatos(datos) {
   const partes = [];
   for (const [key, val] of Object.entries(datos)) {
     if (Array.isArray(val)) {
-      partes.push(key + ' = (' + fmt(val[0]) + ', ' + fmt(val[1]) + ')');
+      // Detectar si es complejo por el nombre de la variable (z1, z2, z13, etc.)
+      const esComplejo = key.toLowerCase().startsWith('z');
+      const x = fmtExacto(val[0]);
+      const y = fmtExacto(val[1]);
+      if (esComplejo) {
+        partes.push(key + ' = (' + x + ', ' + y + 'i)');
+      } else {
+        partes.push(key + ' = (' + x + ', ' + y + ')');
+      }
     } else {
-      partes.push(key + ' = ' + fmt(val));
+      partes.push(key + ' = ' + fmtExacto(val));
     }
   }
   return partes.join(', ');
+}
+
+// Formato exacto: muestra √n para raíces, no el decimal
+function fmtExacto(n) {
+  if (typeof n !== 'number') return String(n);
+  // Verificar si es una raíz cuadrada de un entero
+  const cuadrado = n * n;
+  if (Math.abs(cuadrado - Math.round(cuadrado)) < 0.0001 && Math.round(cuadrado) > 0 && Math.abs(n) > 0.001) {
+    const entero = Math.round(cuadrado);
+    // Verificar que sea una raíz "bonita" (2-30)
+    if (entero >= 2 && entero <= 30 && Math.abs(n) - Math.sqrt(entero) < 0.0001) {
+      return '<span class="math">' + (n < 0 ? '−' : '') + '√' + entero + '</span>';
+    }
+  }
+  // Verificar si es una fracción simple (x/2, x/3, x/4, x/5, x/6, x/7, x/8, x/9, x/10)
+  for (let den = 2; den <= 10; den++) {
+    const numerador = n * den;
+    if (Math.abs(numerador - Math.round(numerador)) < 0.0001) {
+      const num = Math.round(numerador);
+      if (num !== 0 && Math.abs(num) <= 30) {
+        return '<span class="math">' + (num < 0 ? '−' : '') + Math.abs(num) + '/' + den + '</span>';
+      }
+    }
+  }
+  // Verificar si es entero
+  if (Number.isInteger(n)) return n.toString();
+  // Verificar si tiene decimales bonitos
+  const str = n.toFixed(4).replace(/\.?0+$/, '');
+  return str;
 }
 
 function toggleSolucion(id) {
