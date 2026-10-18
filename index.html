@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Precálculo 67 · Vectores, Complejos, Trigonometría y Estadística</title>
 <meta name="description" content="Curso interactivo de precálculo: teoría, calculadoras, 30 ejercicios resueltos, banco de 24 ejercicios prácticos, 8 de Teorema de Moivre y 60 preguntas teóricas.">
-<meta name="theme-color" content="#060910">
+<meta name="theme-color" content="#08050f">
 <meta property="og:title" content="Precálculo 67 · Aprende resolviendo">
 <meta property="og:description" content="Vectores, números complejos, trigonometría y estadística con teoría, calculadoras y 122 recursos de práctica.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Segoe UI,Arial' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a855f7'/%3E%3Cstop offset='1' stop-color='%23d946ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Segoe UI,Arial' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -446,9 +446,9 @@
         <div class="card-head"><h2>Visualización</h2><span class="badge badge-tema">Plano cartesiano</span></div>
         <div class="plot" id="plotVectores"></div>
         <div class="legend">
-          <span><i style="background:#7c5cff"></i>a</span>
-          <span><i style="background:#22d3ee"></i>b</span>
-          <span><i style="background:#f472b6"></i>a + b</span>
+          <span><i style="background:#a855f7"></i>a</span>
+          <span><i style="background:#d946ef"></i>b</span>
+          <span><i style="background:#ec4899"></i>a + b</span>
         </div>
       </div>
     </div>
@@ -514,9 +514,9 @@
         <div class="card-head"><h2>Plano complejo</h2><span class="badge badge-tema">Módulo y argumento</span></div>
         <div class="plot" id="plotComplejos"></div>
         <div class="legend">
-          <span><i style="background:#7c5cff"></i>z₁</span>
-          <span><i style="background:#22d3ee"></i>z₂</span>
-          <span><i style="background:#f472b6"></i>z₁ + z₂</span>
+          <span><i style="background:#a855f7"></i>z₁</span>
+          <span><i style="background:#d946ef"></i>z₂</span>
+          <span><i style="background:#ec4899"></i>z₁ + z₂</span>
           <span><i style="background:#34d399"></i>z₁ · z₂</span>
         </div>
       </div>
@@ -696,6 +696,10 @@
           <span class="small muted">8 ítems</span>
         </div>
       </div>
+      <div class="note">
+        <strong>Ojo con la notación</strong>
+        En <span class="math-inline">−√3/2</span> la raíz afecta solo al 3: es <span class="math-inline">−(√3)/2 ≈ −0.8660</span>, no <span class="math-inline">√(3/2) ≈ 1.2247</span>. Por eso aquí las fracciones se muestran apiladas y el vínculo de la raíz cubre solo el radicando.
+      </div>
       <div id="listaMoivre"></div>
     </div>
 
@@ -788,10 +792,11 @@
 <div class="bubble" id="bubble" role="status"></div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="assets/js/format.js"></script>
-<script src="assets/js/data-core.js"></script>
-<script src="assets/js/data-bancos.js"></script>
-<script src="assets/js/data-teoria.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/math-render.js?v=2"></script>
+<script src="assets/js/format.js?v=2"></script>
+<script src="assets/js/data-core.js?v=2"></script>
+<script src="assets/js/data-bancos.js?v=2"></script>
+<script src="assets/js/data-teoria.js?v=2"></script>
+<script src="assets/js/app.js?v=2"></script>
 </body>
 </html>

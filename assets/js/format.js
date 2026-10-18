@@ -44,8 +44,7 @@
         var g = gcd(Math.abs(nu), den);
         if (g > 1) { nu /= g; den = den / g; }
         if (den === 1) return (neg ? MINUS : '') + nu;
-        return (neg ? MINUS : '') + '<span class="frac"><span class="num">' + nu +
-          '</span><span class="den">' + den + '</span></span>';
+        return (neg ? MINUS : '') + frac(nu, den);
       }
     }
     return (neg ? MINUS : '') + a.toFixed(4).replace(/\.?0+$/, '');
@@ -55,12 +54,16 @@
 
   /** Raíz con vínculo superior. */
   function sqrt(n) {
-    return '<span class="sqrt"><span class="sqrt-content">' + n + '</span></span>';
+    return global.MathRender
+      ? global.MathRender.sqrt(n)
+      : '<span class="sqrt"><span class="sqrt-content">' + n + '</span></span>';
   }
 
   /** Fracción apilada. */
   function frac(a, b) {
-    return '<span class="frac"><span class="num">' + a + '</span><span class="den">' + b + '</span></span>';
+    return global.MathRender
+      ? global.MathRender.frac(a, b)
+      : '<span class="frac"><span class="num">' + a + '</span><span class="den">' + b + '</span></span>';
   }
 
   function vec(v) { return '<span class="vec">' + v + '</span>'; }

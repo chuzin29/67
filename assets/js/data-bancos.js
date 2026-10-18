@@ -338,10 +338,10 @@ window.BANCO_MOIVRE = [
     respuesta: 'z = 64 − 64√3 i',
     pasos: [
       'Calcula el módulo con el teorema de Pitágoras: <span class="math">r = √(1² + (−√3)²) = √(1 + 3) = 2</span>.',
-      'Calcula el argumento con la arcotangente: <span class="math">θ = arctan(−√3/1) = −60°</span>, en el Cuadrante IV; así, <span class="math">z = 2(cos(−60°) + i sen(−60°))</span>.',
+      'Calcula el argumento con la arcotangente: <span class="math">θ = arctan(−√3) = −60°</span> (Cuadrante IV). Recuerda que <span class="math">sen(−60°) = −√3/2 ≈ −0.8660</span>; así, <span class="math">z = 2(cos(−60°) + i sen(−60°))</span>.',
       'Aplica la fórmula de Moivre con <span class="math">n = 7</span>: <span class="math">z⁷ = 2⁷(cos(7 · (−60°)) + i sen(7 · (−60°))) = 128(cos(−420°) + i sen(−420°))</span>.',
       'Reduce el ángulo sumando 360°: <span class="math">−420° + 360° = −60°</span>, entonces <span class="math">z⁷ = 128(cos(−60°) + i sen(−60°))</span>.',
-      'Evalúa: <span class="math">z⁷ = 128(1/2 − (√3/2)i) = 64 − 64√3 i</span>.'
+      'Evalúa con <span class="math">cos(−60°) = 1/2</span> y <span class="math">sen(−60°) = −√3/2 ≈ −0.8660</span>: <span class="math">z⁷ = 128(1/2 − (√3/2)i) = 64 − 64√3 i</span>.'
     ]
   },
   {

@@ -37,6 +37,13 @@
     });
   }
 
+  /** Convierte la notación matemática plana del contenido a HTML. */
+  function mathHtml(html) {
+    return window.MathRender && window.MathRender.render
+      ? window.MathRender.render(html)
+      : html;
+  }
+
   /** Número simple para etiquetas SVG (sin HTML). */
   function plain(n, decimals) {
     if (typeof n !== 'number' || !isFinite(n)) return '—';
@@ -74,7 +81,7 @@
     return Math.round(n * f) / f;
   }
 
-  var C = { purple: '#7c5cff', cyan: '#22d3ee', pink: '#f472b6', green: '#34d399', amber: '#fbbf24', red: '#fb7185' };
+  var C = { purple: '#a855f7', cyan: '#d946ef', pink: '#ec4899', green: '#34d399', amber: '#fbbf24', red: '#fb7185' };
   var uidSeed = 0;
   function uid() { uidSeed += 1; return 'p67-' + uidSeed; }
 
@@ -92,7 +99,7 @@
       sun.style.display = light ? 'block' : 'none';
     }
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f6fc' : '#060910');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#f7f4fd' : '#08050f');
     Store.set(THEME_KEY, theme);
   }
 
@@ -621,7 +628,9 @@
       B = parseNumber($('#tB').value);
       c = parseNumber($('#tc').value);
       if (A === null || B === null || c === null || c <= 0) { warn = 'Introduce dos ángulos y un lado positivo.'; }
-      else {
+      else if (A <= 0 || B <= 0 || A >= 180 || B >= 180) {
+        warn = 'Los ángulos deben estar entre 0° y 180°.';
+      } else {
         Cc = 180 - A - B;
         if (Cc <= 0) warn = 'Los ángulos suman 180° o más: no forman un triángulo.';
         else {
@@ -723,14 +732,14 @@
 
     var body = '<polygon class="shape" points="' + [A, B, Cc].map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
 
-    body += '<circle cx="' + A[0] + '" cy="' + A[1] + '" r="4" fill="#f472b6"/>';
-    body += '<circle cx="' + B[0] + '" cy="' + B[1] + '" r="4" fill="#22d3ee"/>';
-    body += '<circle cx="' + Cc[0] + '" cy="' + Cc[1] + '" r="4" fill="#a78bfa"/>';
+    body += '<circle cx="' + A[0] + '" cy="' + A[1] + '" r="4" fill="#ec4899"/>';
+    body += '<circle cx="' + B[0] + '" cy="' + B[1] + '" r="4" fill="#d946ef"/>';
+    body += '<circle cx="' + Cc[0] + '" cy="' + Cc[1] + '" r="4" fill="#c084fc"/>';
 
     var labels = [
-      { pos: A, text: 'A', color: '#f472b6', dx: -14, dy: 16 },
-      { pos: B, text: 'B', color: '#22d3ee', dx: 12, dy: 16 },
-      { pos: Cc, text: 'C', color: '#a78bfa', dx: 0, dy: -14 }
+      { pos: A, text: 'A', color: '#ec4899', dx: -14, dy: 16 },
+      { pos: B, text: 'B', color: '#d946ef', dx: 12, dy: 16 },
+      { pos: Cc, text: 'C', color: '#c084fc', dx: 0, dy: -14 }
     ];
     labels.forEach(function (l) {
       body += '<text x="' + (l.pos[0] + l.dx) + '" y="' + (l.pos[1] + l.dy) + '" fill="' + l.color +
@@ -844,7 +853,7 @@
     var barW = Math.max(7, Math.min(46, slot * 0.6));
 
     var body = '<defs><linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>';
+      '<stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs>';
 
     body += '<line class="axis" x1="' + P + '" y1="' + bottom + '" x2="' + (W - P) + '" y2="' + bottom + '"/>';
 
@@ -1070,6 +1079,8 @@
       '</article>';
     }).join('') || '<div class="empty">No hay ítems con ese tema.</div>';
 
+    container.innerHTML = mathHtml(container.innerHTML);
+
     $$('details.acc', container).forEach(function (details) {
       if (details.dataset.bound) return;
       details.dataset.bound = '1';
@@ -1105,6 +1116,8 @@
         '</div></details>' +
       '</article>';
     }).join('') || '<div class="empty">Aún no hay ejercicios de Moivre cargados.</div>';
+
+    container.innerHTML = mathHtml(container.innerHTML);
 
     $$('details.acc', container).forEach(function (details) {
       if (details.dataset.bound) return;
@@ -1148,6 +1161,8 @@
         '</div></details>' +
       '</article>';
     }).join('') || '<div class="empty">No hay preguntas que coincidan con la búsqueda.</div>';
+
+    container.innerHTML = mathHtml(container.innerHTML);
 
     $$('details.acc', container).forEach(function (details) {
       if (details.dataset.bound) return;
@@ -1278,14 +1293,14 @@
     var container = $('#examenContainer');
 
     if (exam.mode === 'teorico') {
-      container.innerHTML = '<p class="quiz-question">' + item.pregunta + '</p>' +
+      container.innerHTML = mathHtml('<p class="quiz-question">' + item.pregunta + '</p>' +
         '<div id="teoriaRevealBox" hidden><div class="quiz-feedback"><strong>Respuesta modelo:</strong><br>' + item.respuesta + '</div></div>' +
         '<div class="item-actions mt-2">' +
           '<button class="btn btn-soft" id="btnRevealTeoria">Ver respuesta modelo</button>' +
           '<span class="spacer"></span>' +
           '<button class="btn btn-ghost" id="btnFallo" disabled>No la sabía</button>' +
           '<button class="btn btn-primary" id="btnAcierto" disabled>La sabía</button>' +
-        '</div>';
+        '</div>');
 
       $('#btnRevealTeoria').addEventListener('click', function () {
         $('#teoriaRevealBox').hidden = false;
@@ -1359,12 +1374,12 @@
       ? '(' + Fmt.fmt(item.respuesta[0]) + ', ' + Fmt.fmt(item.respuesta[1]) + ')'
       : Fmt.fmt(item.respuesta);
 
-    box.innerHTML = '<div class="quiz-feedback ' + (ok ? 'ok' : 'no') + '">' +
+    box.innerHTML = mathHtml('<div class="quiz-feedback ' + (ok ? 'ok' : 'no') + '">' +
       (ok ? '<strong>¡Correcto!</strong>' : '<strong>' + (counted ? 'Incorrecto.' : 'Solución mostrada.') + '</strong>') +
       ' La respuesta es <span class="math">' + solution + '</span>.' +
       '<details class="acc" style="margin-top:10px"><summary>Ver procedimiento</summary><div class="acc-body">' +
       '<ol class="steps-list">' + item.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
-      '</div></details></div>';
+      '</div></details></div>');
   }
 
   function appendNextButton() {
@@ -1437,7 +1452,57 @@
   /* ---------------------------------------------------------
      Arranque
      --------------------------------------------------------- */
+  /** Añade el gancho SVG a las raíces escritas directamente en el HTML. */
+  function ensureRadicalHooks() {
+    if (!window.MathRender) return;
+    var nodes = document.querySelectorAll('.sqrt');
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.querySelector('.rad-hook')) continue;
+      var content = node.querySelector('.sqrt-content');
+      if (!content) continue;
+      node.outerHTML = window.MathRender.sqrt(content.innerHTML);
+    }
+  }
+
+  /** Convierte la notación matemática escrita a mano en el HTML. */
+  function renderStaticMath() {
+    if (!window.MathRender) return;
+    // Fórmulas de desarrollo y avisos: tablas y portada se mantienen compactas.
+    var nodes = document.querySelectorAll('.formula .math, .note .math, .tip .math, .warn .math');
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.dataset.mathDone) continue;
+      if (node !== node.closest('.math')) continue;
+      node.innerHTML = window.MathRender.render(node.innerHTML);
+      node.dataset.mathDone = '1';
+    }
+  }
+
+  /** Raíces de las tablas de referencia: solo el radical, sin fracciones. */
+  function renderTableRoots() {
+    if (!window.MathRender) return;
+    var nodes = document.querySelectorAll('.table-wrap .math');
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.dataset.rootsDone || node.innerHTML.indexOf('\u221A') === -1) continue;
+      node.innerHTML = node.innerHTML
+        .split(/(<[^>]+>)/)
+        .map(function (part) {
+          if (part.charAt(0) === '<') return part;
+          return part.replace(/\u221A(\d+)/g, function (match, radicand) {
+            return window.MathRender.sqrt(radicand);
+          });
+        })
+        .join('');
+      node.dataset.rootsDone = '1';
+    }
+  }
+
   function init() {
+    ensureRadicalHooks();
+    renderTableRoots();
+    renderStaticMath();
     initTheme();
     initNav();
     initMascota();

@@ -38,6 +38,7 @@ Todo en una sola página, sin dependencias ni instalación.
     ├── css
     │   └── style.css
     └── js
+        ├── math-render.js   # Raíces, fracciones y paréntesis matemáticos
         ├── format.js        # Helpers de notación matemática
         ├── data-core.js     # 30 ejercicios base
         ├── data-bancos.js   # 24 prácticos + 8 de Moivre
