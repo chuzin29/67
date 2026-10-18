@@ -748,6 +748,8 @@ html[data-theme="light"] .hero-card {
   color: var(--cyan);
 }
 .formula .math { font-size: 1.12rem; }
+.formula .frac { font-size: 0.98em; }
+.formula .sqrt .sqrt-content { font-size: 1em; }
 
 .vec { font-weight: 700; }
 .vec::after { content: ""; }
@@ -825,9 +827,18 @@ sup { font-size: 0.68em; line-height: 0; }
 }
 .tip { border-left-color: var(--primary); background: rgba(168, 85, 247, 0.08); }
 .warn { border-left-color: var(--amber); background: rgba(251, 191, 36, 0.08); }
-.note strong, .tip strong, .warn strong { display: block; margin-bottom: 3px; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); }
-.tip strong { color: var(--primary-2); }
-.warn strong { color: var(--amber); }
+.note > strong:first-child,
+.tip > strong:first-child,
+.warn > strong:first-child {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.tip > strong:first-child { color: var(--primary-2); }
+.warn > strong:first-child { color: var(--amber); }
 
 .kbd {
   font-family: var(--font-mono);
@@ -891,6 +902,12 @@ tbody tr { transition: background 0.16s ease; }
 tbody tr:hover { background: rgba(168, 85, 247, 0.07); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 td .math { font-size: 1.02rem; }
+
+tr.stats-total td {
+  font-weight: 700;
+  border-top: 2px solid var(--line-strong);
+  background: var(--surface-3);
+}
 
 /* ---------------------------- 11. Formularios y calculadoras ---------------------------- */
 .field { display: flex; flex-direction: column; gap: 6px; }
@@ -1463,22 +1480,37 @@ details.acc > summary:hover { color: var(--ink); }
   .toolbar { flex-direction: column; align-items: stretch; }
   .search { flex-basis: auto; min-width: 0; }
   .mascota {
-    top: 13px;
-    right: 112px;
-    bottom: auto;
+    left: 10px;
+    right: auto;
+    top: auto;
+    bottom: 10px;
     width: 38px;
     height: 38px;
-    z-index: 210;
+    z-index: 180;
     animation: none;
+    opacity: 0.92;
     box-shadow: 0 6px 18px rgba(168, 85, 247, 0.4);
   }
-  .bubble { top: 62px; right: 12px; bottom: auto; max-width: 190px; border-radius: 16px 16px 16px 4px; }
+  .bubble {
+    left: 10px;
+    right: auto;
+    top: auto;
+    bottom: 58px;
+    max-width: 190px;
+    border-radius: 16px 16px 16px 4px;
+  }
   .footer { padding-bottom: 80px; }
   .btn { padding: 11px 18px; }
   .steps-list li { font-size: 0.92rem; }
   .item-text { font-size: 0.93rem; }
   .formula { padding: 13px 14px 13px 16px; font-size: 1rem; }
   .quiz-opt { font-size: 0.88rem; }
+
+  /* Resultados de calculadoras en dos columnas legibles */
+  .calc-result { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .result-item { padding: 12px 13px; }
+  .result-label { font-size: 0.63rem; letter-spacing: 0.06em; }
+  .result-value { font-size: 0.98rem; }
 
   /* Filtros y pestañas: una sola fila deslizable */
   .chips {

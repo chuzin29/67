@@ -10,7 +10,7 @@
 <meta property="og:description" content="Vectores, números complejos, trigonometría y estadística con teoría, calculadoras y 122 recursos de práctica.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a855f7'/%3E%3Cstop offset='1' stop-color='%23d946ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Segoe UI,Arial' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=2">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -383,6 +383,55 @@
           </table>
         </div>
         <div class="note"><strong>Asimetría</strong> En una distribución simétrica coinciden media, mediana y moda. Con asimetría positiva (cola a la derecha) la media se desplaza a la derecha de la mediana: <span class="math">Mo &lt; Me &lt; x̄</span>.</div>
+
+        <h3>Varianza y desviación típica</h3>
+        <p>La <strong>varianza</strong> mide la dispersión promedio respecto a la media: promedia los cuadrados de las desviaciones. La <strong>desviación típica</strong> es su raíz cuadrada y devuelve la medida a las unidades originales.</p>
+
+        <div class="grid grid-2">
+          <div>
+            <h4>Varianza poblacional</h4>
+            <div class="formula">
+              <span class="label">Toda la población (N datos)</span>
+              <span class="math">σ² = <span class="frac"><span class="num">Σ(x<sub>i</sub> − μ)²</span><span class="den">N</span></span></span>
+            </div>
+            <p class="small muted">Se divide entre <span class="math-inline">N</span> porque se conocen todos los datos.</p>
+          </div>
+          <div>
+            <h4>Varianza muestral</h4>
+            <div class="formula">
+              <span class="label">Una muestra (n datos)</span>
+              <span class="math">s² = <span class="frac"><span class="num">Σ(x<sub>i</sub> − x̄)²</span><span class="den">n − 1</span></span></span>
+            </div>
+            <p class="small muted">Se divide entre <span class="math-inline">n − 1</span> (grados de libertad) para corregir el sesgo de la muestra.</p>
+          </div>
+        </div>
+
+        <div class="formula">
+          <span class="label">Desviación típica</span>
+          <span class="math">σ = <span class="sqrt"><span class="sqrt-content">σ²</span></span> &nbsp;·&nbsp; s = <span class="sqrt"><span class="sqrt-content">s²</span></span></span>
+        </div>
+
+        <div class="formula">
+          <span class="label">Fórmula abreviada de la varianza</span>
+          <span class="math">σ² = <span class="frac"><span class="num">Σx<sub>i</sub>²</span><span class="den">N</span></span> − μ²</span>
+        </div>
+
+        <div class="tip"><strong>Interpretación</strong> Una varianza o desviación típica <strong>pequeña</strong> indica datos concentrados alrededor de la media; una <strong>grande</strong>, datos dispersos. La desviación típica se expresa en las mismas unidades que los datos; la varianza, en esas unidades al cuadrado.</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Concepto</th><th>Fórmula</th><th>Unidades</th><th>Cuándo se usa</th></tr></thead>
+            <tbody>
+              <tr><td>Varianza poblacional</td><td class="math">σ² = Σ(x−μ)²/N</td><td>unidades²</td><td>Se conoce toda la población</td></tr>
+              <tr><td>Varianza muestral</td><td class="math">s² = Σ(x−x̄)²/(n−1)</td><td>unidades²</td><td>Datos de una muestra</td></tr>
+              <tr><td>Desviación típica</td><td class="math">σ = √σ²</td><td>unidades</td><td>Comparar dispersión con los datos</td></tr>
+              <tr><td>Coeficiente de variación</td><td class="math">CV = σ/μ · 100 %</td><td>%</td><td>Comparar grupos con medias distintas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note"><strong>Ejemplo</strong> Para <span class="math-inline">4, 6, 8, 10</span> la media es <span class="math-inline">7</span>; las desviaciones son <span class="math-inline">−3, −1, 1, 3</span> y sus cuadrados suman <span class="math-inline">20</span>. Entonces <span class="math-inline">σ² = 20/4 = 5</span> y <span class="math-inline">σ = √5 ≈ 2.24</span>.</div>
+
         <p class="small muted">Las <strong>medidas de dispersión</strong> (rango, varianza, desviación típica) no buscan el centro, sino cuánto se alejan los datos de él. Se usan junto con las de tendencia central.</p>
       </div>
     </div>
@@ -589,33 +638,61 @@
       <div>
         <span class="eyebrow">Tema 04</span>
         <h2 id="estadistica-titulo">Estadística descriptiva</h2>
-        <p>Calcula media, mediana y moda, y observa la forma de la distribución.</p>
+        <p>Calcula media, mediana, moda, varianza y desviación típica, y revisa la tabla de frecuencias.</p>
       </div>
       <button class="btn btn-ghost btn-sm" data-go="teoria">Ver teoría</button>
     </div>
 
-    <div class="grid grid-2" style="align-items:start">
-      <div class="card">
-        <div class="card-head"><h2>Calculadora de tendencia central</h2></div>
-        <div class="field">
-          <label for="datos">Conjunto de datos (separados por coma)</label>
-          <input type="text" id="datos" value="7.0, 8.5, 9.0, 6.0, 7.5">
-        </div>
-        <div class="chips mt-2" id="dataPresets">
-          <button class="chip" data-data="7.0, 8.5, 9.0, 6.0, 7.5">Calificaciones</button>
-          <button class="chip" data-data="4, 6, 8, 10, 12, 15">Datos pares</button>
-          <button class="chip" data-data="3, 11, 7, 2, 9, 5">Desordenados</button>
-          <button class="chip" data-data="22, 25, 22, 30, 28, 25, 22, 35">Con moda</button>
-        </div>
-        <button class="btn btn-primary btn-block mt-2" id="calcStats">Calcular medidas</button>
-        <div class="calc-result" id="resultadoStats"></div>
+    <div class="card">
+      <div class="card-head">
+        <h2>Calculadora de estadística</h2>
+        <span class="badge badge-tema">Media · mediana · moda · varianza</span>
       </div>
+      <div class="field">
+        <label for="datos">Conjunto de datos (separados por coma)</label>
+        <input type="text" id="datos" value="7.0, 8.5, 9.0, 6.0, 7.5">
+      </div>
+      <div class="chips mt-2" id="dataPresets">
+        <button class="chip" data-data="7.0, 8.5, 9.0, 6.0, 7.5">Calificaciones</button>
+        <button class="chip" data-data="4, 6, 8, 10, 12, 15">Datos pares</button>
+        <button class="chip" data-data="3, 11, 7, 2, 9, 5">Desordenados</button>
+        <button class="chip" data-data="22, 25, 22, 30, 28, 25, 22, 35">Con moda</button>
+      </div>
+      <div class="item-actions mt-2">
+        <button class="btn btn-primary" id="calcStats">Calcular medidas</button>
+        <button class="btn btn-soft" id="clearStats">Limpiar</button>
+      </div>
+      <div class="calc-result" id="resultadoStats"></div>
+    </div>
 
-      <div class="card">
-        <div class="card-head"><h2>Distribución</h2><span class="badge badge-tema">Frecuencias</span></div>
-        <div class="plot" id="plotStats"></div>
-        <p class="small muted mt-2">Cada barra muestra cuántas veces aparece un valor en el conjunto.</p>
+    <div class="card mt-3">
+      <div class="card-head">
+        <h2>Tabla de valores</h2>
+        <span class="badge badge-tema">Frecuencias y desviaciones</span>
       </div>
+      <div class="table-wrap">
+        <table id="tablaStats">
+          <thead>
+            <tr>
+              <th>Valor x<sub>i</sub></th>
+              <th class="num">Frecuencia f<sub>i</sub></th>
+              <th class="num">f<sub>i</sub>/N (%)</th>
+              <th class="num">F<sub>i</sub> acumulada</th>
+              <th class="num">x<sub>i</sub> · f<sub>i</sub></th>
+              <th class="num">x<sub>i</sub> − x̄</th>
+              <th class="num">(x<sub>i</sub> − x̄)² · f<sub>i</sub></th>
+            </tr>
+          </thead>
+          <tbody id="tablaStatsBody"></tbody>
+        </table>
+      </div>
+      <p class="small muted mt-2">La tabla muestra cada valor distinto, su frecuencia absoluta y relativa, la frecuencia acumulada y su aporte a la varianza. En pantallas pequeñas puedes deslizarla para ver todas las columnas.</p>
+      <details class="acc">
+        <summary>Ver gráfico de frecuencias</summary>
+        <div class="acc-body">
+          <div class="plot" id="plotStats"></div>
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -792,11 +869,11 @@
 <div class="bubble" id="bubble" role="status"></div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="assets/js/math-render.js?v=2"></script>
-<script src="assets/js/format.js?v=2"></script>
-<script src="assets/js/data-core.js?v=2"></script>
-<script src="assets/js/data-bancos.js?v=2"></script>
-<script src="assets/js/data-teoria.js?v=2"></script>
-<script src="assets/js/app.js?v=2"></script>
+<script src="assets/js/math-render.js?v=3"></script>
+<script src="assets/js/format.js?v=3"></script>
+<script src="assets/js/data-core.js?v=3"></script>
+<script src="assets/js/data-bancos.js?v=3"></script>
+<script src="assets/js/data-teoria.js?v=3"></script>
+<script src="assets/js/app.js?v=3"></script>
 </body>
 </html>

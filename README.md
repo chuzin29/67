@@ -4,7 +4,7 @@ Sitio web interactivo de **precálculo** que reúne teoría, calculadoras con gr
 
 - **Vectores** y **números complejos** (con teorema de Moivre).
 - **Trigonometría**: ley del seno, ley del coseno, caso ambiguo e identidades.
-- **Estadística descriptiva**: media, mediana y moda.
+- **Estadística descriptiva**: media, mediana, moda, varianza y desviación típica.
 
 Todo en una sola página, sin dependencias ni instalación.
 
@@ -17,7 +17,7 @@ Todo en una sola página, sin dependencias ni instalación.
 | Vectores | Lista de referencia, calculadora (suma, resta, escalar, norma, producto escalar, ángulo, proyección) y plano cartesiano |
 | Complejos | Lista z₁–z₃₀, calculadora (operaciones, conjugado, módulo, argumento, forma polar y potencia n-ésima) y plano complejo |
 | Trigonometría | Resolvedor de triángulos AAS/ASA, SAS y LLL con figura a escala |
-| Estadística | Calculadora de media, mediana, moda, rango, varianza y desviación típica con gráfico de frecuencias |
+| Estadística | Calculadora de media, mediana, moda, varianza y desviación típica, con tabla de frecuencias, desviaciones y gráfico opcional |
 | Ejercicios | 30 ejercicios resueltos paso a paso, 5 niveles, filtros y progreso |
 | Bancos | 24 ejercicios prácticos, 8 de Moivre y 60 preguntas teóricas con filtros, búsqueda y respuestas modelo |
 | Examen | Modo numérico (vectores/complejos) y modo teórico autoevaluado |

@@ -235,8 +235,8 @@ window.BANCO_PRACTICOS = [
     enunciado: 'Si u = (−2, 6), calcula el vector resultante de multiplicar por el escalar r = −3.',
     respuesta: '(6, −18)',
     pasos: [
-      'Multiplica cada componente por <span class="math">r = −3</span>: <span class="math">r u = (−3)(−2, 6)</span>.',
-      'Calcula: <span class="math">((−3)(−2), (−3)(6))</span>.',
+      'Multiplica cada componente por <span class="math">r = −3</span>: <span class="math">r u = −3 · (−2, 6)</span>.',
+      'Calcula: <span class="math">(−3 · (−2), −3 · 6) = (6, −18)</span>.',
       'El resultado es <span class="math">(6, −18)</span>.'
     ]
   },

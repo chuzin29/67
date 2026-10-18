@@ -800,15 +800,21 @@
     values.forEach(function (v) { freq.set(v, (freq.get(v) || 0) + 1); });
     var maxFreq = Math.max.apply(null, Array.from(freq.values()));
     var modes = Array.from(freq.keys()).filter(function (k) { return freq.get(k) === maxFreq; }).sort(function (x, y) { return x - y; });
-    var variance = values.reduce(function (acc, v) { return acc + Math.pow(v - mean, 2); }, 0) / n;
+    var sumSquares = values.reduce(function (acc, v) { return acc + Math.pow(v - mean, 2); }, 0);
+    var variance = sumSquares / n;
+    var varianceSample = n > 1 ? sumSquares / (n - 1) : 0;
     return {
       n: n, sum: sum, mean: mean, median: median,
       modes: maxFreq > 1 ? modes : [],
       maxFreq: maxFreq,
       min: sorted[0], max: sorted[n - 1],
       range: sorted[n - 1] - sorted[0],
+      sumSquares: sumSquares,
       variance: variance,
+      varianceSample: varianceSample,
       std: Math.sqrt(variance),
+      stdSample: Math.sqrt(varianceSample),
+      cv: mean !== 0 ? Math.abs(Math.sqrt(variance) / mean) * 100 : null,
       values: values,
       sorted: sorted,
       freq: freq
@@ -819,6 +825,7 @@
     if (!values.length) {
       $('#resultadoStats').innerHTML = '<div class="empty">Escribe al menos un número.</div>';
       $('#plotStats').innerHTML = '';
+      renderStatsTable(null);
       return;
     }
     var s = statsOf(values);
@@ -831,17 +838,65 @@
       ['Mediana', Fmt.fmt(s.median)],
       ['Moda', moda],
       ['Rango', Fmt.fmt(s.range)],
-      ['Varianza (poblacional)', Fmt.fmt(s.variance)],
-      ['Desviación típica', Fmt.fmt(s.std)],
-      ['Mínimo / Máximo', Fmt.fmt(s.min) + ' / ' + Fmt.fmt(s.max)]
+      ['Varianza poblacional σ²', Fmt.fmt(s.variance)],
+      ['Desviación típica σ', Fmt.fmt(s.std)]
     ];
+    if (s.n > 1) {
+      rows.push(['Varianza muestral s²', Fmt.fmt(s.varianceSample)]);
+      rows.push(['Desviación muestral s', Fmt.fmt(s.stdSample)]);
+    }
+    if (s.cv !== null) rows.push(['Coeficiente de variación', Fmt.fmt(round2(s.cv)) + '\u00A0%']);
+    rows.push(['Mínimo / Máximo', Fmt.fmt(s.min) + ' / ' + Fmt.fmt(s.max)]);
+
     $('#resultadoStats').innerHTML = rows.map(function (row) {
       return '<div class="result-item' + (row[0] === 'Media' ? ' accent' : '') + '">' +
         '<span class="result-label">' + row[0] + '</span>' +
         '<span class="result-value">' + row[1] + '</span></div>';
     }).join('');
 
+    renderStatsTable(s);
     drawStats(s);
+  }
+
+  /** Tabla de frecuencias, acumulados y aporte a la varianza. */
+  function renderStatsTable(s) {
+    var body = $('#tablaStatsBody');
+    if (!body) return;
+
+    if (!s) {
+      body.innerHTML = '<tr><td colspan="7" class="muted">Sin datos: escribe un conjunto y pulsa «Calcular medidas».</td></tr>';
+      return;
+    }
+
+    var entries = Array.from(s.freq.entries()).sort(function (a, b) { return a[0] - b[0]; });
+    var cumulative = 0;
+    var rows = entries.map(function (entry) {
+      var value = entry[0];
+      var count = entry[1];
+      var relative = (count / s.n) * 100;
+      var deviation = value - s.mean;
+      cumulative += count;
+      return '<tr>' +
+        '<td class="math">' + Fmt.fmt(value) + '</td>' +
+        '<td class="num">' + count + '</td>' +
+        '<td class="num">' + Fmt.fmt(round2(relative)) + '\u00A0%</td>' +
+        '<td class="num">' + cumulative + '</td>' +
+        '<td class="num">' + Fmt.fmt(value * count) + '</td>' +
+        '<td class="num">' + Fmt.fmt(round2(deviation)) + '</td>' +
+        '<td class="num">' + Fmt.fmt(round2(deviation * deviation * count)) + '</td>' +
+      '</tr>';
+    }).join('');
+
+    body.innerHTML = rows +
+      '<tr class="stats-total">' +
+        '<td>Total</td>' +
+        '<td class="num">' + s.n + '</td>' +
+        '<td class="num">100\u00A0%</td>' +
+        '<td class="num">' + s.n + '</td>' +
+        '<td class="num">' + Fmt.fmt(s.sum) + '</td>' +
+        '<td class="num">0</td>' +
+        '<td class="num">' + Fmt.fmt(round2(s.sumSquares)) + '</td>' +
+      '</tr>';
   }
 
   function drawStats(s) {
@@ -894,6 +949,16 @@
         run();
       });
     }
+
+    var clear = $('#clearStats');
+    if (clear) {
+      clear.addEventListener('click', function () {
+        $('#datos').value = '';
+        renderStats([]);
+        $('#datos').focus();
+      });
+    }
+
     run();
   }
 
@@ -1465,20 +1530,6 @@
     }
   }
 
-  /** Convierte la notación matemática escrita a mano en el HTML. */
-  function renderStaticMath() {
-    if (!window.MathRender) return;
-    // Fórmulas de desarrollo y avisos: tablas y portada se mantienen compactas.
-    var nodes = document.querySelectorAll('.formula .math, .note .math, .tip .math, .warn .math');
-    for (var i = 0; i < nodes.length; i++) {
-      var node = nodes[i];
-      if (node.dataset.mathDone) continue;
-      if (node !== node.closest('.math')) continue;
-      node.innerHTML = window.MathRender.render(node.innerHTML);
-      node.dataset.mathDone = '1';
-    }
-  }
-
   /** Raíces de las tablas de referencia: solo el radical, sin fracciones. */
   function renderTableRoots() {
     if (!window.MathRender) return;
@@ -1502,7 +1553,6 @@
   function init() {
     ensureRadicalHooks();
     renderTableRoots();
-    renderStaticMath();
     initTheme();
     initNav();
     initMascota();
