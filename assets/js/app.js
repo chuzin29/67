@@ -81,7 +81,7 @@
     return Math.round(n * f) / f;
   }
 
-  var C = { purple: '#a855f7', cyan: '#d946ef', pink: '#ec4899', green: '#34d399', amber: '#fbbf24', red: '#fb7185' };
+  var C = { purple: 'var(--plot-1)', cyan: 'var(--plot-2)', pink: 'var(--plot-3)', green: 'var(--plot-4)', amber: 'var(--plot-4)', red: 'hsl(var(--danger))' };
   var uidSeed = 0;
   function uid() { uidSeed += 1; return 'p67-' + uidSeed; }
 
@@ -90,7 +90,7 @@
      --------------------------------------------------------- */
   var THEME_KEY = 'p67.theme';
 
-  function applyTheme(theme) {
+  function applyTheme(theme, persist) {
     document.documentElement.setAttribute('data-theme', theme);
     var moon = $('#iconMoon'), sun = $('#iconSun');
     if (moon && sun) {
@@ -99,13 +99,14 @@
       sun.style.display = light ? 'block' : 'none';
     }
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f7f4fd' : '#08050f');
-    Store.set(THEME_KEY, theme);
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#f7f4ed' : '#101320');
+    if (persist !== false) Store.set(THEME_KEY, theme);
   }
 
   function initTheme() {
     var saved = Store.get(THEME_KEY, null);
-    applyTheme(saved === 'light' ? 'light' : 'dark');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved ? saved : (prefersDark ? 'dark' : 'light'), false);
     var btn = $('#themeToggle');
     if (btn) {
       btn.addEventListener('click', function () {
@@ -137,8 +138,10 @@
 
     if (!options || options.scroll !== false) {
       window.scrollTo({ top: 0, behavior: 'auto' });
+      /* Solo al navegar: si se escribe el ancla en la carga inicial, Chrome
+         salta a ella al terminar de cargar y la página arranca desplazada. */
+      try { history.replaceState(null, '', '#' + id); } catch (e) { /* file:// */ }
     }
-    try { history.replaceState(null, '', '#' + id); } catch (e) { /* file:// */ }
     revealScan();
   }
 
@@ -200,6 +203,22 @@
         observer.observe(node);
       }
     });
+  }
+
+  function initScrollProgress() {
+    var bar = $('#scrollProgress');
+    if (!bar) return;
+    var ticking = false;
+    function update() {
+      var root = document.documentElement;
+      var max = root.scrollHeight - root.clientHeight;
+      bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, root.scrollTop / max) : 0) + ')';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
   }
 
   function animateCounters() {
@@ -357,7 +376,7 @@
       }
     });
 
-    body = arrowDefs(opts.arrowX, '#6b7896') + arrowDefs(opts.arrowY, '#6b7896') + grid + axes + draw;
+    body = arrowDefs(opts.arrowX, 'var(--plot-axis)') + arrowDefs(opts.arrowY, 'var(--plot-axis)') + grid + axes + draw;
     return svg(W, H, body);
   }
 
@@ -509,12 +528,12 @@
 
     // círculos de módulo
     var circle = '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r1 * scale).toFixed(1) +
-      '" fill="none" stroke="rgba(124,92,255,0.25)" stroke-dasharray="4 4"/>';
+      '" fill="none" stroke="var(--plot-1)" stroke-opacity="0.35" stroke-dasharray="4 4"/>';
 
-    var axes = arrowDefs(uid(), '#6b7896') + arrowDefs(uid(), '#6b7896');
+    var axes = arrowDefs(uid(), 'var(--plot-axis)') + arrowDefs(uid(), 'var(--plot-axis)');
     axes = axes.replace(/id="([^"]+)"/g, function (m, id) { return 'id="' + id + '"'; });
     var idX = uid(), idY = uid();
-    var axisHtml = arrowDefs(idX, '#6b7896') + arrowDefs(idY, '#6b7896') +
+    var axisHtml = arrowDefs(idX, 'var(--plot-axis)') + arrowDefs(idY, 'var(--plot-axis)') +
       '<line class="axis" x1="' + P + '" y1="' + cy + '" x2="' + (W - P) + '" y2="' + cy + '" marker-end="url(#' + idX + ')"/>' +
       '<line class="axis" x1="' + cx + '" y1="' + (H - P) + '" x2="' + cx + '" y2="' + P + '" marker-end="url(#' + idY + ')"/>' +
       '<text class="axis-label" x="' + (W - P) + '" y="' + (cy + 16) + '" text-anchor="end">Re</text>' +
@@ -732,14 +751,14 @@
 
     var body = '<polygon class="shape" points="' + [A, B, Cc].map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
 
-    body += '<circle cx="' + A[0] + '" cy="' + A[1] + '" r="4" fill="#ec4899"/>';
-    body += '<circle cx="' + B[0] + '" cy="' + B[1] + '" r="4" fill="#d946ef"/>';
-    body += '<circle cx="' + Cc[0] + '" cy="' + Cc[1] + '" r="4" fill="#c084fc"/>';
+    body += '<circle cx="' + A[0] + '" cy="' + A[1] + '" r="4" fill="var(--plot-2)"/>';
+    body += '<circle cx="' + B[0] + '" cy="' + B[1] + '" r="4" fill="var(--plot-1)"/>';
+    body += '<circle cx="' + Cc[0] + '" cy="' + Cc[1] + '" r="4" fill="var(--plot-3)"/>';
 
     var labels = [
-      { pos: A, text: 'A', color: '#ec4899', dx: -14, dy: 16 },
-      { pos: B, text: 'B', color: '#d946ef', dx: 12, dy: 16 },
-      { pos: Cc, text: 'C', color: '#c084fc', dx: 0, dy: -14 }
+      { pos: A, text: 'A', color: 'var(--plot-2)', dx: -14, dy: 16 },
+      { pos: B, text: 'B', color: 'var(--plot-1)', dx: 12, dy: 16 },
+      { pos: Cc, text: 'C', color: 'var(--plot-3)', dx: 0, dy: -14 }
     ];
     labels.forEach(function (l) {
       body += '<text x="' + (l.pos[0] + l.dx) + '" y="' + (l.pos[1] + l.dy) + '" fill="' + l.color +
@@ -753,7 +772,7 @@
     ];
     sides.forEach(function (side) {
       var p = outward(side.p, 18);
-      body += '<text x="' + p[0].toFixed(1) + '" y="' + p[1].toFixed(1) + '" fill="#c5cde2" font-size="11.5" text-anchor="middle" font-family="Cambria Math, Georgia, serif">' +
+      body += '<text x="' + p[0].toFixed(1) + '" y="' + p[1].toFixed(1) + '" fill="hsl(var(--foreground))" font-size="11.5" text-anchor="middle" font-family="Cambria Math, Georgia, serif">' +
         side.name + ' = ' + plain(side.len, 2) + '</text>';
     });
 
@@ -763,7 +782,7 @@
       { p: Cc, value: t.C, dx: 0, dy: 26 }
     ];
     angles.forEach(function (ang) {
-      body += '<text x="' + (ang.p[0] + ang.dx) + '" y="' + (ang.p[1] + ang.dy) + '" fill="#fbbf24" font-size="10.5" text-anchor="middle">' +
+      body += '<text x="' + (ang.p[0] + ang.dx) + '" y="' + (ang.p[1] + ang.dy) + '" fill="var(--plot-4)" font-size="10.5" text-anchor="middle">' +
         plain(ang.value, 1) + '\u00B0</text>';
     });
 
@@ -907,10 +926,7 @@
     var slot = (W - 2 * P) / entries.length;
     var barW = Math.max(7, Math.min(46, slot * 0.6));
 
-    var body = '<defs><linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#d946ef"/></linearGradient></defs>';
-
-    body += '<line class="axis" x1="' + P + '" y1="' + bottom + '" x2="' + (W - P) + '" y2="' + bottom + '"/>';
+    var body = '<line class="axis" x1="' + P + '" y1="' + bottom + '" x2="' + (W - P) + '" y2="' + bottom + '"/>';
 
     entries.forEach(function (entry, index) {
       var height = (entry[1] / maxFreq) * (bottom - P - 22);
@@ -965,7 +981,7 @@
   /* ---------------------------------------------------------
      EJERCICIOS BASE
      --------------------------------------------------------- */
-  var listo = { parte: 'todos', nivel: 'todos' };
+  var listo = { parte: 'todos', nivel: 'todos', busqueda: '', pendientes: false };
   var dominados = new Set(Store.get('p67.dominados', []));
 
   function saveDominados() {
@@ -1019,14 +1035,96 @@
     return partes.join(' · ');
   }
 
+  /* Cada tema tiene un tono propio (mismo lenguaje de color que TORNUTI). */
+  var TONO = {
+    vectores: 'tone-vectores', 'Vectores': 'tone-vectores',
+    complejos: 'tone-complejos', 'Números Complejos': 'tone-complejos',
+    'Ley de Senos': 'tone-trigo', 'Ley del Coseno': 'tone-trigo', 'Trigonometría': 'tone-trigo',
+    'Identidades Trigonométricas': 'tone-identidades',
+    'Estadística': 'tone-estadistica'
+  };
+  var ABREV = {
+    vectores: 'Vect', complejos: 'Comp',
+    'Vectores': 'Vect', 'Números Complejos': 'Comp',
+    'Ley de Senos': 'Senos', 'Ley del Coseno': 'Coseno', 'Trigonometría': 'Trig',
+    'Identidades Trigonométricas': 'Ident', 'Estadística': 'Estad'
+  };
+
+  function tileHtml(num, sub) {
+    return '<div class="item-tile"><span class="item-num">' + num + '</span><span class="item-sub">' + escapeHtml(sub) + '</span></div>';
+  }
+
+  /** Texto plano de un fragmento HTML (para buscar sin tropezar con las etiquetas). */
+  var plainCache = {};
+  function plainText(key, html) {
+    if (plainCache[key] === undefined) {
+      var node = document.createElement('div');
+      node.innerHTML = html || '';
+      plainCache[key] = (node.textContent || '').toLowerCase();
+    }
+    return plainCache[key];
+  }
+
+  /** Contadores y barras de dominio de un riel de temas. */
+  function updateRail(listSel, items, attr, field, isDone) {
+    var list = $(listSel);
+    if (!list) return;
+    $$('[data-' + attr + ']', list).forEach(function (btn) {
+      var key = btn.dataset[attr];
+      var pool = key === 'todos' ? items : items.filter(function (it) { return it[field] === key; });
+      var done = pool.filter(isDone).length;
+      var count = btn.querySelector('.count');
+      if (count) count.textContent = pool.length;
+      var bar = btn.querySelector('.rail-bar i');
+      if (bar) bar.style.width = (pool.length ? Math.round(done / pool.length * 100) : 0) + '%';
+    });
+  }
+
+  function setProgress(prefix, done, total, noun) {
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var pctNode = $('#' + prefix + 'Pct');
+    var barNode = $('#' + prefix + 'Bar');
+    var textNode = $('#' + prefix + 'Progreso');
+    if (pctNode) pctNode.textContent = pct + '%';
+    if (barNode) barNode.style.width = pct + '%';
+    if (textNode) textNode.textContent = done + ' de ' + total + ' ' + noun;
+  }
+
+  function updateRails() {
+    var base = window.EJERCICIOS || [];
+    var isDominado = function (e) { return dominados.has(e.id); };
+    updateRail('#filtroParte', base, 'parte', 'parte', isDominado);
+    setProgress('ej', base.filter(isDominado).length, base.length, 'dominados');
+
+    var practicos = window.BANCO_PRACTICOS || [];
+    var visto = function (e) { return viewed.practicos.has(e.id); };
+    updateRail('#practicosFiltro', practicos, 'tema', 'tema', visto);
+    setProgress('pr', practicos.filter(visto).length, practicos.length, 'vistos');
+
+    var teoria = window.BANCO_TEORIA || [];
+    var vista = function (e) { return viewed.teoria.has(e.id); };
+    updateRail('#teoriaFiltro', teoria, 'tema', 'tema', vista);
+    setProgress('te', teoria.filter(vista).length, teoria.length, 'vistas');
+  }
+
   function renderEjercicios() {
     var container = $('#listaEjercicios');
     if (!container) return;
     var items = window.EJERCICIOS || [];
+    var query = listo.busqueda.trim().toLowerCase();
     var filtered = items.filter(function (ej) {
-      return (listo.parte === 'todos' || ej.parte === listo.parte) &&
-        (listo.nivel === 'todos' || ej.nivel === listo.nivel);
+      if (listo.parte !== 'todos' && ej.parte !== listo.parte) return false;
+      if (listo.nivel !== 'todos' && ej.nivel !== listo.nivel) return false;
+      if (listo.pendientes && dominados.has(ej.id)) return false;
+      if (query) {
+        var hay = plainText('ej-' + ej.id, ej.titulo) + ' ' + ej.id + ' ' + ej.parte + ' ' + ej.nivel + ' juego ' + ej.juego;
+        if (hay.indexOf(query) === -1) return false;
+      }
+      return true;
     });
+
+    var count = $('#ejCount');
+    if (count) count.textContent = filtered.length + (filtered.length === 1 ? ' ejercicio' : ' ejercicios');
 
     if (!filtered.length) {
       container.innerHTML = '<div class="empty">No hay ejercicios con ese filtro.</div>';
@@ -1036,21 +1134,23 @@
         var badgeText = ej.nivel === 'facil' ? 'Fácil' : ej.nivel === 'intermedio' ? 'Intermedio' : 'Difícil';
         var parte = ej.parte === 'vectores' ? 'Vectores' : 'Complejos';
         var done = dominados.has(ej.id);
-        return '<article class="item-card' + (done ? ' done' : '') + '" data-id="' + ej.id + '">' +
-          '<div class="item-top">' +
-            '<span class="item-num">J' + ej.juego + '</span>' +
-            '<span class="badge ' + badge + '">' + badgeText + '</span>' +
-            '<span class="badge badge-' + ej.parte + '">' + parte + '</span>' +
+        return '<article class="item-card ' + TONO[ej.parte] + (done ? ' done' : '') + '" data-id="' + ej.id + '">' +
+          tileHtml('J' + ej.juego, ABREV[ej.parte]) +
+          '<div class="item-body">' +
+            '<div class="item-top">' +
+              '<span class="badge ' + badge + '">' + badgeText + '</span>' +
+              '<span class="badge badge-' + ej.parte + '">' + parte + '</span>' +
+            '</div>' +
+            '<h3 class="item-title">' + ej.titulo + '</h3>' +
+            '<div class="item-formula">' + ej.formula + '</div>' +
+            '<p class="small muted" style="margin:4px 0 0">Datos: ' + formatDatos(ej) + '</p>' +
+            '<details class="acc"><summary>Ver solución paso a paso</summary><div class="acc-body">' +
+              '<ol class="steps-list">' + ej.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
+              '<div class="answer"><strong>Respuesta:</strong> ' + answerText(ej) + '</div>' +
+            '</div></details>' +
+            '<div class="item-actions"><button class="btn btn-soft btn-sm" data-done="' + ej.id + '">' +
+              (done ? '✓ Dominado' : 'Marcar como dominado') + '</button></div>' +
           '</div>' +
-          '<h3 class="item-title">' + ej.titulo + '</h3>' +
-          '<div class="item-formula">' + ej.formula + '</div>' +
-          '<p class="small muted" style="margin:4px 0 0">Datos: ' + formatDatos(ej) + '</p>' +
-          '<details class="acc"><summary>Ver solución paso a paso</summary><div class="acc-body">' +
-            '<ol class="steps-list">' + ej.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
-            '<div class="answer"><strong>Respuesta:</strong> ' + answerText(ej) + '</div>' +
-          '</div></details>' +
-          '<div class="item-actions"><button class="btn btn-soft btn-sm" data-done="' + ej.id + '">' +
-            (done ? '✓ Dominado' : 'Marcar como dominado') + '</button></div>' +
         '</article>';
       }).join('');
     }
@@ -1070,10 +1170,7 @@
   }
 
   function updateExerciseProgress() {
-    var node = $('#progresoEjercicios');
-    if (!node) return;
-    var total = (window.EJERCICIOS || []).length;
-    node.textContent = dominados.size + ' de ' + total + ' dominados';
+    updateRails();
   }
 
   function initExerciseFilters() {
@@ -1097,12 +1194,40 @@
         renderEjercicios();
       });
     }
+
+    var search = $('#ejSearch');
+    if (search) {
+      search.addEventListener('input', function () {
+        listo.busqueda = search.value;
+        renderEjercicios();
+      });
+    }
+
+    var pendientes = $('#ejPendientes');
+    if (pendientes) {
+      pendientes.addEventListener('click', function () {
+        listo.pendientes = !listo.pendientes;
+        pendientes.classList.toggle('active', listo.pendientes);
+        pendientes.setAttribute('aria-pressed', listo.pendientes ? 'true' : 'false');
+        renderEjercicios();
+      });
+    }
+
+    var reveal = $('#ejReveal');
+    if (reveal) {
+      reveal.addEventListener('click', function () {
+        var details = $$('#listaEjercicios details.acc');
+        var allOpen = details.length > 0 && details.every(function (d) { return d.open; });
+        details.forEach(function (d) { d.open = !allOpen; });
+        reveal.textContent = allOpen ? 'Abrir soluciones' : 'Cerrar soluciones';
+      });
+    }
   }
 
   /* ---------------------------------------------------------
      BANCOS
      --------------------------------------------------------- */
-  var bancoState = { practicos: 'todos', teoria: 'todos', busqueda: '' };
+  var bancoState = { practicos: 'todos', teoria: 'todos', busqueda: '', busquedaP: '' };
   var viewed = {
     practicos: new Set(Store.get('p67.vistosPracticos', [])),
     moivre: new Set(Store.get('p67.vistosMoivre', [])),
@@ -1120,32 +1245,8 @@
     renderTeoria();
   }
 
-  function renderPracticos() {
-    var container = $('#listaPracticos');
-    if (!container) return;
-    var items = window.BANCO_PRACTICOS || [];
-    var filtered = items.filter(function (item) {
-      return bancoState.practicos === 'todos' || item.tema === bancoState.practicos;
-    });
-
-    $('#practicosCount').textContent = filtered.length + ' de ' + items.length + ' ítems';
-
-    container.innerHTML = filtered.map(function (item) {
-      return '<article class="item-card">' +
-        '<div class="item-top">' +
-          '<span class="item-num">' + item.id + '</span>' +
-          '<span class="badge badge-tema">' + escapeHtml(item.tema) + '</span>' +
-        '</div>' +
-        '<p class="item-text">' + item.enunciado + '</p>' +
-        '<details class="acc"><summary>Ver resolución</summary><div class="acc-body">' +
-          '<ol class="steps-list">' + item.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
-          '<div class="answer"><strong>Respuesta:</strong> ' + item.respuesta + '</div>' +
-        '</div></details>' +
-      '</article>';
-    }).join('') || '<div class="empty">No hay ítems con ese tema.</div>';
-
-    container.innerHTML = mathHtml(container.innerHTML);
-
+  /** Marca una tarjeta de banco como vista cuando se abre su solución. */
+  function bindViewed(container, bank) {
     $$('details.acc', container).forEach(function (details) {
       if (details.dataset.bound) return;
       details.dataset.bound = '1';
@@ -1154,12 +1255,48 @@
         var card = details.closest('.item-card');
         if (!card) return;
         var num = parseInt(card.querySelector('.item-num').textContent, 10);
-        if (!isNaN(num) && !viewed.practicos.has(num)) {
-          viewed.practicos.add(num);
-          saveViewed('practicos');
+        if (!isNaN(num) && !viewed[bank].has(num)) {
+          viewed[bank].add(num);
+          saveViewed(bank);
+          card.classList.add('done');
+          updateRails();
         }
       });
     });
+  }
+
+  function renderPracticos() {
+    var container = $('#listaPracticos');
+    if (!container) return;
+    var items = window.BANCO_PRACTICOS || [];
+    var query = bancoState.busquedaP.trim().toLowerCase();
+    var filtered = items.filter(function (item) {
+      if (bancoState.practicos !== 'todos' && item.tema !== bancoState.practicos) return false;
+      if (!query) return true;
+      return (plainText('pr-' + item.id, (item.titulo || '') + ' ' + item.enunciado) + ' ' + item.tema.toLowerCase()).indexOf(query) !== -1;
+    });
+
+    $('#practicosCount').textContent = filtered.length + ' de ' + items.length + ' ítems';
+
+    container.innerHTML = filtered.map(function (item) {
+      return '<article class="item-card ' + (TONO[item.tema] || '') + (viewed.practicos.has(item.id) ? ' done' : '') + '">' +
+        tileHtml(item.id, ABREV[item.tema] || item.tema) +
+        '<div class="item-body">' +
+          '<div class="item-top">' +
+            '<span class="badge badge-tema">' + escapeHtml(item.tema) + '</span>' +
+          '</div>' +
+          (item.titulo ? '<h3 class="item-title">' + escapeHtml(item.titulo) + '</h3>' : '') +
+          '<p class="item-text">' + item.enunciado + '</p>' +
+          '<details class="acc"><summary>Ver resolución</summary><div class="acc-body">' +
+            '<ol class="steps-list">' + item.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
+            '<div class="answer"><strong>Respuesta:</strong> ' + item.respuesta + '</div>' +
+          '</div></details>' +
+        '</div>' +
+      '</article>';
+    }).join('') || '<div class="empty">No hay ítems con ese filtro.</div>';
+
+    container.innerHTML = mathHtml(container.innerHTML);
+    bindViewed(container, 'practicos');
   }
 
   function renderMoivre() {
@@ -1168,36 +1305,24 @@
     var items = window.BANCO_MOIVRE || [];
 
     container.innerHTML = items.map(function (item) {
-      return '<article class="item-card">' +
-        '<div class="item-top">' +
-          '<span class="item-num">' + item.id + '</span>' +
-          '<span class="badge badge-tema">Teorema de Moivre</span>' +
-          (item.formaPolar ? '<span class="badge badge-forma">' + escapeHtml(item.formaPolar) + '</span>' : '') +
+      return '<article class="item-card tone-complejos' + (viewed.moivre.has(item.id) ? ' done' : '') + '">' +
+        tileHtml(item.id, 'Moivre') +
+        '<div class="item-body">' +
+          '<div class="item-top">' +
+            '<span class="badge badge-tema">Teorema de Moivre</span>' +
+            (item.formaPolar ? '<span class="badge badge-forma">' + escapeHtml(item.formaPolar) + '</span>' : '') +
+          '</div>' +
+          '<p class="item-text">' + item.enunciado + '</p>' +
+          '<details class="acc"><summary>Ver resolución</summary><div class="acc-body">' +
+            '<ol class="steps-list">' + item.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
+            '<div class="answer"><strong>Respuesta:</strong> ' + item.respuesta + '</div>' +
+          '</div></details>' +
         '</div>' +
-        '<p class="item-text">' + item.enunciado + '</p>' +
-        '<details class="acc"><summary>Ver resolución</summary><div class="acc-body">' +
-          '<ol class="steps-list">' + item.pasos.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ol>' +
-          '<div class="answer"><strong>Respuesta:</strong> ' + item.respuesta + '</div>' +
-        '</div></details>' +
       '</article>';
     }).join('') || '<div class="empty">Aún no hay ejercicios de Moivre cargados.</div>';
 
     container.innerHTML = mathHtml(container.innerHTML);
-
-    $$('details.acc', container).forEach(function (details) {
-      if (details.dataset.bound) return;
-      details.dataset.bound = '1';
-      details.addEventListener('toggle', function () {
-        if (!details.open) return;
-        var card = details.closest('.item-card');
-        if (!card) return;
-        var num = parseInt(card.querySelector('.item-num').textContent, 10);
-        if (!isNaN(num) && !viewed.moivre.has(num)) {
-          viewed.moivre.add(num);
-          saveViewed('moivre');
-        }
-      });
-    });
+    bindViewed(container, 'moivre');
   }
 
   function renderTeoria() {
@@ -1215,34 +1340,22 @@
     $('#teoriaCount').textContent = filtered.length + ' de ' + items.length + ' ítems';
 
     container.innerHTML = filtered.map(function (item) {
-      return '<article class="item-card">' +
-        '<div class="item-top">' +
-          '<span class="item-num">' + item.id + '</span>' +
-          '<span class="badge badge-tema">' + escapeHtml(item.tema) + '</span>' +
+      return '<article class="item-card ' + (TONO[item.tema] || '') + (viewed.teoria.has(item.id) ? ' done' : '') + '">' +
+        tileHtml(item.id, ABREV[item.tema] || item.tema) +
+        '<div class="item-body">' +
+          '<div class="item-top">' +
+            '<span class="badge badge-tema">' + escapeHtml(item.tema) + '</span>' +
+          '</div>' +
+          '<p class="item-text"><strong>' + item.pregunta + '</strong></p>' +
+          '<details class="acc"><summary>Ver respuesta modelo</summary><div class="acc-body">' +
+            item.respuesta +
+          '</div></details>' +
         '</div>' +
-        '<p class="item-text"><strong>' + item.pregunta + '</strong></p>' +
-        '<details class="acc"><summary>Ver respuesta modelo</summary><div class="acc-body">' +
-          item.respuesta +
-        '</div></details>' +
       '</article>';
     }).join('') || '<div class="empty">No hay preguntas que coincidan con la búsqueda.</div>';
 
     container.innerHTML = mathHtml(container.innerHTML);
-
-    $$('details.acc', container).forEach(function (details) {
-      if (details.dataset.bound) return;
-      details.dataset.bound = '1';
-      details.addEventListener('toggle', function () {
-        if (!details.open) return;
-        var card = details.closest('.item-card');
-        if (!card) return;
-        var num = parseInt(card.querySelector('.item-num').textContent, 10);
-        if (!isNaN(num) && !viewed.teoria.has(num)) {
-          viewed.teoria.add(num);
-          saveViewed('teoria');
-        }
-      });
-    });
+    bindViewed(container, 'teoria');
   }
 
   function initBancos() {
@@ -1281,6 +1394,14 @@
         bancoState.teoria = chip.dataset.tema;
         $$('[data-tema]', filtroTeoria).forEach(function (b) { b.classList.toggle('active', b === chip); });
         renderTeoria();
+      });
+    }
+
+    var searchP = $('#practicosSearch');
+    if (searchP) {
+      searchP.addEventListener('input', function () {
+        bancoState.busquedaP = searchP.value;
+        renderPracticos();
       });
     }
 
@@ -1555,6 +1676,7 @@
     renderTableRoots();
     initTheme();
     initNav();
+    initScrollProgress();
     initMascota();
     initTheoryTabs();
     initVectors();
@@ -1564,6 +1686,7 @@
     initExerciseFilters();
     initBancos();
     initExam();
+    updateRails();
     animateCounters();
     revealScan();
 

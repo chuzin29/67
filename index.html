@@ -1,29 +1,51 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Precálculo 67 · Vectores, Complejos, Trigonometría y Estadística</title>
 <meta name="description" content="Curso interactivo de precálculo: teoría, calculadoras, 30 ejercicios resueltos, banco de 24 ejercicios prácticos, 8 de Teorema de Moivre y 60 preguntas teóricas.">
-<meta name="theme-color" content="#08050f">
+<meta name="theme-color" content="#f7f4ed">
 <meta property="og:title" content="Precálculo 67 · Aprende resolviendo">
 <meta property="og:description" content="Vectores, números complejos, trigonometría y estadística con teoría, calculadoras y 122 recursos de práctica.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a855f7'/%3E%3Cstop offset='1' stop-color='%23d946ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Segoe UI,Arial' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=3">
+<script>
+/* Aplica el tema guardado (o el del sistema) antes de pintar para evitar parpadeos. */
+(function () {
+  try {
+    var raw = localStorage.getItem('p67.theme');
+    var saved = raw ? JSON.parse(raw) : null;
+    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch (e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css?v=4">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<div class="announce">
+  <div class="wrap announce-inner">
+    <p>Guía 2026 abierta. 122 recursos de práctica, gratis y sin instalar nada.</p>
+    <button type="button" data-go="bancos">Practicar
+      <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10 10 2M4 2h6v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
 
 <!-- ==================== BARRA SUPERIOR ==================== -->
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#inicio" data-go="inicio" aria-label="Inicio">
       <span class="brand-mark">67</span>
-      <span class="brand-text">
-        <strong>Precálculo</strong>
-        <small>Vectores · Complejos · Trigonometría</small>
-      </span>
+      <span class="brand-text"><strong>Precálculo</strong></span>
     </a>
 
     <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -99,37 +121,37 @@
     </div>
 
     <div class="grid grid-3" id="topicGrid">
-      <button class="topic-card reveal" data-go="vectores">
+      <button class="topic-card tone-vectores reveal" data-go="vectores">
         <span class="topic-icon">→</span>
         <h3>Vectores</h3>
         <p>Segmentos dirigidos, componentes, norma, producto escalar y proyecciones.</p>
         <span class="topic-meta">Calculadora + gráfico <span>→</span></span>
       </button>
-      <button class="topic-card reveal" data-go="complejos">
+      <button class="topic-card tone-complejos reveal" data-go="complejos">
         <span class="topic-icon">i</span>
         <h3>Números complejos</h3>
         <p>Forma binómica, conjugado, módulo, forma polar y potencias.</p>
         <span class="topic-meta">Calculadora + plano <span>→</span></span>
       </button>
-      <button class="topic-card reveal" data-go="trigonometria">
+      <button class="topic-card tone-trigo reveal" data-go="trigonometria">
         <span class="topic-icon">△</span>
         <h3>Trigonometría</h3>
         <p>Ley del seno, ley del coseno, caso ambiguo e identidades.</p>
         <span class="topic-meta">Resuelve triángulos <span>→</span></span>
       </button>
-      <button class="topic-card reveal" data-go="estadistica">
+      <button class="topic-card tone-estadistica reveal" data-go="estadistica">
         <span class="topic-icon">x̄</span>
         <h3>Estadística</h3>
         <p>Media, mediana y moda: calcula y compara medidas de tendencia central.</p>
         <span class="topic-meta">Calculadora + gráfico <span>→</span></span>
       </button>
-      <button class="topic-card reveal" data-go="ejercicios">
+      <button class="topic-card tone-vectores reveal" data-go="ejercicios">
         <span class="topic-icon">✓</span>
         <h3>Ejercicios resueltos</h3>
         <p>30 ejercicios paso a paso de vectores y complejos, con niveles.</p>
         <span class="topic-meta">5 juegos × 6 <span>→</span></span>
       </button>
-      <button class="topic-card reveal" data-go="bancos">
+      <button class="topic-card tone-identidades reveal" data-go="bancos">
         <span class="topic-icon">▤</span>
         <h3>Bancos de práctica</h3>
         <p>24 prácticos, 8 de Moivre y 60 preguntas teóricas con respuesta modelo.</p>
@@ -188,7 +210,7 @@
     </div>
 
     <!-- VECTORES -->
-    <div class="theory-panel" id="t-vectores">
+    <div class="theory-panel tone-vectores" id="t-vectores">
       <div class="card mt-3">
         <h2>¿Qué es un vector?</h2>
         <p>Un <strong>vector</strong> es una magnitud con <strong>módulo</strong> (longitud), <strong>dirección</strong> y <strong>sentido</strong>. Geométricamente se representa por un <em>segmento dirigido</em>: el conjunto de todos los segmentos con la misma longitud, dirección y sentido forma un único vector libre.</p>
@@ -235,7 +257,7 @@
     </div>
 
     <!-- COMPLEJOS -->
-    <div class="theory-panel" id="t-complejos" hidden>
+    <div class="theory-panel tone-complejos" id="t-complejos" hidden>
       <div class="card mt-3">
         <h2>El conjunto de los números complejos</h2>
         <p>Un <strong>número complejo</strong> es una expresión <span class="math">z = a + bi</span>, con <span class="math">a, b ∈ ℝ</span>. El conjunto se denota <span class="math">ℂ</span> y contiene a todos los reales (cuando <span class="math">b = 0</span>).</p>
@@ -292,7 +314,7 @@
     </div>
 
     <!-- TRIGONOMETRÍA -->
-    <div class="theory-panel" id="t-trigo" hidden>
+    <div class="theory-panel tone-trigo" id="t-trigo" hidden>
       <div class="card mt-3">
         <h2>Triángulos oblicuángulos</h2>
         <p>Un <strong>triángulo oblicuángulo</strong> no tiene ángulo recto. Se resuelve con dos herramientas: la <strong>ley del seno</strong> y la <strong>ley del coseno</strong>. En todo triángulo, la suma de los ángulos internos es <span class="math">180°</span> y se cumple la <strong>desigualdad triangular</strong>: cada lado es menor que la suma de los otros dos.</p>
@@ -347,7 +369,7 @@
     </div>
 
     <!-- ESTADÍSTICA -->
-    <div class="theory-panel" id="t-estadistica" hidden>
+    <div class="theory-panel tone-estadistica" id="t-estadistica" hidden>
       <div class="card mt-3">
         <h2>Medidas de tendencia central</h2>
         <p>Resumen un conjunto de datos con un solo valor representativo. Las tres medidas clásicas son la <strong>media</strong>, la <strong>mediana</strong> y la <strong>moda</strong>.</p>
@@ -439,7 +461,7 @@
 </section>
 
 <!-- ==================== VECTORES ==================== -->
-<section id="vectores" class="view" aria-labelledby="vectores-titulo">
+<section id="vectores" class="view tone-vectores" aria-labelledby="vectores-titulo">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -495,9 +517,9 @@
         <div class="card-head"><h2>Visualización</h2><span class="badge badge-tema">Plano cartesiano</span></div>
         <div class="plot" id="plotVectores"></div>
         <div class="legend">
-          <span><i style="background:#a855f7"></i>a</span>
-          <span><i style="background:#d946ef"></i>b</span>
-          <span><i style="background:#ec4899"></i>a + b</span>
+          <span><i style="background:var(--plot-1)"></i>a</span>
+          <span><i style="background:var(--plot-2)"></i>b</span>
+          <span><i style="background:var(--plot-3)"></i>a + b</span>
         </div>
       </div>
     </div>
@@ -505,7 +527,7 @@
 </section>
 
 <!-- ==================== COMPLEJOS ==================== -->
-<section id="complejos" class="view" aria-labelledby="complejos-titulo">
+<section id="complejos" class="view tone-complejos" aria-labelledby="complejos-titulo">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -563,10 +585,10 @@
         <div class="card-head"><h2>Plano complejo</h2><span class="badge badge-tema">Módulo y argumento</span></div>
         <div class="plot" id="plotComplejos"></div>
         <div class="legend">
-          <span><i style="background:#a855f7"></i>z₁</span>
-          <span><i style="background:#d946ef"></i>z₂</span>
-          <span><i style="background:#ec4899"></i>z₁ + z₂</span>
-          <span><i style="background:#34d399"></i>z₁ · z₂</span>
+          <span><i style="background:var(--plot-1)"></i>z₁</span>
+          <span><i style="background:var(--plot-2)"></i>z₂</span>
+          <span><i style="background:var(--plot-3)"></i>z₁ + z₂</span>
+          <span><i style="background:var(--plot-4)"></i>z₁ · z₂</span>
         </div>
       </div>
     </div>
@@ -574,7 +596,7 @@
 </section>
 
 <!-- ==================== TRIGONOMETRÍA ==================== -->
-<section id="trigonometria" class="view" aria-labelledby="trigo-titulo">
+<section id="trigonometria" class="view tone-trigo" aria-labelledby="trigo-titulo">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -632,7 +654,7 @@
 </section>
 
 <!-- ==================== ESTADÍSTICA ==================== -->
-<section id="estadistica" class="view" aria-labelledby="estadistica-titulo">
+<section id="estadistica" class="view tone-estadistica" aria-labelledby="estadistica-titulo">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -704,26 +726,47 @@
       <div>
         <span class="eyebrow">Práctica guiada</span>
         <h2 id="ejercicios-titulo">30 ejercicios resueltos</h2>
-        <p>Cinco juegos con dificultad creciente. Intenta resolver antes de abrir la solución.</p>
-      </div>
-      <div class="chips" id="filtroParte">
-        <button class="chip active" data-parte="todos">Todos</button>
-        <button class="chip" data-parte="vectores">Vectores</button>
-        <button class="chip" data-parte="complejos">Complejos</button>
+        <p>Cinco juegos con dificultad creciente. Intenta resolver antes de abrir la solución y marca los que ya dominas.</p>
       </div>
     </div>
 
-    <div class="toolbar">
-      <div class="chips" id="filtroNivel">
-        <button class="chip active" data-nivel="todos">Todos los niveles</button>
-        <button class="chip" data-nivel="facil">Fácil</button>
-        <button class="chip" data-nivel="intermedio">Intermedio</button>
-        <button class="chip" data-nivel="dificil">Difícil</button>
-      </div>
-      <p class="small muted mb-0" id="progresoEjercicios">0 de 30 dominados</p>
-    </div>
+    <div class="layout-rail">
+      <aside class="rail" aria-label="Filtros de ejercicios">
+        <div class="rail-group">
+          <span class="eyebrow">Tema</span>
+          <div class="rail-list" id="filtroParte">
+            <button class="rail-item active" data-parte="todos"><i class="dot"></i><span class="rail-label">Todos los temas</span><span class="count">30</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-vectores" data-parte="vectores"><i class="dot"></i><span class="rail-label">Vectores</span><span class="count">15</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-complejos" data-parte="complejos"><i class="dot"></i><span class="rail-label">Complejos</span><span class="count">15</span><span class="rail-bar"><i></i></span></button>
+          </div>
+        </div>
+        <div class="rail-group">
+          <span class="eyebrow">Nivel</span>
+          <div class="rail-list rail-levels" id="filtroNivel">
+            <button class="chip active" data-nivel="todos">Todos</button>
+            <button class="chip" data-nivel="facil">Fácil</button>
+            <button class="chip" data-nivel="intermedio">Intermedio</button>
+            <button class="chip" data-nivel="dificil">Difícil</button>
+          </div>
+        </div>
+        <div class="rail-card"><span class="eyebrow">Tu progreso</span><strong id="ejPct">0%</strong><div class="progress"><div class="progress-fill" id="ejBar"></div></div><p class="small muted" id="ejProgreso">0 de 30 dominados</p></div>
+      </aside>
 
-    <div id="listaEjercicios"></div>
+      <div class="rail-main">
+        <div class="toolbar">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" id="ejSearch" placeholder="Buscar ejercicio…" aria-label="Buscar ejercicio" autocomplete="off">
+          </div>
+          <div class="chips">
+            <button class="chip" id="ejPendientes" aria-pressed="false">Solo pendientes</button>
+            <button class="chip" id="ejReveal">Abrir soluciones</button>
+            <span class="list-count" id="ejCount">30 ejercicios</span>
+          </div>
+        </div>
+        <div id="listaEjercicios"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -734,11 +777,11 @@
       <div>
         <span class="eyebrow">92 recursos</span>
         <h2 id="bancos-titulo">Bancos de práctica</h2>
-        <p>Las tres guías del curso, integradas con filtros, progreso y soluciones desplegables.</p>
+        <p>Las tres guías del curso, organizadas por tema, con progreso y soluciones desplegables.</p>
       </div>
     </div>
 
-    <div class="chips" id="bancosTabs" role="tablist" aria-label="Bancos">
+    <div class="seg" id="bancosTabs" role="tablist" aria-label="Bancos">
       <button class="chip active" data-banco="practicos" role="tab" aria-selected="true">24 prácticos</button>
       <button class="chip" data-banco="moivre" role="tab" aria-selected="false">8 de Moivre</button>
       <button class="chip" data-banco="teoria" role="tab" aria-selected="false">60 teóricas</button>
@@ -746,31 +789,45 @@
 
     <!-- 24 PRÁCTICOS -->
     <div class="banco-panel" id="banco-practicos">
-      <div class="toolbar mt-3">
-        <div class="chips" id="practicosFiltro">
-          <button class="chip active" data-tema="todos">Todos</button>
-          <button class="chip" data-tema="Ley de Senos">Ley de Senos</button>
-          <button class="chip" data-tema="Ley del Coseno">Ley del Coseno</button>
-          <button class="chip" data-tema="Vectores">Vectores</button>
-          <button class="chip" data-tema="Números Complejos">Complejos</button>
-          <button class="chip" data-tema="Identidades Trigonométricas">Identidades</button>
-          <button class="chip" data-tema="Estadística">Estadística</button>
-        </div>
-        <div class="chips">
-          <button class="chip" id="practicosReveal">Mostrar respuestas</button>
-          <span class="small muted" id="practicosCount">24 ítems</span>
+      <div class="layout-rail">
+        <aside class="rail" aria-label="Temas de los ejercicios prácticos">
+          <div class="rail-group">
+            <span class="eyebrow">Tema</span>
+            <div class="rail-list" id="practicosFiltro">
+            <button class="rail-item active" data-tema="todos"><i class="dot"></i><span class="rail-label">Todos los temas</span><span class="count">24</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-trigo" data-tema="Ley de Senos"><i class="dot"></i><span class="rail-label">Ley de Senos</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-trigo" data-tema="Ley del Coseno"><i class="dot"></i><span class="rail-label">Ley del Coseno</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-vectores" data-tema="Vectores"><i class="dot"></i><span class="rail-label">Vectores</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-complejos" data-tema="Números Complejos"><i class="dot"></i><span class="rail-label">Complejos</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-identidades" data-tema="Identidades Trigonométricas"><i class="dot"></i><span class="rail-label">Identidades</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-estadistica" data-tema="Estadística"><i class="dot"></i><span class="rail-label">Estadística</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            </div>
+          </div>
+          <div class="rail-card"><span class="eyebrow">Tu progreso</span><strong id="prPct">0%</strong><div class="progress"><div class="progress-fill" id="prBar"></div></div><p class="small muted" id="prProgreso">0 de 24 vistos</p></div>
+        </aside>
+        <div class="rail-main">
+          <div class="toolbar">
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="practicosSearch" placeholder="Buscar ejercicio…" aria-label="Buscar ejercicio práctico" autocomplete="off">
+            </div>
+            <div class="chips">
+              <button class="chip" id="practicosReveal">Mostrar respuestas</button>
+              <span class="list-count" id="practicosCount">24 ítems</span>
+            </div>
+          </div>
+          <div id="listaPracticos"></div>
         </div>
       </div>
-      <div id="listaPracticos"></div>
     </div>
 
     <!-- MOIVRE -->
-    <div class="banco-panel" id="banco-moivre" hidden>
-      <div class="toolbar mt-3">
+    <div class="banco-panel tone-complejos" id="banco-moivre" hidden>
+      <div class="toolbar">
         <p class="small muted mb-0">Elige un ejercicio para ver la conversión a polar y la aplicación de la fórmula.</p>
         <div class="chips">
           <button class="chip" id="moivreReveal">Mostrar respuestas</button>
-          <span class="small muted">8 ítems</span>
+          <span class="list-count">8 ítems</span>
         </div>
       </div>
       <div class="note">
@@ -782,24 +839,34 @@
 
     <!-- TEORÍA -->
     <div class="banco-panel" id="banco-teoria" hidden>
-      <div class="toolbar mt-3">
-        <div class="chips" id="teoriaFiltro">
-          <button class="chip active" data-tema="todos">Todas</button>
-          <button class="chip" data-tema="Trigonometría">Trigonometría</button>
-          <button class="chip" data-tema="Vectores">Vectores</button>
-          <button class="chip" data-tema="Números Complejos">Complejos</button>
-          <button class="chip" data-tema="Identidades Trigonométricas">Identidades</button>
-          <button class="chip" data-tema="Estadística">Estadística</button>
-        </div>
-        <div class="chips">
-          <div class="search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <input type="text" id="teoriaSearch" placeholder="Buscar pregunta…" aria-label="Buscar pregunta">
+      <div class="layout-rail">
+        <aside class="rail" aria-label="Temas de las preguntas teóricas">
+          <div class="rail-group">
+            <span class="eyebrow">Tema</span>
+            <div class="rail-list" id="teoriaFiltro">
+            <button class="rail-item active" data-tema="todos"><i class="dot"></i><span class="rail-label">Todas las preguntas</span><span class="count">60</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-trigo" data-tema="Trigonometría"><i class="dot"></i><span class="rail-label">Trigonometría</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-vectores" data-tema="Vectores"><i class="dot"></i><span class="rail-label">Vectores</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-complejos" data-tema="Números Complejos"><i class="dot"></i><span class="rail-label">Complejos</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-identidades" data-tema="Identidades Trigonométricas"><i class="dot"></i><span class="rail-label">Identidades</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            <button class="rail-item tone-estadistica" data-tema="Estadística"><i class="dot"></i><span class="rail-label">Estadística</span><span class="count">0</span><span class="rail-bar"><i></i></span></button>
+            </div>
           </div>
-          <span class="small muted" id="teoriaCount">60 ítems</span>
+          <div class="rail-card"><span class="eyebrow">Tu progreso</span><strong id="tePct">0%</strong><div class="progress"><div class="progress-fill" id="teBar"></div></div><p class="small muted" id="teProgreso">0 de 60 vistas</p></div>
+        </aside>
+        <div class="rail-main">
+          <div class="toolbar">
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="teoriaSearch" placeholder="Buscar pregunta…" aria-label="Buscar pregunta" autocomplete="off">
+            </div>
+            <div class="chips">
+              <span class="list-count" id="teoriaCount">60 ítems</span>
+            </div>
+          </div>
+          <div id="listaTeoria"></div>
         </div>
       </div>
-      <div id="listaTeoria"></div>
     </div>
   </div>
 </section>
@@ -818,17 +885,17 @@
     <div class="card" id="examenInicio">
       <h2>Elige un modo</h2>
       <div class="exam-modes">
-        <button class="exam-mode" data-exam="vectores">
+        <button class="exam-mode tone-vectores" data-exam="vectores">
           <span class="emoji">→</span>
           <strong>Vectores</strong>
           <span>10 ejercicios numéricos</span>
         </button>
-        <button class="exam-mode" data-exam="complejos">
+        <button class="exam-mode tone-complejos" data-exam="complejos">
           <span class="emoji">i</span>
           <strong>Complejos</strong>
           <span>10 ejercicios numéricos</span>
         </button>
-        <button class="exam-mode" data-exam="teorico">
+        <button class="exam-mode tone-identidades" data-exam="teorico">
           <span class="emoji">?</span>
           <strong>Teórico</strong>
           <span>10 preguntas autoevaluadas</span>
@@ -856,9 +923,47 @@
 
 <!-- ==================== PIE ==================== -->
 <footer class="footer">
-  <div class="wrap footer-inner">
-    <span>© 2026 · Precálculo 67 — Vectores, complejos, trigonometría y estadística.</span>
-    <span>Hecho para aprender resolviendo · <a href="#inicio">Volver arriba ↑</a></span>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#inicio" data-go="inicio" aria-label="Precálculo 67, ir al inicio">
+          <span class="brand-mark">67</span>
+          <span class="brand-text"><strong>Precálculo</strong></span>
+        </a>
+        <p>Teoría, calculadoras y práctica de vectores, complejos, trigonometría y estadística en una sola página.</p>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h2>Estudiar</h2>
+          <ul>
+            <li><button type="button" data-go="teoria">Teoría</button></li>
+            <li><button type="button" data-go="vectores">Vectores</button></li>
+            <li><button type="button" data-go="complejos">Complejos</button></li>
+            <li><button type="button" data-go="trigonometria">Trigonometría</button></li>
+            <li><button type="button" data-go="estadistica">Estadística</button></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Practicar</h2>
+          <ul>
+            <li><button type="button" data-go="ejercicios">Ejercicios</button></li>
+            <li><button type="button" data-go="bancos">Bancos</button></li>
+            <li><button type="button" data-go="examen">Examen</button></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Proyecto</h2>
+          <ul>
+            <li><a href="https://github.com/chuzin29/67" rel="noopener">Código abierto</a></li>
+            <li><a href="#inicio" data-go="inicio">Volver arriba ↑</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Precálculo 67. Hecho para aprender resolviendo.</span>
+      <span><i class="ok-dot" aria-hidden="true"></i>Tu progreso se guarda en este dispositivo</span>
+    </div>
   </div>
 </footer>
 
@@ -869,11 +974,11 @@
 <div class="bubble" id="bubble" role="status"></div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="assets/js/math-render.js?v=3"></script>
-<script src="assets/js/format.js?v=3"></script>
-<script src="assets/js/data-core.js?v=3"></script>
-<script src="assets/js/data-bancos.js?v=3"></script>
-<script src="assets/js/data-teoria.js?v=3"></script>
-<script src="assets/js/app.js?v=3"></script>
+<script src="assets/js/math-render.js?v=4"></script>
+<script src="assets/js/format.js?v=4"></script>
+<script src="assets/js/data-core.js?v=4"></script>
+<script src="assets/js/data-bancos.js?v=4"></script>
+<script src="assets/js/data-teoria.js?v=4"></script>
+<script src="assets/js/app.js?v=4"></script>
 </body>
 </html>
