@@ -77,33 +77,33 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --background: 225 22% 8%;
-  --surface: 225 20% 11%;
-  --elevated: 225 18% 15%;
+  --background: 268 30% 8%;
+  --surface: 268 26% 12%;
+  --elevated: 268 22% 16%;
   --foreground: 42 30% 94%;
-  --muted: 225 14% 18%;
-  --muted-foreground: 225 10% 67%;
-  --line: 225 14% 23%;
-  --primary: 232 90% 70%;
-  --primary-foreground: 225 22% 8%;
+  --muted: 268 16% 19%;
+  --muted-foreground: 268 12% 70%;
+  --line: 268 16% 25%;
+  --primary: 270 88% 74%;
+  --primary-foreground: 268 30% 8%;
   --accent: 76 80% 60%;
-  --accent-foreground: 225 22% 8%;
+  --accent-foreground: 268 30% 8%;
   --aura: 38 95% 58%;
   --danger: 4 80% 62%;
   --success: 158 55% 48%;
-  --success-foreground: 225 22% 8%;
+  --success-foreground: 268 30% 8%;
 
-  --tone: 232 90% 70%;
-  --tone-foreground: 225 22% 8%;
+  --tone: 270 88% 74%;
+  --tone-foreground: 268 30% 8%;
 
   --btn-rim: rgba(255, 255, 255, 0.55);
   --btn-low: rgba(0, 0, 0, 0.22);
 
-  --plot-1: hsl(232 90% 74%);
+  --plot-1: hsl(270 90% 76%);
   --plot-2: hsl(16 88% 65%);
   --plot-3: hsl(183 55% 58%);
   --plot-4: hsl(40 90% 62%);
-  --plot-axis: hsl(225 10% 60%);
+  --plot-axis: hsl(268 10% 62%);
 }
 
 /* Un color por tema: igual que las categorías de TORNUTI. */
@@ -112,11 +112,11 @@ html[data-theme="dark"] {
 .tone-trigo { --tone: 14 76% 48%; --tone-foreground: 0 0% 100%; }
 .tone-estadistica { --tone: 183 58% 28%; --tone-foreground: 0 0% 100%; }
 .tone-identidades { --tone: 38 78% 40%; --tone-foreground: 0 0% 100%; }
-html[data-theme="dark"] .tone-vectores { --tone: 232 90% 70%; --tone-foreground: 225 22% 8%; }
-html[data-theme="dark"] .tone-complejos { --tone: 262 80% 72%; --tone-foreground: 225 22% 8%; }
-html[data-theme="dark"] .tone-trigo { --tone: 16 88% 65%; --tone-foreground: 225 22% 8%; }
-html[data-theme="dark"] .tone-estadistica { --tone: 183 55% 58%; --tone-foreground: 225 22% 8%; }
-html[data-theme="dark"] .tone-identidades { --tone: 40 90% 62%; --tone-foreground: 225 22% 8%; }
+html[data-theme="dark"] .tone-vectores { --tone: 270 88% 74%; --tone-foreground: 268 30% 8%; }
+html[data-theme="dark"] .tone-complejos { --tone: 300 70% 72%; --tone-foreground: 268 30% 8%; }
+html[data-theme="dark"] .tone-trigo { --tone: 16 88% 65%; --tone-foreground: 268 30% 8%; }
+html[data-theme="dark"] .tone-estadistica { --tone: 183 55% 58%; --tone-foreground: 268 30% 8%; }
+html[data-theme="dark"] .tone-identidades { --tone: 40 90% 62%; --tone-foreground: 268 30% 8%; }
 
 /* ---------------------------- 02. Base ---------------------------- */
 *,
@@ -772,8 +772,8 @@ html[data-theme="dark"] .hero-card {
 }
 .badge-vectores { --tone: 232 74% 45%; }
 .badge-complejos { --tone: 262 62% 48%; }
-html[data-theme="dark"] .badge-vectores { --tone: 232 90% 70%; }
-html[data-theme="dark"] .badge-complejos { --tone: 262 80% 72%; }
+html[data-theme="dark"] .badge-vectores { --tone: 270 88% 74%; }
+html[data-theme="dark"] .badge-complejos { --tone: 300 70% 72%; }
 .badge-forma {
   color: hsl(var(--foreground));
   background: hsl(var(--elevated));
