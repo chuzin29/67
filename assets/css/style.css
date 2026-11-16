@@ -2035,3 +2035,11 @@ body.s2-lock { overflow: hidden; }
 @keyframes s2-slide { from { transform: translateX(-100%); } }
 @media (max-width: 640px) { .s2-tabs { top: 3.6rem; } .s2-all { margin-left: 0; } }
 @media (prefers-reduced-motion: reduce) { .s2-drawer, .s2-scrim { animation: none !important; } }
+
+/* Botones simbiontes automáticos (reemplazan a .btn-primary) */
+.stretch-btn.sb-sm { padding: 11px 22px; font-size: .95rem; }
+.stretch.sb-block { display: flex; width: 100%; } .stretch-btn.sb-block { width: 100%; }
+.stretch:has(> .stretch-btn[hidden]) { display: none; }
+.stretch-btn:disabled { opacity: .55; cursor: not-allowed; }
+.s2-form-actions .stretch, .hero-actions .stretch, .s2-answer-row .stretch { margin: 4px 2px; }
+.s2-pager .stretch { max-width: 100%; } .s2-pager .stretch-btn { max-width: 100%; white-space: normal; text-align: left; }

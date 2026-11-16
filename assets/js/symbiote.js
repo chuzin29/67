@@ -64,6 +64,9 @@
 
     function tick(now) {
       var dt = clamp((now - last) / 1000, 1 / 240, 1 / 30); last = now; t += dt * 1000;
+      if (!wrap.isConnected) return dispose();
+      if (dirty || !rect || w < 2) { measure(); }
+      if (w < 2 || h < 2) { settle(); return; }
       if (dirty || !rect) rect = wrap.getBoundingClientRect();
       var px = pt.x - rect.left, py = pt.y - rect.top, cx = w / 2, cy = h / 2;
       var qx = clamp(px, h / 2, w - h / 2), qy = clamp(py, h / 2, h - h / 2);
@@ -114,7 +117,7 @@
       var gone = clamp((es - 0.01) / 0.07, 0, 1), poolVis = Math.max(rest, es);
       var neck = h * 0.2 / Math.sqrt(1 + stretch * 0.9), headR = (h * 0.2 + 12 * es * es + press * 3) * (1 + 0.07 * Math.sin(t * 0.005)) * (1 + clamp(velH / 900, 0, 0.35));
       var ci = 0;
-      function put(x, y, r) { if (ci < NC) { circ[ci].setAttribute('cx', x.toFixed(1)); circ[ci].setAttribute('cy', y.toFixed(1)); circ[ci].setAttribute('r', Math.max(0, r).toFixed(1)); ci++; } }
+      function put(x, y, r) { if (ci < NC && isFinite(x + y + r)) { circ[ci].setAttribute('cx', x.toFixed(1)); circ[ci].setAttribute('cy', y.toFixed(1)); circ[ci].setAttribute('r', Math.max(0, r).toFixed(1)); ci++; } }
 
       /* Mancha en reposo: pintura asentada en el borde que respira. */
       var wob = t * 0.0014, pr = h * (0.16 + 0.26 * poolVis);
@@ -144,18 +147,45 @@
       raf = requestAnimationFrame(tick);
     }
     function wake() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
-    window.addEventListener('pointermove', function (e) { pt.x = e.clientX; pt.y = e.clientY; pt.active = true; wake(); }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', function () { pt.active = false; wake(); });
-    window.addEventListener('scroll', function () { dirty = true; wake(); }, { passive: true, capture: true });
-    btn.addEventListener('pointerdown', function () { btn.setAttribute('data-pressed', ''); });
-    window.addEventListener('pointerup', function () { btn.removeAttribute('data-pressed'); }, { passive: true });
-    window.addEventListener('pointercancel', function () { btn.removeAttribute('data-pressed'); });
+    function onMove(e) { if (!wrap.isConnected) return dispose(); pt.x = e.clientX; pt.y = e.clientY; pt.active = true; wake(); }
+    function onLeave() { pt.active = false; wake(); }
+    function onScroll() { dirty = true; wake(); }
+    function onDown() { btn.setAttribute('data-pressed', ''); }
+    function onUp() { btn.removeAttribute('data-pressed'); }
+    var ro = global.ResizeObserver ? new ResizeObserver(measure) : null;
+    function dispose() {
+      cancelAnimationFrame(raf); raf = 0;
+      window.removeEventListener('pointermove', onMove); document.documentElement.removeEventListener('pointerleave', onLeave);
+      window.removeEventListener('scroll', onScroll, { capture: true }); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onUp); window.removeEventListener('resize', measure);
+      if (ro) ro.disconnect();
+    }
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.documentElement.addEventListener('pointerleave', onLeave);
+    window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    btn.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointerup', onUp, { passive: true });
+    window.addEventListener('pointercancel', onUp);
     measure();
-    if (global.ResizeObserver) new ResizeObserver(measure).observe(btn);
+    if (ro) ro.observe(btn);
     window.addEventListener('resize', measure);
   }
 
+  /* Convierte los .btn-primary de la página en botones simbiontes (también los que se crean después). */
+  function wrapBtn(b) {
+    if (b.classList.contains('stretch-btn') || b.closest('.stretch') || b.closest('.topbar, .announce')) return;
+    var block = b.classList.contains('btn-block'), wrap = document.createElement('span'), svg = document.createElementNS(NS, 'svg');
+    wrap.className = 'stretch sb-auto' + (block ? ' sb-block' : ''); wrap.setAttribute('data-symbiote', '110'); wrap.setAttribute('data-variant', 'primary');
+    svg.setAttribute('class', 'stretch-stage'); svg.setAttribute('aria-hidden', 'true');
+    b.parentNode.insertBefore(wrap, b); wrap.appendChild(svg); wrap.appendChild(b);
+    b.className = 'stretch-btn sb-sm' + (block ? ' sb-block' : '');
+    setup(wrap, 110);
+  }
+  function enhance() { Array.prototype.forEach.call(document.querySelectorAll('main .btn-primary, #s2Root .btn-primary'), wrapBtn); }
+  var pending = false;
+  function schedule() { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; enhance(); }); }
+
   function init() { Array.prototype.forEach.call(document.querySelectorAll('.stretch[data-symbiote]'), function (w) { setup(w, +w.getAttribute('data-symbiote') || 150); }); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-  global.Symbiote = { init: init };
+  function boot() { init(); enhance(); new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  global.Symbiote = { init: init, enhance: enhance };
 })(window);
