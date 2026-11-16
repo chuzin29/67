@@ -14,7 +14,7 @@
     { id: 'IV', temas: ['1.19', '1.20', '1.21', '1.22', '1.23', '1.24'], resumen: 'Conjuntos, conteo y probabilidad' }
   ];
   var UN = { 1: 'Ecuaciones', 2: 'Geometría analítica de la recta', 3: 'Secciones cónicas', 4: 'Funciones trascendentales I', 5: 'Funciones II', 6: 'Sucesiones', 7: 'Conjuntos y conteo', 8: 'Probabilidad' };
-  var TABS = [['teoria', 'Teoría'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
+  var TABS = [['teoria', 'Teoría'], ['video', 'Video'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 
   var root, mounted = false;
@@ -168,11 +168,25 @@
     return '<details class="s2-acc"' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="s2-acc-body">' + body + '</div></details>' + (extra || '');
   }
 
+  function videoHtml(t) {
+    var v = (global.VIDEOS_2A || {})[t.id], q = encodeURIComponent(t.titulo + ' bachillerato');
+    var search = '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/results?search_query=' + q + '" target="_blank" rel="noopener">Buscar más videos de este tema</a>';
+    if (!v) return '<p class="s2-hint">Aún no hay video para este tema.</p><div class="s2-toolrow">' + search + '</div>';
+    var url = 'https://www.youtube.com/watch?v=' + v.id;
+    return '<div class="s2-video"><div class="s2-vframe" data-vid="' + v.id + '"><button class="s2-vplay" data-play="' + v.id + '" aria-label="Reproducir video: ' + esc(v.t) + '" style="background-image:url(https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg)"><span aria-hidden="true"></span></button></div>' +
+      '<div class="s2-vinfo"><strong>' + esc(v.t) + '</strong><p class="muted small">Video externo de YouTube que explica este tema con más detalle. No se carga hasta que pulses reproducir.</p>' +
+      '<div class="s2-toolrow"><a class="btn btn-ghost btn-sm" href="' + url + '" target="_blank" rel="noopener">Abrir en YouTube ↗</a>' + search + '</div></div></div>' +
+      '<div class="s2-goals s2-watch"><strong>Mientras lo ves, fíjate en:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul>' +
+      '<p class="muted small">Después, pasa a <button class="link" data-tab="ejemplos">Ejemplos</button> y comprueba que puedes resolverlos tú solo.</p></div>';
+  }
+
   function tabHtml(tab, t) {
     var id = t.id, h = '';
     if (tab === 'teoria') {
       h = '<div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Expandir todo</button><button class="btn btn-ghost btn-sm" data-acc="close">Contraer todo</button></div>' +
         t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
+    } else if (tab === 'video') {
+      h = videoHtml(t);
     } else if (tab === 'formulas') {
       h = '<div class="s2-formulas">' + t.formulas.map(function (x, i) { return '<div class="s2-formula" style="--i:' + i + '"><span class="s2-flabel">' + esc(x.label) + '</span><div class="formula"><span class="math">' + M(x.html) + '</span></div></div>'; }).join('') + '</div>';
     } else if (tab === 'ejemplos') {
@@ -372,6 +386,7 @@
     else if (d.done != null) { var k = view.id + ':' + d.done; if (store.done[k]) delete store.done[k]; else store.done[k] = true; save(); renderTab(); }
     else if (b.hasAttribute('data-step')) { var ex = b.closest('[data-ex]'), nx = $('.s2-step[hidden]', ex), tot = $$('.s2-step', ex).length; if (nx) { nx.hidden = false; } var left = $$('.s2-step[hidden]', ex).length; b.textContent = 'Siguiente paso (' + (tot - left) + '/' + tot + ')'; if (!left) { $('.s2-answer', ex).hidden = false; b.disabled = true; b.textContent = 'Listo ✓'; } }
     else if (b.hasAttribute('data-allsteps')) { var ex2 = b.closest('[data-ex]'); $$('.s2-step', ex2).forEach(function (s) { s.hidden = false; }); $('.s2-answer', ex2).hidden = false; var sb = $('[data-step]', ex2); sb.disabled = true; sb.textContent = 'Listo ✓'; }
+    else if (d.play) { var fr = b.closest('.s2-vframe'); fr.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + d.play + '?autoplay=1&rel=0" title="Video del tema" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>'; }
     else if (b.hasAttribute('data-calc-reset')) resetCalc();
     else if (d.examMode) startMode(d.examMode);
   }
