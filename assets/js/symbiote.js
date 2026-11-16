@@ -19,31 +19,48 @@
   }
   function path(svg, op) { var p = document.createElementNS(NS, 'path'); p.setAttribute('fill', 'var(--sb-thread)'); p.setAttribute('opacity', op); svg.appendChild(p); return p; }
 
+  var uid = 0;
   function setup(wrap, radius) {
     var btn = wrap.querySelector('.stretch-btn'), svg = wrap.querySelector('.stretch-stage');
     if (!btn || !svg) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (reduce || !fine) return;
-    var haze = path(svg, '0.1'), poolWide = path(svg, '0.2'), pool = path(svg, '0.78'), spill = path(svg, '0.14'), body = path(svg, '0.97');
-    var blob = document.createElementNS(NS, 'ellipse'); blob.setAttribute('fill', 'var(--sb-thread)'); blob.setAttribute('opacity', '0.97'); svg.appendChild(blob);
 
-    var R = radius || 150, TILT = 9, SHIFT = 7, STIFF = 46, DAMP = 0.82;
+    /* Filtro "goo": desenfoca y umbraliza el alfa, así los círculos se funden como líquido viscoso. */
+    var fid = 'goo' + (++uid);
+    var defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = '<filter id="' + fid + '" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="5.5" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9.5" result="g"/><feGaussianBlur in="g" stdDeviation="0.6"/></filter>';
+    svg.appendChild(defs);
+    var grp = document.createElementNS(NS, 'g'); grp.setAttribute('filter', 'url(#' + fid + ')'); grp.setAttribute('fill', 'var(--sb-thread)'); svg.appendChild(grp);
+    var NC = 54, circ = [], i;
+    for (i = 0; i < NC; i++) { var c = document.createElementNS(NS, 'circle'); c.setAttribute('r', '0'); grp.appendChild(c); circ.push(c); }
+    var shine = document.createElementNS(NS, 'ellipse'); shine.setAttribute('fill', '#fff'); shine.setAttribute('opacity', '0'); svg.appendChild(shine);
+
+    var R = radius || 150, M = 11, TILT = 8, SHIFT = 6;
     var pt = { x: -9999, y: -9999, active: false }, w = 0, h = 0, margin = 0, rect = null, dirty = false, raf = 0, last = performance.now(), t = 0;
-    var es = 0, rest = 0, sx = 0, sy = 0, tilt = 0, press = 0, tipX = 0, tipY = 0, tipVX = 0, tipVY = 0;
+    var es = 0, rest = 0, sx = 0, sy = 0, tilt = 0, press = 0, born = false;
+    var nodes = [], drops = [{ x: 0, y: 0, vx: 0, vy: 0 }, { x: 0, y: 0, vx: 0, vy: 0 }];
+    for (i = 0; i <= M; i++) nodes.push({ x: 0, y: 0, vx: 0, vy: 0 });
 
     function measure() {
-      w = btn.offsetWidth; h = btn.offsetHeight; margin = R + 30;
+      w = btn.offsetWidth; h = btn.offsetHeight; margin = R + 40;
       var W = w + margin * 2, H = h + margin * 2;
       svg.style.left = -margin + 'px'; svg.style.top = -margin + 'px'; svg.style.width = W + 'px'; svg.style.height = H + 'px';
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       rect = wrap.getBoundingClientRect(); dirty = false;
     }
-    function resetInk() {
-      btn.style.transform = ''; btn.style.filter = 'none';
-      [spill, body, pool, poolWide, haze].forEach(function (p) { p.setAttribute('d', ''); });
-      blob.setAttribute('rx', '0'); blob.setAttribute('ry', '0');
+    function hide() { circ.forEach(function (c) { c.setAttribute('r', '0'); }); shine.setAttribute('opacity', '0'); }
+    function settle() { raf = 0; es = 0; sx = sy = tilt = press = 0; born = false; btn.style.transform = ''; btn.style.filter = 'none'; hide(); }
+
+    /* Resorte amortiguado semi-implícito (subpasos para estabilidad). */
+    function spring(n, tx, ty, k, c, dt) {
+      var ax = (tx - n.x) * k - n.vx * c, ay = (ty - n.y) * k - n.vy * c;
+      n.vx += ax * dt; n.vy += ay * dt; n.x += n.vx * dt; n.y += n.vy * dt;
     }
-    function settle() { raf = 0; es = 0; sx = sy = tilt = press = 0; tipVX = tipVY = 0; resetInk(); }
+    function cr(p0, p1, p2, p3, u) { // Catmull-Rom
+      var u2 = u * u, u3 = u2 * u;
+      return 0.5 * ((2 * p1) + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u2 + (-p0 + 3 * p1 - 3 * p2 + p3) * u3);
+    }
 
     function tick(now) {
       var dt = clamp((now - last) / 1000, 1 / 240, 1 / 30); last = now; t += dt * 1000;
@@ -52,77 +69,78 @@
       var qx = clamp(px, h / 2, w - h / 2), qy = clamp(py, h / 2, h - h / 2);
       var dEdge = Math.max(0, Math.hypot(px - qx, py - qy) - h / 2);
       var ddx = px - cx, ddy = py - cy, dl = Math.hypot(ddx, ddy) || 1, ux = ddx / dl, uy = ddy / dl;
-      var e = pt.active ? clamp((R - dEdge) / (R * 0.62), 0, 1) : 0, restR = R * 1.9;
+      var e = pt.active ? clamp((R - dEdge) / (R * 0.7), 0, 1) : 0, restR = R * 1.9;
       var eRest = pt.active ? clamp((restR - dEdge) / (restR - R), 0, 1) : 0;
-      es += (sstep(e) - es) * 0.16; rest += (sstep(eRest) - rest) * 0.11;
+      es += (sstep(e) - es) * 0.1; rest += (sstep(eRest) - rest) * 0.08;
       if (es < 0.004 && rest < 0.02) { settle(); return; }
-      var engaged = es > 0.002;
 
+      /* El botón se inclina y se desplaza hacia la masa, y se hunde al presionar. */
       var rx = qx - cx + ux * (h / 2 - 4), ry = uy * (h / 2 - 4), torque = rx * uy - ry * ux;
-      var tiltT = clamp((torque / (w * 0.5)) * TILT, -TILT, TILT) * es, sxT = ux * SHIFT * es, syT = uy * SHIFT * es;
+      var tiltT = clamp((torque / (w * 0.5)) * TILT, -TILT, TILT) * es;
       press += ((btn.hasAttribute('data-pressed') ? 1 : 0) - press) * 0.22;
-      sx += (sxT - sx) * 0.12; sy += (syT - sy) * 0.12; tilt += (tiltT - tilt) * 0.12;
-      var move = Math.hypot(sxT - sx, syT - sy) + Math.abs(tiltT - tilt) * 2, blur = move > 0.55 ? Math.min(move * 0.22, 0.65) : 0;
+      sx += (ux * SHIFT * es - sx) * 0.1; sy += (uy * SHIFT * es - sy) * 0.1; tilt += (tiltT - tilt) * 0.1;
       btn.style.transform = 'translate(' + sx.toFixed(2) + 'px,' + sy.toFixed(2) + 'px) rotate(' + tilt.toFixed(2) + 'deg) scale(' + (1 - 0.04 * press).toFixed(3) + ',' + (1 - 0.06 * press).toFixed(3) + ')';
-      btn.style.filter = blur > 0.35 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none';
 
-      if (engaged) {
-        var reach = Math.min(1, es * 1.2), tx = cx + ddx * reach, ty = cy + ddy * reach;
-        tipVX += (tx - tipX) * STIFF * dt; tipVY += (ty - tipY) * STIFF * dt;
-        var damp = Math.pow(DAMP, dt * 60); tipVX *= damp; tipVY *= damp; tipX += tipVX; tipY += tipVY;
-      } else { tipVX *= 0.7; tipVY *= 0.7; tipX += (cx - tipX) * 0.24; tipY += (cy - tipY) * 0.24; }
-      tipX = clamp(tipX, -margin, w + margin); tipY = clamp(tipY, -margin, h + margin);
-
+      /* Ancla en el borde del botón, del lado del puntero. */
       var A = (w - h) / 2, segX = clamp(ddx, -A, A), ox2 = ddx - segX, oy2 = ddy, olen = Math.hypot(ox2, oy2), rimOk = olen > 0.6;
-      var BX = margin + cx + sx + (rimOk ? segX + (ox2 / olen) * (h / 2 - 3) : 0), BY = margin + cy + sy + (rimOk ? (oy2 / olen) * (h / 2 - 3) : 0);
-      var tdx = margin + tipX - BX, tdy = margin + tipY - BY, tl = Math.hypot(tdx, tdy) || 1, dirX = tdx / tl, dirY = tdy / tl;
-      var nx = -dirY, ny = dirX; if (ny < 0) { nx = -nx; ny = -ny; }
-      var sag = (10 + tl * 0.16) * (1 - 0.78 * es), slow = 1 - 0.86 * press, whipAmp = (2.6 + tl * 0.052) * (1 - 0.4 * press), whipPh = t * 0.0042;
-      var meanderAmp = (7 + tl * 0.075) * Math.max(0.25, 1 - press), meanderPh = Math.sin(t * 0.0011) * 1.6;
-      var K = 13, cxs = [], cys = [], k, u;
-      for (k = 0; k <= K; k++) {
-        u = k / K; var taper = Math.sin(u * Math.PI), grow = 0.32 + 0.68 * u;
-        var g = sag * 0.55 * taper + meanderAmp * Math.sin(u * 1.9 + meanderPh) * (0.18 + 0.82 * u) + slow * whipAmp * (Math.sin(u * 2.9 - whipPh) + 0.45 * Math.sin(u * 6.2 + whipPh * 1.7)) * taper * grow;
-        cxs.push(BX + tdx * u + nx * g); cys.push(BY + tdy * u + ny * g);
+      var BX = margin + cx + sx + (rimOk ? segX + (ox2 / olen) * (h / 2 - 5) : 0), BY = margin + cy + sy + (rimOk ? (oy2 / olen) * (h / 2 - 5) : 0);
+      var CX = margin + px, CY = margin + py, vx = CX - BX, vy = CY - BY, len = Math.hypot(vx, vy) || 1, dx = vx / len, dy = vy / len;
+
+      /* Alcance con elasticidad: la masa nunca pasa del rango, solo se estira como goma. */
+      var Rmax = R * 0.92, want = len <= Rmax ? len : Rmax + (len - Rmax) * 0.06, reach = want * clamp(es * 1.25, 0, 1);
+      var HX = BX + dx * Math.max(reach, h * 0.18), HY = BY + dy * Math.max(reach, h * 0.18);
+      var nxp = -dy, nyp = dx; if (nyp < 0) { nxp = -nxp; nyp = -nyp; }
+
+      if (!born) { for (i = 0; i <= M; i++) { nodes[i].x = BX; nodes[i].y = BY; nodes[i].vx = nodes[i].vy = 0; } drops.forEach(function (d) { d.x = BX; d.y = BY; d.vx = d.vy = 0; }); born = true; }
+
+      var SUB = 3, sdt = dt / SUB, stretch = reach / (h * 1.4);
+      for (var s2 = 0; s2 < SUB; s2++) {
+        nodes[0].x = BX; nodes[0].y = BY; nodes[0].vx = nodes[0].vy = 0;
+        /* Cabeza: resorte con poca amortiguación → rebote gelatinoso al frenar. */
+        spring(nodes[M], HX, HY, 70, 9.5, sdt);
+        /* Cuerpo: cada nodo persigue al segmento ideal con retraso (viscosidad), colgando por su peso. */
+        for (i = 1; i < M; i++) {
+          var u = i / M, sag = Math.sin(u * Math.PI) * (5 + 14 * (1 - es * 0.7)) + Math.sin(u * 2.4 + t * 0.0012) * (3 + stretch * 3) * Math.sin(u * Math.PI);
+          var tx = BX + (nodes[M].x - BX) * u + nxp * sag * 0.6, ty = BY + (nodes[M].y - BY) * u + nyp * sag * 0.6 + 4 * Math.sin(u * Math.PI);
+          spring(nodes[i], tx, ty, 120 - u * 50, 13 + u * 2, sdt);
+        }
+        /* Gotas satélite: siguen a la cabeza con más retraso, se funden o se sueltan. */
+        drops[0].x += 0; spring(drops[0], nodes[M].x - dx * 16, nodes[M].y - dy * 16 + 5, 16, 3.6, sdt);
+        spring(drops[1], nodes[M - 2].x + nxp * 9, nodes[M - 2].y + nyp * 9, 11, 3, sdt);
       }
-      var tipJit = nx * 1.6 * Math.sin(t * 0.0061) + ny * 0.9 * Math.sin(t * 0.0048 + 1); cxs[K] += tipJit; cys[K] += tipJit;
-      var headR = (6.5 + 14 * es * es * es + press * 3.4) * (1 + 0.05 * Math.sin(t * 0.0045));
-      var velQ = clamp(Math.hypot(tipVX, tipVY) / 1200, 0, 0.55), cEs = 0.62 + 0.38 * es;
-      function hwAt(u2) { return (h * (0.27 - 0.09 * u2) + h * 0.11 * Math.sin(u2 * Math.PI * 0.9) + headR * 0.5 * u2 * u2) * (1 + 0.16 * Math.sin(u2 * 4.1 - whipPh * 1.25) * slow) * (1 + 0.14 * press) * (1 + velQ * 0.25 * u2) * cEs; }
-      var nX = [], nY = [];
-      for (k = 0; k <= K; k++) { var a = Math.max(0, k - 1), b = Math.min(K, k + 1), tx2 = cxs[b] - cxs[a], ty2 = cys[b] - cys[a], tn = Math.hypot(tx2, ty2) || 1; nX.push(-ty2 / tn); nY.push(tx2 / tn); }
-      var wallPh = t * 0.0034;
-      function ring(wMul, ox, oy) {
-        var X = [], Y = [], kk, uu, rc, hw;
-        for (kk = 0; kk <= K; kk++) { uu = kk / K; rc = 0.22 + 0.78 * uu; hw = hwAt(uu) * wMul * (1 + 0.12 * Math.sin(uu * 5.3 - wallPh * 1.4) * rc); X.push(cxs[kk] + nX[kk] * hw + ox); Y.push(cys[kk] + nY[kk] * hw + oy); }
-        var capSide = hwAt(1) * wMul * (1 - velQ * 0.3) * 0.55, capLen = headR * 1.25 * wMul * (1 + velQ * 0.6);
-        X.push(cxs[K] + nX[K] * capSide + dirX * capLen * 0.82 + ox); Y.push(cys[K] + nY[K] * capSide + dirY * capLen * 0.82 + oy);
-        X.push(cxs[K] + dirX * capLen + ox); Y.push(cys[K] + dirY * capLen + oy);
-        X.push(cxs[K] - nX[K] * capSide + dirX * capLen * 0.82 + ox); Y.push(cys[K] - nY[K] * capSide + dirY * capLen * 0.82 + oy);
-        for (kk = K; kk >= 0; kk--) { uu = kk / K; rc = 0.22 + 0.78 * uu; hw = hwAt(uu) * wMul * (1 + 0.14 * Math.sin(uu * 4.4 + wallPh * 1.85 + 1.3) * rc); X.push(cxs[kk] - nX[kk] * hw + ox); Y.push(cys[kk] - nY[kk] * hw + oy); }
-        return gooBlob(X, Y);
+      var velH = Math.hypot(nodes[M].vx, nodes[M].vy);
+
+      /* Radios: gruesa en la base, cuello que adelgaza al estirarse, cabeza en bulbo que late. */
+      var gone = clamp((es - 0.01) / 0.07, 0, 1), poolVis = Math.max(rest, es);
+      var neck = h * 0.2 / Math.sqrt(1 + stretch * 0.9), headR = (h * 0.2 + 12 * es * es + press * 3) * (1 + 0.07 * Math.sin(t * 0.005)) * (1 + clamp(velH / 900, 0, 0.35));
+      var ci = 0;
+      function put(x, y, r) { if (ci < NC) { circ[ci].setAttribute('cx', x.toFixed(1)); circ[ci].setAttribute('cy', y.toFixed(1)); circ[ci].setAttribute('r', Math.max(0, r).toFixed(1)); ci++; } }
+
+      /* Mancha en reposo: pintura asentada en el borde que respira. */
+      var wob = t * 0.0014, pr = h * (0.16 + 0.26 * poolVis);
+      for (i = 0; i < 4; i++) {
+        var ang = i * 1.57 + wob * (i % 2 ? 1 : -1), off = pr * 0.55;
+        put(BX - dx * pr * 0.3 + Math.cos(ang) * off * 0.8, BY - dy * pr * 0.3 + Math.sin(ang) * off * 0.8, pr * (0.78 + 0.18 * Math.sin(wob * 2.1 + i * 2)));
       }
-      var gone = clamp((es - 0.012) / 0.055, 0, 1), poolVis = Math.max(rest, es);
-      if (poolVis > 0.03) {
-        var wob = t * 0.0011;
-        var poolBlob = function (wideMul) {
-          var xs2 = [], ys2 = [], base = h * (0.28 + 0.44 * poolVis) * wideMul, p2x = BX - ux * base * 0.32, p2y = BY - uy * base * 0.32;
-          for (var i = 0; i < 15; i++) {
-            var ang = (i / 15) * Math.PI * 2;
-            var wobR = 1 + 0.17 * Math.sin(ang * 3 + wob * 1.7) + 0.12 * Math.sin(ang * 5 - wob * 1.15) + 0.08 * Math.sin(ang * 8 + wob * 2.3) + 0.06 * Math.sin(ang * 2 - wob * 0.6);
-            var rr = base * wobR * (1 + 0.07 * Math.sin(t * 0.0016 + ang * 1.35)), ox3 = Math.cos(ang) * rr, oy3 = Math.sin(ang) * rr;
-            var along = ox3 * ux + oy3 * uy, perp = -ox3 * uy + oy3 * ux, alongF = along >= 0 ? 1 + 0.42 * poolVis : 1 - 0.46 * poolVis, sq = 1 - 0.12 * poolVis;
-            xs2.push(p2x + along * alongF * ux + perp * sq * -uy); ys2.push(p2y + along * alongF * uy + perp * sq * ux);
-          }
-          return gooBlob(xs2, ys2);
-        };
-        haze.setAttribute('d', poolBlob(1.6)); poolWide.setAttribute('d', poolBlob(1.26)); pool.setAttribute('d', poolBlob(0.95));
-      } else { haze.setAttribute('d', ''); poolWide.setAttribute('d', ''); pool.setAttribute('d', ''); }
+      put(BX, BY, pr * 1.05);
+
+      /* Cuerpo: círculos a lo largo de la spline; el filtro los funde en una sola masa lisa. */
       if (gone > 0.001) {
-        spill.setAttribute('d', ring(1.5 * gone, nx * 4.5, ny * 4.5)); body.setAttribute('d', ring(gone, 0, 0));
-        var ang2 = Math.atan2(dirY, dirX) * 180 / Math.PI, hx = cxs[K].toFixed(1), hy = cys[K].toFixed(1);
-        blob.setAttribute('cx', hx); blob.setAttribute('cy', hy); blob.setAttribute('rx', (headR * 0.95 * gone).toFixed(1)); blob.setAttribute('ry', (headR * (1.02 + velQ * 0.8) * gone).toFixed(1)); blob.setAttribute('transform', 'rotate(' + ang2.toFixed(1) + ' ' + hx + ' ' + hy + ')');
-      } else { spill.setAttribute('d', ''); body.setAttribute('d', ''); blob.setAttribute('rx', '0'); blob.setAttribute('ry', '0'); }
+        var N = 34, pts = nodes;
+        for (var k = 0; k < N; k++) {
+          var f = k / (N - 1) * M, i1 = Math.min(M - 1, Math.floor(f)), uu = f - i1, i0 = Math.max(0, i1 - 1), i2 = i1 + 1, i3 = Math.min(M, i1 + 2), g = f / M;
+          var X = cr(pts[i0].x, pts[i1].x, pts[i2].x, pts[i3].x, uu), Y = cr(pts[i0].y, pts[i1].y, pts[i2].y, pts[i3].y, uu);
+          var r = (neck * (1 + 0.7 * Math.pow(1 - g, 2)) + headR * Math.pow(g, 5)) * (1 + 0.1 * Math.sin(g * 7 - t * 0.0045)) * gone;
+          put(X, Y, r);
+        }
+        put(nodes[M].x, nodes[M].y, headR * 1.05 * gone);
+        put(drops[0].x, drops[0].y, headR * 0.5 * gone * clamp(es * 1.5 - 0.3, 0, 1));
+        put(drops[1].x, drops[1].y, headR * 0.34 * gone * clamp(es * 1.5 - 0.5, 0, 1));
+        shine.setAttribute('cx', (nodes[M].x - headR * 0.25).toFixed(1)); shine.setAttribute('cy', (nodes[M].y - headR * 0.35).toFixed(1));
+        shine.setAttribute('rx', (headR * 0.38 * gone).toFixed(1)); shine.setAttribute('ry', (headR * 0.2 * gone).toFixed(1)); shine.setAttribute('opacity', (0.28 * gone).toFixed(2));
+        shine.setAttribute('transform', 'rotate(' + (Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1) + ' ' + nodes[M].x.toFixed(1) + ' ' + nodes[M].y.toFixed(1) + ')');
+      } else shine.setAttribute('opacity', '0');
+      for (; ci < NC; ci++) circ[ci].setAttribute('r', '0');
       raf = requestAnimationFrame(tick);
     }
     function wake() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
