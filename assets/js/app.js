@@ -119,7 +119,7 @@
   /* ---------------------------------------------------------
      Navegación
      --------------------------------------------------------- */
-  var sections = ['inicio', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen'];
+  var sections = ['inicio', 'segundo', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen'];
   var rendered = { ejercicios: false, bancos: false, examen: false };
 
   function showSection(id, options) {
@@ -132,6 +132,7 @@
     var toggle = $('#navToggle');
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
 
+    if (id === 'segundo' && window.Segundo) window.Segundo.mount();
     if (id === 'ejercicios' && !rendered.ejercicios) { renderEjercicios(); rendered.ejercicios = true; }
     if (id === 'bancos' && !rendered.bancos) { renderBancos(); rendered.bancos = true; }
     if (id === 'examen' && !rendered.examen) { rendered.examen = true; }

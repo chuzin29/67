@@ -1,0 +1,358 @@
+/* ============================================================
+   segundo.js — Vista de 2.º año de Bachillerato (Matemática 2A)
+   Año → período → unidad → tema. Teoría, fórmulas, ejemplos paso a paso,
+   práctica por niveles, preguntas, calculadora y examen autocorregible.
+   Progreso guardado en localStorage (si está disponible).
+   ============================================================ */
+(function (global) {
+  'use strict';
+
+  var PER = [
+    { id: 'I', temas: ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7'], resumen: 'Ecuaciones, la recta y la parábola' },
+    { id: 'II', temas: ['1.8', '1.9', '1.10', '1.11', '1.12'], resumen: 'Circunferencia, elipse, hipérbola y funciones exponenciales' },
+    { id: 'III', temas: ['1.13', '1.14', '1.15', '1.16', '1.17', '1.18'], resumen: 'Funciones, logaritmos, trigonometría y sucesiones' },
+    { id: 'IV', temas: ['1.19', '1.20', '1.21', '1.22', '1.23', '1.24'], resumen: 'Conjuntos, conteo y probabilidad' }
+  ];
+  var UN = { 1: 'Ecuaciones', 2: 'Geometría analítica de la recta', 3: 'Secciones cónicas', 4: 'Funciones trascendentales I', 5: 'Funciones II', 6: 'Sucesiones', 7: 'Conjuntos y conteo', 8: 'Probabilidad' };
+  var TABS = [['teoria', 'Teoría'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
+  var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
+
+  var root, mounted = false;
+  var view = { mode: 'home', per: 'all', q: '', id: null, tab: 'teoria', nivel: 'todos', pend: false };
+  var store = { seen: {}, done: {}, best: {}, last: null };
+  var exam = null;
+
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+  function T() { return (global.CURSO_2A || {}).temas || {}; }
+  function M(h) { return global.MathRender && global.MathRender.render ? global.MathRender.render(h) : h; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function order(id) { var p = id.split('.'); return +p[1]; }
+  function ids() { return Object.keys(T()).sort(function (a, b) { return order(a) - order(b); }); }
+  function perOf(id) { for (var i = 0; i < PER.length; i++) if (PER[i].temas.indexOf(id) >= 0) return PER[i]; return PER[0]; }
+
+  function load() { try { var s = JSON.parse(localStorage.getItem('s2.v1')); if (s) { store = Object.assign(store, s); } } catch (e) { /* sin almacenamiento */ } }
+  function save() { try { localStorage.setItem('s2.v1', JSON.stringify(store)); } catch (e) { /* ignorar */ } }
+
+  function doneCount(id) { var t = T()[id], n = 0; if (!t) return 0; t.ejercicios.forEach(function (_, i) { if (store.done[id + ':' + i]) n++; }); return n; }
+  function totals() {
+    var all = ids(), seen = 0, ej = 0, ejT = 0, ex = 0;
+    all.forEach(function (id) { if (store.seen[id]) seen++; ej += doneCount(id); ejT += T()[id].ejercicios.length; if (store.best['t:' + id] != null) ex++; });
+    return { temas: all.length, seen: seen, ej: ej, ejT: ejT, ex: ex };
+  }
+
+  /* ---------- números y respuestas ---------- */
+  function pnum(s) {
+    s = String(s).trim().replace(/−/g, '-').replace(/\s+/g, '');
+    if (!s) return NaN;
+    var pct = /%$/.test(s); if (pct) s = s.slice(0, -1);
+    var mm = s.match(/^(-?\d*\.?\d+)\/(-?\d*\.?\d+)$/), v;
+    if (mm) v = parseFloat(mm[1]) / parseFloat(mm[2]);
+    else { s = s.replace(',', '.'); v = /^-?\d*\.?\d+(e-?\d+)?$/i.test(s) ? parseFloat(s) : NaN; }
+    return pct ? v / 100 : v;
+  }
+  function plist(s) {
+    s = String(s).replace(/[a-zA-Z]+\s*=/g, '').replace(/[()\[\]{}]/g, '');
+    var parts = s.indexOf(';') >= 0 ? s.split(';') : s.split(/,|\s+/);
+    return parts.map(function (x) { return x.trim(); }).filter(Boolean).map(pnum);
+  }
+  function fmtN(n) { return (Math.round(n * 1000) / 1000).toString().replace('-', '−'); }
+
+  function check(q, raw) {
+    var tol = q.tol || 0.01, a, i;
+    if (q.tipo === 'opt') return +raw === q.correcta;
+    if (q.tipo === 'num') { a = pnum(raw); return isFinite(a) && Math.abs(a - q.r) <= tol; }
+    a = plist(raw);
+    if (a.length !== q.r.length || a.some(function (x) { return !isFinite(x); })) return false;
+    if (q.tipo === 'par') return Math.abs(a[0] - q.r[0]) <= tol && Math.abs(a[1] - q.r[1]) <= tol;
+    var s = a.slice().sort(function (x, y) { return x - y; }), r = q.r.slice().sort(function (x, y) { return x - y; });
+    for (i = 0; i < r.length; i++) if (Math.abs(s[i] - r[i]) > tol) return false;
+    return true;
+  }
+  function correctText(q) {
+    if (q.tipo === 'opt') return q.opciones[q.correcta];
+    if (q.tipo === 'num') return '<span class="math">' + fmtN(q.r) + '</span>';
+    if (q.tipo === 'par') return '<span class="math">(' + fmtN(q.r[0]) + ', ' + fmtN(q.r[1]) + ')</span>';
+    return '<span class="math">' + q.r.map(fmtN).join(', ') + '</span>';
+  }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function pool(tIds) { var out = []; tIds.forEach(function (id) { (T()[id].examen || []).forEach(function (q) { out.push(Object.assign({ _t: id }, q)); }); }); return out; }
+
+  /* ---------- piezas de interfaz ---------- */
+  function ring(pct, label) {
+    var r = 26, c = 2 * Math.PI * r, o = c * (1 - pct / 100);
+    return '<div class="s2-ring" role="img" aria-label="' + label + ' ' + pct + '%"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="' + r + '" class="bg"/><circle cx="32" cy="32" r="' + r + '" class="fg" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + o.toFixed(1) + '"/></svg><b>' + pct + '%</b></div>';
+  }
+  function bar(pct) { return '<div class="progress s2-prog"><div class="progress-fill" style="width:' + pct + '%"></div></div>'; }
+
+  function topicCard(id, i) {
+    var t = T()[id], d = doneCount(id), n = t.ejercicios.length, best = store.best['t:' + id];
+    return '<button class="s2-topic u' + t.unidad + '" data-open="' + id + '" style="--i:' + i + '">' +
+      '<span class="s2-tile">' + id + '</span>' +
+      '<span class="s2-topic-body"><strong>' + esc(t.titulo) + '</strong><span class="s2-sub">' + M(t.resumen) + '</span>' +
+      '<span class="s2-meta"><span>' + t.ejemplos.length + ' ejemplos</span><span>' + n + ' ejercicios</span><span>10 preguntas de examen</span></span>' +
+      bar(Math.round(100 * d / n)) +
+      '<span class="s2-flags">' + (store.seen[id] ? '<i class="s2-flag ok">✓ Visto</i>' : '<i class="s2-flag">Nuevo</i>') + (d ? '<i class="s2-flag">' + d + '/' + n + ' dominados</i>' : '') + (best != null ? '<i class="s2-flag gold">Examen ' + best + '/10</i>' : '') + '</span>' +
+      '</span></button>';
+  }
+
+  /* ---------- inicio ---------- */
+  function renderHome() {
+    var tt = totals(), pct = Math.round(100 * (tt.seen / tt.temas * 0.4 + tt.ej / tt.ejT * 0.6)), html = '', n = 0;
+    var last = store.last && T()[store.last] ? store.last : null;
+    html += '<div class="s2-hero"><div class="s2-hero-text"><span class="eyebrow">Matemática 2A · Bachillerato</span><h2 id="s2-title">2.º año de Bachillerato</h2>' +
+      '<p class="lead">24 temas en 8 unidades y 4 períodos. En cada tema: teoría, fórmulas, ejemplos que se revelan paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
+      '<div class="hero-actions"><button class="btn btn-primary" data-open="' + (last || '1.1') + '">' + (last ? 'Continuar: tema ' + last : 'Empezar por el tema 1.1') + '</button>' +
+      '<button class="btn btn-ghost" data-s2="examenes">Modo examen</button></div></div>' +
+      '<div class="s2-hero-stats">' + ring(pct, 'Avance general') + '<ul><li><b>' + tt.seen + '</b>/' + tt.temas + ' temas vistos</li><li><b>' + tt.ej + '</b>/' + tt.ejT + ' ejercicios dominados</li><li><b>' + tt.ex + '</b>/' + tt.temas + ' mini‑exámenes hechos</li></ul></div></div>';
+    html += '<div class="s2-toolbar"><div class="seg-tabs" role="tablist" aria-label="Períodos">' +
+      '<button class="s2-tab' + (view.per === 'all' ? ' active' : '') + '" data-per="all">Todo el año</button>' +
+      PER.map(function (p) { return '<button class="s2-tab' + (view.per === p.id ? ' active' : '') + '" data-per="' + p.id + '">Período ' + p.id + '</button>'; }).join('') + '</div>' +
+      '<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="s2Search" placeholder="Buscar tema… (parábola, logaritmo, Bayes)" value="' + esc(view.q) + '" autocomplete="off" aria-label="Buscar tema"></div></div>';
+    var q = view.q.trim().toLowerCase(), shown = 0;
+    PER.forEach(function (p) {
+      if (view.per !== 'all' && view.per !== p.id) return;
+      var list = p.temas.filter(function (id) { var t = T()[id]; return t && (!q || (t.titulo + ' ' + t.resumen + ' ' + id).toLowerCase().indexOf(q) >= 0); });
+      if (!list.length) return;
+      shown += list.length;
+      html += '<section class="s2-period"><header class="s2-period-head"><span class="s2-pnum">' + p.id + '</span><div><h3>Período ' + p.id + '</h3><p>' + p.resumen + '</p></div></header>';
+      var cur = null;
+      list.forEach(function (id) {
+        var u = T()[id].unidad;
+        if (u !== cur) { if (cur !== null) html += '</div>'; cur = u; html += '<h4 class="s2-unit u' + u + '"><i></i>Unidad ' + u + ' · ' + UN[u] + '</h4><div class="s2-grid">'; }
+        html += topicCard(id, n++);
+      });
+      html += '</div></section>';
+    });
+    if (!shown) html += '<div class="s2-empty">No hay temas que coincidan con tu búsqueda.</div>';
+    root.innerHTML = html;
+  }
+
+  /* ---------- tema ---------- */
+  function renderTopic() {
+    var id = view.id, t = T()[id], p = perOf(id), all = ids(), ix = all.indexOf(id), html = '';
+    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
+    html += '<header class="s2-head u' + t.unidad + '"><span class="s2-tile big">' + id + '</span><div><h2 id="s2-title">' + esc(t.titulo) + '</h2><p class="lead">' + M(t.resumen) + '</p></div></header>';
+    html += '<div class="s2-goals"><strong>Al terminar sabrás:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul></div>';
+    html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    html += '<div class="s2-panel u' + t.unidad + '" id="s2Panel"></div>';
+    html += '<nav class="s2-pager">' + (ix > 0 ? '<button class="btn btn-ghost" data-open="' + all[ix - 1] + '">← ' + all[ix - 1] + ' ' + esc(T()[all[ix - 1]].titulo) + '</button>' : '<span></span>') +
+      (ix < all.length - 1 ? '<button class="btn btn-primary" data-open="' + all[ix + 1] + '">' + all[ix + 1] + ' ' + esc(T()[all[ix + 1]].titulo) + ' →</button>' : '<span></span>') + '</nav>';
+    root.innerHTML = html;
+    store.seen[id] = true; store.last = id; save();
+    renderTab();
+  }
+
+  function acc(title, body, open, extra) {
+    return '<details class="s2-acc"' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="s2-acc-body">' + body + '</div></details>' + (extra || '');
+  }
+
+  function renderTab() {
+    var id = view.id, t = T()[id], el = $('#s2Panel'), h = '', tab = view.tab;
+    exam = null;
+    if (tab === 'teoria') {
+      h = t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0); }).join('');
+      h += '<div class="s2-hint">¿Listo para practicar? Prueba los <button class="link" data-tab="ejemplos">ejemplos paso a paso</button> o la <button class="link" data-tab="calc">calculadora</button>.</div>';
+    } else if (tab === 'formulas') {
+      h = '<div class="s2-formulas">' + t.formulas.map(function (x, i) { return '<div class="s2-formula" style="--i:' + i + '"><span class="s2-flabel">' + esc(x.label) + '</span><div class="formula"><span class="math">' + M(x.html) + '</span></div></div>'; }).join('') + '</div>';
+    } else if (tab === 'ejemplos') {
+      h = '<p class="s2-hint">Tapa la solución, intenta resolver y luego pulsa <strong>Siguiente paso</strong> para comparar.</p>' + t.ejemplos.map(function (e, i) {
+        return '<article class="s2-ex" data-ex><header><span class="s2-num">' + (i + 1) + '</span><strong>' + esc(e.titulo) + '</strong></header><div class="s2-stmt">' + M(e.enunciado) + '</div>' +
+          '<ol class="s2-steps">' + e.pasos.map(function (s) { return '<li class="s2-step" hidden>' + M(s) + '</li>'; }).join('') + '</ol>' +
+          '<div class="s2-answer" hidden><span>Respuesta</span>' + M(e.respuesta) + '</div>' +
+          '<div class="s2-ex-actions"><button class="btn btn-ghost btn-sm" data-step>Siguiente paso (0/' + e.pasos.length + ')</button><button class="btn btn-ghost btn-sm" data-allsteps>Mostrar todo</button></div></article>';
+      }).join('');
+    } else if (tab === 'practica') {
+      h = renderPractica();
+    } else if (tab === 'preguntas') {
+      h = '<p class="s2-hint">Responde en voz alta o por escrito antes de abrir la respuesta modelo.</p>' + t.teoricas.map(function (x, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + M(x.q), M(x.a), false); }).join('');
+    } else if (tab === 'errores') {
+      h = '<h3 class="s2-h">Errores comunes</h3><div class="s2-errs">' + t.errores.map(function (e) { return '<div class="s2-err"><span aria-hidden="true">⚠</span><div>' + M(e) + '</div></div>'; }).join('') + '</div>' +
+        '<h3 class="s2-h">En la vida real · ' + esc(t.aplicacion.titulo) + '</h3><div class="s2-app">' + M(t.aplicacion.html) + '</div>';
+    } else if (tab === 'calc') {
+      h = renderCalc(t);
+    } else if (tab === 'examen') {
+      h = '<div id="s2Exam"></div>';
+    }
+    el.innerHTML = h;
+    el.classList.remove('s2-swap'); void el.offsetWidth; el.classList.add('s2-swap');
+    if (tab === 'calc') runCalc();
+    if (tab === 'examen') startExam($('#s2Exam'), shuffle(pool([id])), { key: 't:' + id, title: 'Mini‑examen · ' + t.titulo, intro: true });
+    if (tab === 'practica') updatePractica();
+  }
+
+  function renderPractica() {
+    var id = view.id, t = T()[id], d = doneCount(id), n = t.ejercicios.length;
+    var h = '<div class="s2-pracbar"><div><strong id="s2PracTxt">' + d + ' de ' + n + ' dominados</strong>' + bar(Math.round(100 * d / n)) + '</div>' +
+      '<div class="chips"><button class="chip' + (view.nivel === 'todos' ? ' active' : '') + '" data-nivel="todos">Todos</button>' +
+      Object.keys(LVL).map(function (k) { return '<button class="chip' + (view.nivel === k ? ' active' : '') + '" data-nivel="' + k + '">' + LVL[k] + '</button>'; }).join('') +
+      '<button class="chip' + (view.pend ? ' active' : '') + '" data-pend aria-pressed="' + view.pend + '">Solo pendientes</button></div></div><div id="s2PracList">';
+    t.ejercicios.forEach(function (e, i) {
+      var dn = store.done[id + ':' + i];
+      if ((view.nivel !== 'todos' && e.nivel !== view.nivel) || (view.pend && dn)) return;
+      h += '<article class="s2-prob' + (dn ? ' done' : '') + '" style="--i:' + i + '"><div class="s2-prob-top"><span class="s2-num">' + (i + 1) + '</span><span class="s2-lvl ' + e.nivel + '">' + LVL[e.nivel] + '</span><button class="btn btn-ghost btn-sm" data-done="' + i + '" aria-pressed="' + !!dn + '">' + (dn ? '✓ Dominado' : 'Marcar como dominado') + '</button></div>' +
+        '<div class="s2-stmt">' + M(e.enunciado) + '</div>' +
+        '<details class="s2-acc s2-sol"><summary>Ver solución paso a paso</summary><div class="s2-acc-body"><ol class="s2-steps">' + e.pasos.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol><div class="s2-answer"><span>Respuesta</span>' + M(e.respuesta) + '</div></div></details></article>';
+    });
+    return h + '</div>';
+  }
+  function updatePractica() { /* el progreso se refresca al volver a pintar */ }
+
+  /* ---------- calculadora ---------- */
+  function renderCalc(t) {
+    var C = global.S2Calc && global.S2Calc.CALCS[t.calc];
+    if (!C) return '<p class="muted">Este tema no tiene calculadora.</p>';
+    var h = '<div class="s2-calc"><div class="s2-calc-head"><h3>' + C.t + '</h3><p class="muted">' + C.d + '</p></div><form class="s2-form" id="s2Form" autocomplete="off">';
+    C.f.forEach(function (x) {
+      h += '<label class="s2-field"><span>' + x[1] + '</span>';
+      if (x[3]) h += '<select name="' + x[0] + '">' + x[3].map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === x[2] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>';
+      else h += '<input name="' + x[0] + '" type="text" inputmode="' + (x[4] === 'text' ? 'text' : 'decimal') + '" value="' + esc(x[2]) + '" data-t="' + (x[4] || 'num') + '">';
+      h += '</label>';
+    });
+    h += '<div class="s2-form-actions"><button class="btn btn-primary" type="submit">Calcular</button><button class="btn btn-ghost" type="button" data-calc-reset>Valores de ejemplo</button></div></form><div id="s2CalcOut" class="s2-calc-out" aria-live="polite"></div></div>';
+    return h;
+  }
+  function runCalc() {
+    var t = T()[view.id], C = global.S2Calc && global.S2Calc.CALCS[t.calc], form = $('#s2Form'), out = $('#s2CalcOut');
+    if (!C || !form) return;
+    var v = {}, bad = null;
+    C.f.forEach(function (x) {
+      var el = form.elements[x[0]], raw = el ? el.value : x[2];
+      if (x[3] || x[4] === 'text') v[x[0]] = raw;
+      else { var n = pnum(raw); if (!isFinite(n)) { if (String(raw).trim() === '' ) n = NaN; bad = bad || x[1]; } v[x[0]] = n; }
+    });
+    if (bad) { out.innerHTML = '<div class="s2-calc-err">Escribe un número válido en «' + bad + '» (puedes usar decimales con punto o fracciones como 3/4).</div>'; return; }
+    var r;
+    try { r = C.run(v); } catch (e) { r = { err: 'No se pudo calcular con esos valores.' }; }
+    if (r.err) { out.innerHTML = '<div class="s2-calc-err">' + r.err + '</div>'; return; }
+    out.innerHTML = '<div class="s2-result">' + M(r.res) + '</div>' +
+      (r.plot ? '<figure class="s2-plot">' + r.plot + (r.note ? '<figcaption>' + r.note + '</figcaption>' : '') + '</figure>' : '') +
+      '<ol class="s2-steps s2-calc-steps">' + r.steps.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol>';
+  }
+  function resetCalc() {
+    var t = T()[view.id], C = global.S2Calc.CALCS[t.calc], form = $('#s2Form');
+    C.f.forEach(function (x) { if (form.elements[x[0]]) form.elements[x[0]].value = x[2]; });
+    runCalc();
+  }
+
+  /* ---------- examen ---------- */
+  function startExam(box, qs, o) {
+    exam = { box: box, qs: qs, i: 0, ok: 0, miss: [], o: o, done: false };
+    if (o.intro) { examIntro(); } else renderQ();
+    box.onclick = onExamClick; box.onkeydown = function (e) { if (e.key === 'Enter' && e.target.matches('.s2-q-input')) { e.preventDefault(); answer(); } };
+  }
+  function examIntro() {
+    var q = exam.qs, calc = q.filter(function (x) { return x.tipo !== 'opt'; }).length, best = store.best[exam.o.key];
+    exam.box.innerHTML = '<div class="s2-exam-intro"><h3>' + esc(exam.o.title) + '</h3><p>' + q.length + ' preguntas · ' + calc + ' de respuesta calculada · se corrige solo y te explica cada paso.</p>' +
+      (best != null ? '<p class="s2-best">Tu mejor resultado: <strong>' + best + ' de ' + q.length + '</strong></p>' : '') +
+      '<p class="muted small">Para escribir respuestas: decimales con punto (3.5), fracciones (7/2), varias respuestas separadas por comas o punto y coma, puntos como (3, −2).</p>' +
+      '<button class="btn btn-primary" data-exam-start>Comenzar</button></div>';
+  }
+  function renderQ() {
+    var q = exam.qs[exam.i], n = exam.qs.length, h = '';
+    h += '<div class="s2-qhead"><span>Pregunta ' + (exam.i + 1) + ' de ' + n + (q._t ? ' · tema ' + q._t : '') + '</span><span>Aciertos: ' + exam.ok + '</span></div>' + bar(Math.round(100 * exam.i / n));
+    h += '<div class="s2-q" role="group"><div class="s2-stmt">' + M(q.q) + '</div>';
+    if (q.tipo === 'opt') h += '<div class="s2-opts">' + q.opciones.map(function (o, k) { return '<button class="s2-opt" data-opt="' + k + '"><i>' + 'ABCD'[k] + '</i><span>' + M(o) + '</span></button>'; }).join('') + '</div>';
+    else h += '<div class="s2-answer-row"><input class="s2-q-input" type="text" inputmode="text" autocomplete="off" aria-label="Tu respuesta" placeholder="' + (q.tipo === 'lista' ? 'Ej.: -2, 1, 3' : q.tipo === 'par' ? 'Ej.: (3, -2)' : 'Ej.: 3.5 o 7/2') + '"><button class="btn btn-primary" data-check>Comprobar</button></div>';
+    h += '</div><div id="s2Fb"></div>';
+    exam.box.innerHTML = h;
+    var inp = $('.s2-q-input', exam.box); if (inp) inp.focus({ preventScroll: true });
+  }
+  function answer(optIdx) {
+    if (!exam || exam.locked) return;
+    var q = exam.qs[exam.i], raw;
+    if (q.tipo === 'opt') raw = optIdx; else { raw = ($('.s2-q-input', exam.box) || {}).value; if (!String(raw || '').trim()) return; }
+    var ok = check(q, raw);
+    exam.locked = true; if (ok) exam.ok++; else exam.miss.push(exam.i);
+    if (q.tipo === 'opt') $$('.s2-opt', exam.box).forEach(function (b, k) { b.disabled = true; if (k === q.correcta) b.classList.add('right'); else if (k === +raw) b.classList.add('wrong'); });
+    else { var i2 = $('.s2-q-input', exam.box); i2.disabled = true; i2.classList.add(ok ? 'right' : 'wrong'); var cb = $('[data-check]', exam.box); if (cb) cb.hidden = true; }
+    $('#s2Fb').innerHTML = '<div class="s2-fb ' + (ok ? 'ok' : 'no') + '"><strong>' + (ok ? '¡Correcto! ✓' : 'Todavía no ✗') + '</strong>' + (ok ? '' : '<p>La respuesta era: ' + M(correctText(q)) + '</p>') +
+      '<ol class="s2-steps">' + q.pasos.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol>' +
+      '<button class="btn btn-primary" data-next>' + (exam.i === exam.qs.length - 1 ? 'Ver resultado' : 'Siguiente pregunta') + '</button></div>';
+    var nb = $('[data-next]', exam.box); if (nb) nb.focus({ preventScroll: true });
+  }
+  function nextQ() {
+    exam.locked = false; exam.i++;
+    if (exam.i >= exam.qs.length) return finishExam();
+    renderQ();
+  }
+  function finishExam() {
+    var n = exam.qs.length, pct = Math.round(100 * exam.ok / n), prev = store.best[exam.o.key];
+    if (prev == null || exam.ok > prev) { store.best[exam.o.key] = exam.ok; save(); }
+    var msg = pct >= 90 ? '¡Excelente! Dominas este contenido.' : pct >= 70 ? 'Muy bien. Repasa lo que fallaste y lo tendrás.' : pct >= 50 ? 'Vas por buen camino: vuelve a los ejemplos y a la práctica.' : 'Sin presión: revisa la teoría y los ejemplos y vuelve a intentarlo.';
+    exam.box.innerHTML = '<div class="s2-result-card">' + ring(pct, 'Resultado') + '<div><h3>' + exam.ok + ' de ' + n + ' correctas</h3><p>' + msg + '</p>' +
+      (exam.miss.length ? '<p class="muted small">Preguntas falladas: ' + exam.miss.map(function (i) { return i + 1; }).join(', ') + '.</p>' : '') +
+      '<div class="hero-actions"><button class="btn btn-primary" data-exam-again>Repetir con preguntas nuevas</button>' + (exam.o.back ? '<button class="btn btn-ghost" data-s2="examenes">Otros exámenes</button>' : '<button class="btn btn-ghost" data-tab="practica">Ir a practicar</button>') + '</div></div></div>';
+    exam.done = true;
+  }
+  function onExamClick(e) {
+    var b = e.target.closest('button'); if (!b || !exam) return;
+    if (b.hasAttribute('data-exam-start')) renderQ();
+    else if (b.hasAttribute('data-opt')) answer(b.getAttribute('data-opt'));
+    else if (b.hasAttribute('data-check')) answer();
+    else if (b.hasAttribute('data-next')) nextQ();
+    else if (b.hasAttribute('data-exam-again')) { var o = exam.o, box = exam.box, again = o.again ? o.again() : null; startExam(box, again || shuffle(exam.qs), Object.assign({}, o, { intro: false })); }
+  }
+
+  /* ---------- hub de exámenes ---------- */
+  function renderExamHub() {
+    var all = ids(), h = '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><span>Modo examen</span></div>';
+    h += '<header class="s2-head"><span class="s2-tile big">★</span><div><h2 id="s2-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
+    h += '<h3 class="s2-h">Por período</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>Período ' + p.id + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
+    h += '<h3 class="s2-h">Por unidad</h3><div class="s2-modes">' + Object.keys(UN).map(function (u) { var b = store.best['u:' + u]; return '<button class="s2-mode u' + u + '" data-exam-mode="u:' + u + '"><strong>Unidad ' + u + '</strong><span>' + UN[u] + '</span><em>10 preguntas' + (b != null ? ' · mejor ' + b + '/10' : '') + '</em></button>'; }).join('') + '</div>';
+    h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 24 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
+    h += '<h3 class="s2-h">Por tema</h3><div class="s2-chiprow">' + all.map(function (id) { var b = store.best['t:' + id]; return '<button class="chip" data-exam-mode="t:' + id + '" title="' + esc(T()[id].titulo) + '">' + id + (b != null ? ' · ' + b + '/10' : '') + '</button>'; }).join('') + '</div>';
+    h += '<div id="s2Exam" class="s2-exam-hub"></div>';
+    root.innerHTML = h;
+  }
+  function startMode(mode) {
+    var all = ids(), tIds, n, title, key = mode;
+    if (mode === 'all') { tIds = all; n = 20; title = 'Simulacro mixto'; }
+    else {
+      var kind = mode.split(':')[0], v = mode.split(':')[1];
+      if (kind === 'p') { tIds = PER.filter(function (p) { return p.id === v; })[0].temas; n = 15; title = 'Período ' + v; }
+      else if (kind === 'u') { tIds = all.filter(function (id) { return String(T()[id].unidad) === v; }); n = 10; title = 'Unidad ' + v + ' · ' + UN[v]; }
+      else { tIds = [v]; n = 10; title = 'Tema ' + v + ' · ' + T()[v].titulo; }
+    }
+    var again = function () { return shuffle(pool(tIds)).slice(0, n); };
+    var box = $('#s2Exam');
+    startExam(box, again(), { key: key, title: 'Examen · ' + title, intro: true, back: true, again: again });
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ---------- eventos ---------- */
+  function go(fn) { fn(); window.scrollTo({ top: 0, behavior: 'auto' }); }
+  function onClick(e) {
+    var b = e.target.closest('button'); if (!b || !root.contains(b)) return;
+    if (b.closest('#s2Exam') && exam && exam.box.contains(b) && (b.hasAttribute('data-opt') || b.hasAttribute('data-check') || b.hasAttribute('data-next') || b.hasAttribute('data-exam-start') || b.hasAttribute('data-exam-again'))) return;
+    var d = b.dataset;
+    if (d.open) { go(function () { view.mode = 'tema'; view.id = d.open; view.tab = 'teoria'; view.nivel = 'todos'; view.pend = false; renderTopic(); }); }
+    else if (d.s2 === 'home') { go(function () { view.mode = 'home'; renderHome(); }); }
+    else if (d.s2 === 'examenes') { go(function () { view.mode = 'examenes'; renderExamHub(); }); }
+    else if (d.per) { view.per = d.per; renderHome(); }
+    else if (d.tab) { view.tab = d.tab; $$('.s2-tab[data-tab]').forEach(function (x) { var on = x.dataset.tab === d.tab; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); }); renderTab(); var tb = $('.s2-tabs'); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    else if (d.nivel) { view.nivel = d.nivel; renderTab(); }
+    else if (b.hasAttribute('data-pend')) { view.pend = !view.pend; renderTab(); }
+    else if (d.done != null) { var k = view.id + ':' + d.done; if (store.done[k]) delete store.done[k]; else store.done[k] = true; save(); renderTab(); }
+    else if (b.hasAttribute('data-step')) { var ex = b.closest('[data-ex]'), nx = $('.s2-step[hidden]', ex), tot = $$('.s2-step', ex).length; if (nx) { nx.hidden = false; } var left = $$('.s2-step[hidden]', ex).length; b.textContent = 'Siguiente paso (' + (tot - left) + '/' + tot + ')'; if (!left) { $('.s2-answer', ex).hidden = false; b.disabled = true; b.textContent = 'Listo ✓'; } }
+    else if (b.hasAttribute('data-allsteps')) { var ex2 = b.closest('[data-ex]'); $$('.s2-step', ex2).forEach(function (s) { s.hidden = false; }); $('.s2-answer', ex2).hidden = false; var sb = $('[data-step]', ex2); sb.disabled = true; sb.textContent = 'Listo ✓'; }
+    else if (b.hasAttribute('data-calc-reset')) resetCalc();
+    else if (d.examMode) startMode(d.examMode);
+  }
+  function onInput(e) {
+    if (e.target.id === 's2Search') { view.q = e.target.value; var pos = e.target.selectionStart; renderHome(); var s = $('#s2Search'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) { /* ok */ } }
+    else if (e.target.closest('#s2Form')) { clearTimeout(onInput.t); onInput.t = setTimeout(runCalc, 160); }
+  }
+  function onSubmit(e) { if (e.target.id === 's2Form') { e.preventDefault(); runCalc(); } }
+
+  function mount() {
+    if (mounted) return;
+    root = $('#s2Root'); if (!root) return;
+    if (!ids().length) { root.innerHTML = '<p class="muted">No se pudo cargar el contenido de 2.º año.</p>'; return; }
+    mounted = true; load();
+    root.addEventListener('click', onClick); root.addEventListener('input', onInput); root.addEventListener('change', onInput); root.addEventListener('submit', onSubmit);
+    renderHome();
+  }
+
+  global.Segundo = { mount: mount };
+})(window);
