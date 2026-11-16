@@ -18,7 +18,7 @@
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 
   var root, mounted = false;
-  var view = { mode: 'home', per: 'all', q: '', id: null, tab: 'teoria', nivel: 'todos', pend: false };
+  var view = { mode: 'home', per: 'all', q: '', id: null, tab: 'teoria', nivel: 'todos', pend: false, all: false, sinver: false };
   var store = { seen: {}, done: {}, best: {}, last: null };
   var exam = null;
 
@@ -108,11 +108,12 @@
     html += '<div class="s2-toolbar"><div class="seg-tabs" role="tablist" aria-label="Períodos">' +
       '<button class="s2-tab' + (view.per === 'all' ? ' active' : '') + '" data-per="all">Todo el año</button>' +
       PER.map(function (p) { return '<button class="s2-tab' + (view.per === p.id ? ' active' : '') + '" data-per="' + p.id + '">Período ' + p.id + '</button>'; }).join('') + '</div>' +
+      '<button class="chip' + (view.sinver ? ' active' : '') + '" data-sinver aria-pressed="' + view.sinver + '">Solo sin ver</button>' +
       '<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="s2Search" placeholder="Buscar tema… (parábola, logaritmo, Bayes)" value="' + esc(view.q) + '" autocomplete="off" aria-label="Buscar tema"></div></div>';
     var q = view.q.trim().toLowerCase(), shown = 0;
     PER.forEach(function (p) {
       if (view.per !== 'all' && view.per !== p.id) return;
-      var list = p.temas.filter(function (id) { var t = T()[id]; return t && (!q || (t.titulo + ' ' + t.resumen + ' ' + id).toLowerCase().indexOf(q) >= 0); });
+      var list = p.temas.filter(function (id) { var t = T()[id]; return t && (!view.sinver || !store.seen[id]) && (!q || (t.titulo + ' ' + t.resumen + ' ' + id).toLowerCase().indexOf(q) >= 0); });
       if (!list.length) return;
       shown += list.length;
       html += '<section class="s2-period"><header class="s2-period-head"><span class="s2-pnum">' + p.id + '</span><div><h3>Período ' + p.id + '</h3><p>' + p.resumen + '</p></div></header>';
@@ -128,16 +129,36 @@
     root.innerHTML = html;
   }
 
+  function drawerHtml(cur) {
+    var h = '<div class="s2-scrim" data-drawer-close hidden></div><aside class="s2-drawer" id="s2Drawer" aria-label="Todos los temas" hidden><header><strong>Ir a otro tema</strong><button class="btn btn-ghost btn-sm" data-drawer-close aria-label="Cerrar">✕</button></header><div class="s2-drawer-body">';
+    PER.forEach(function (p) {
+      h += '<h4>Período ' + p.id + '</h4>';
+      p.temas.forEach(function (id) { var t = T()[id]; h += '<button class="s2-dr-item u' + t.unidad + (id === cur ? ' current' : '') + '" data-jump="' + id + '"><i>' + id + '</i><span>' + esc(t.titulo) + '</span>' + (store.seen[id] ? '<b aria-label="visto">✓</b>' : '') + '</button>'; });
+    });
+    return h + '</div></aside><button class="s2-fab" data-drawer aria-label="Abrir lista de temas">☰ Temas</button>';
+  }
+  function drawer(open) {
+    var d = $('#s2Drawer'), sc = $('.s2-scrim'); if (!d) return;
+    d.hidden = !open; sc.hidden = !open; document.body.classList.toggle('s2-lock', open);
+    if (open) { var c = $('.s2-dr-item.current', d); if (c) c.scrollIntoView({ block: 'center' }); }
+  }
+  function jump(id, keepTab) {
+    view.mode = 'tema'; view.id = id; if (!keepTab) view.tab = 'teoria'; view.nivel = 'todos'; view.pend = false; drawerOpenFlag = false;
+    renderTopic(); window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  var drawerOpenFlag = false;
+
   /* ---------- tema ---------- */
   function renderTopic() {
     var id = view.id, t = T()[id], p = perOf(id), all = ids(), ix = all.indexOf(id), html = '';
-    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
+    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><button class="btn btn-ghost btn-sm" data-drawer>☰ Todos los temas</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
     html += '<header class="s2-head u' + t.unidad + '"><span class="s2-tile big">' + id + '</span><div><h2 id="s2-title">' + esc(t.titulo) + '</h2><p class="lead">' + M(t.resumen) + '</p></div></header>';
     html += '<div class="s2-goals"><strong>Al terminar sabrás:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul></div>';
-    html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '<button class="s2-tab s2-all' + (view.all ? ' active' : '') + '" data-all aria-pressed="' + !!view.all + '" title="Muestra todas las secciones en una sola página">Ver todo ▾</button></div>';
     html += '<div class="s2-panel u' + t.unidad + '" id="s2Panel"></div>';
-    html += '<nav class="s2-pager">' + (ix > 0 ? '<button class="btn btn-ghost" data-open="' + all[ix - 1] + '">← ' + all[ix - 1] + ' ' + esc(T()[all[ix - 1]].titulo) + '</button>' : '<span></span>') +
-      (ix < all.length - 1 ? '<button class="btn btn-primary" data-open="' + all[ix + 1] + '">' + all[ix + 1] + ' ' + esc(T()[all[ix + 1]].titulo) + ' →</button>' : '<span></span>') + '</nav>';
+    html += '<nav class="s2-pager">' + (ix > 0 ? '<button class="btn btn-ghost" data-jump="' + all[ix - 1] + '">← ' + all[ix - 1] + ' ' + esc(T()[all[ix - 1]].titulo) + '</button>' : '<span></span>') +
+      (ix < all.length - 1 ? '<button class="btn btn-primary" data-jump="' + all[ix + 1] + '">' + all[ix + 1] + ' ' + esc(T()[all[ix + 1]].titulo) + ' →</button>' : '<span></span>') + '</nav>';
+    html += drawerHtml(id);
     root.innerHTML = html;
     store.seen[id] = true; store.last = id; save();
     renderTab();
@@ -147,12 +168,11 @@
     return '<details class="s2-acc"' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="s2-acc-body">' + body + '</div></details>' + (extra || '');
   }
 
-  function renderTab() {
-    var id = view.id, t = T()[id], el = $('#s2Panel'), h = '', tab = view.tab;
-    exam = null;
+  function tabHtml(tab, t) {
+    var id = t.id, h = '';
     if (tab === 'teoria') {
-      h = t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0); }).join('');
-      h += '<div class="s2-hint">¿Listo para practicar? Prueba los <button class="link" data-tab="ejemplos">ejemplos paso a paso</button> o la <button class="link" data-tab="calc">calculadora</button>.</div>';
+      h = '<div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Expandir todo</button><button class="btn btn-ghost btn-sm" data-acc="close">Contraer todo</button></div>' +
+        t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
     } else if (tab === 'formulas') {
       h = '<div class="s2-formulas">' + t.formulas.map(function (x, i) { return '<div class="s2-formula" style="--i:' + i + '"><span class="s2-flabel">' + esc(x.label) + '</span><div class="formula"><span class="math">' + M(x.html) + '</span></div></div>'; }).join('') + '</div>';
     } else if (tab === 'ejemplos') {
@@ -165,7 +185,7 @@
     } else if (tab === 'practica') {
       h = renderPractica();
     } else if (tab === 'preguntas') {
-      h = '<p class="s2-hint">Responde en voz alta o por escrito antes de abrir la respuesta modelo.</p>' + t.teoricas.map(function (x, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + M(x.q), M(x.a), false); }).join('');
+      h = '<p class="s2-hint">Responde en voz alta o por escrito antes de abrir la respuesta modelo.</p><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Abrir todas</button><button class="btn btn-ghost btn-sm" data-acc="close">Cerrar todas</button></div>' + t.teoricas.map(function (x, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + M(x.q), M(x.a), false); }).join('');
     } else if (tab === 'errores') {
       h = '<h3 class="s2-h">Errores comunes</h3><div class="s2-errs">' + t.errores.map(function (e) { return '<div class="s2-err"><span aria-hidden="true">⚠</span><div>' + M(e) + '</div></div>'; }).join('') + '</div>' +
         '<h3 class="s2-h">En la vida real · ' + esc(t.aplicacion.titulo) + '</h3><div class="s2-app">' + M(t.aplicacion.html) + '</div>';
@@ -174,11 +194,21 @@
     } else if (tab === 'examen') {
       h = '<div id="s2Exam"></div>';
     }
+    return h;
+  }
+
+  function renderTab() {
+    var id = view.id, t = T()[id], el = $('#s2Panel'), h = '';
+    exam = null;
+    $$('.s2-tab[data-tab]').forEach(function (x) { var on = view.all ? false : x.dataset.tab === view.tab; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); });
+    var allBtn = $('[data-all]'); if (allBtn) { allBtn.classList.toggle('active', !!view.all); allBtn.setAttribute('aria-pressed', !!view.all); }
+    if (view.all) {
+      h = TABS.map(function (x) { return '<section class="s2-sec" id="s2sec-' + x[0] + '"><h3 class="s2-sec-title">' + x[1] + '</h3>' + tabHtml(x[0], t) + '</section>'; }).join('');
+    } else h = tabHtml(view.tab, t);
     el.innerHTML = h;
     el.classList.remove('s2-swap'); void el.offsetWidth; el.classList.add('s2-swap');
-    if (tab === 'calc') runCalc();
-    if (tab === 'examen') startExam($('#s2Exam'), shuffle(pool([id])), { key: 't:' + id, title: 'Mini‑examen · ' + t.titulo, intro: true });
-    if (tab === 'practica') updatePractica();
+    if (view.all || view.tab === 'calc') runCalc();
+    if (view.all || view.tab === 'examen') startExam($('#s2Exam'), shuffle(pool([id])), { key: 't:' + id, title: 'Mini‑examen · ' + t.titulo, intro: true });
   }
 
   function renderPractica() {
@@ -326,11 +356,17 @@
     var b = e.target.closest('button'); if (!b || !root.contains(b)) return;
     if (b.closest('#s2Exam') && exam && exam.box.contains(b) && (b.hasAttribute('data-opt') || b.hasAttribute('data-check') || b.hasAttribute('data-next') || b.hasAttribute('data-exam-start') || b.hasAttribute('data-exam-again'))) return;
     var d = b.dataset;
-    if (d.open) { go(function () { view.mode = 'tema'; view.id = d.open; view.tab = 'teoria'; view.nivel = 'todos'; view.pend = false; renderTopic(); }); }
+    if (d.jump) { jump(d.jump, true); }
+    else if (b.hasAttribute('data-drawer')) { drawer(true); }
+    else if (b.hasAttribute('data-drawer-close')) { drawer(false); }
+    else if (d.acc) { $$('#s2Panel details.s2-acc:not(.s2-sol)').forEach(function (x) { x.open = d.acc === 'open'; }); }
+    else if (b.hasAttribute('data-all')) { view.all = !view.all; renderTab(); }
+    else if (d.open) { go(function () { view.mode = 'tema'; view.id = d.open; view.tab = 'teoria'; view.nivel = 'todos'; view.pend = false; renderTopic(); }); }
     else if (d.s2 === 'home') { go(function () { view.mode = 'home'; renderHome(); }); }
     else if (d.s2 === 'examenes') { go(function () { view.mode = 'examenes'; renderExamHub(); }); }
+    else if (b.hasAttribute('data-sinver')) { view.sinver = !view.sinver; renderHome(); }
     else if (d.per) { view.per = d.per; renderHome(); }
-    else if (d.tab) { view.tab = d.tab; $$('.s2-tab[data-tab]').forEach(function (x) { var on = x.dataset.tab === d.tab; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); }); renderTab(); var tb = $('.s2-tabs'); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    else if (d.tab) { if (view.all && $('#s2sec-' + d.tab)) { $('#s2sec-' + d.tab).scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } view.tab = d.tab; renderTab(); var tb = $('.s2-tabs'); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     else if (d.nivel) { view.nivel = d.nivel; renderTab(); }
     else if (b.hasAttribute('data-pend')) { view.pend = !view.pend; renderTab(); }
     else if (d.done != null) { var k = view.id + ':' + d.done; if (store.done[k]) delete store.done[k]; else store.done[k] = true; save(); renderTab(); }
@@ -343,6 +379,17 @@
     if (e.target.id === 's2Search') { view.q = e.target.value; var pos = e.target.selectionStart; renderHome(); var s = $('#s2Search'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) { /* ok */ } }
     else if (e.target.closest('#s2Form')) { clearTimeout(onInput.t); onInput.t = setTimeout(runCalc, 160); }
   }
+  function onKey(e) {
+    if (!root || view.mode !== 'tema' || !$('#segundo.active')) return;
+    if (e.key === 'Escape') { drawer(false); return; }
+    if (e.target.matches('input, textarea, select') || e.ctrlKey || e.metaKey) return;
+    var all = ids(), ix = all.indexOf(view.id), ti = TABS.map(function (x) { return x[0]; }).indexOf(view.tab);
+    if (e.altKey && e.key === 'ArrowRight' && ix < all.length - 1) { e.preventDefault(); jump(all[ix + 1], true); }
+    else if (e.altKey && e.key === 'ArrowLeft' && ix > 0) { e.preventDefault(); jump(all[ix - 1], true); }
+    else if (!e.altKey && !view.all && e.key === 'ArrowRight' && ti < TABS.length - 1) { view.tab = TABS[ti + 1][0]; renderTab(); }
+    else if (!e.altKey && !view.all && e.key === 'ArrowLeft' && ti > 0) { view.tab = TABS[ti - 1][0]; renderTab(); }
+    else if (e.key.toLowerCase() === 't' && !e.altKey) drawer(true);
+  }
   function onSubmit(e) { if (e.target.id === 's2Form') { e.preventDefault(); runCalc(); } }
 
   function mount() {
@@ -350,6 +397,7 @@
     root = $('#s2Root'); if (!root) return;
     if (!ids().length) { root.innerHTML = '<p class="muted">No se pudo cargar el contenido de 2.º año.</p>'; return; }
     mounted = true; load();
+    document.addEventListener('keydown', onKey);
     root.addEventListener('click', onClick); root.addEventListener('input', onInput); root.addEventListener('change', onInput); root.addEventListener('submit', onSubmit);
     renderHome();
   }
