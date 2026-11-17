@@ -340,7 +340,7 @@
       'Confundir <em>rango</em> con <em>codominio</em>: decir que <span class="math">x²</span> es sobreyectiva "porque sale un número real". Compara siempre el rango real con el codominio declarado.',
       'Pensar que "cada <span class="math">x</span> tiene una sola imagen" significa inyectiva. Eso lo cumple toda función; inyectiva es que cada <span class="math">y</span> tenga una sola <span class="math">x</span>.',
       'Demostrar inyectividad con un solo ejemplo numérico. Un ejemplo sirve para refutar (contraejemplo), pero para demostrar hay que probar el caso general <span class="math">f(a) = f(b) ⟹ a = b</span>.',
-      'Restringir el dominio y olvidarse de ajustar el codominio (o al revés). Para biyectiva se necesitan las dos correcciones; usa la recta vertical para el dominio y la recta horizontal para el codominio.'
+      'Restringir el dominio y olvidarse de ajustar el codominio (o al revés). Para biyectiva se necesitan las dos correcciones; usa la recta horizontal para decidir qué parte del dominio conservar y compara el rango con el codominio para ajustarlo.'
     ],
     aplicacion: {
       titulo: 'Asignación de asientos en un microbús',
@@ -482,7 +482,7 @@
 <li>Escribe el dominio de <span class="math">f<sup>−1</sup></span> (el rango de <span class="math">f</span>) y <strong>comprueba</strong> con <span class="math">f(f<sup>−1</sup>(x)) = x</span>.</li>
 </ol>
 <p><strong>Interpretación geométrica:</strong> la gráfica de <span class="math">f<sup>−1</sup></span> es la reflexión (imagen en un espejo) de la gráfica de <span class="math">f</span> sobre la recta <span class="math">y = x</span>. Si ves la gráfica de <span class="math">f</span> y la recta diagonal, la inversa es "la misma curva girada sobre la diagonal".</p>
-<p>Si <span class="math">f</span> y <span class="math">f<sup>−1</sup></span> se cortan, lo hacen sobre la recta <span class="math">y = x</span> (cuando se cortan en ese punto).</p>`
+<p>Si <span class="math">f</span> es creciente y su gráfica corta a la de <span class="math">f<sup>−1</sup></span>, los puntos de corte están sobre la recta <span class="math">y = x</span>; si es decreciente pueden aparecer cortes fuera de esa recta.</p>`
       },
       {
         titulo: 'Inversas de funciones comunes',

@@ -229,7 +229,7 @@
       { q: `En un modelo de costo lineal {{C = 0.15q + 40}}, ¿qué significan 0.15 y 40?`, a: `0.15 es la pendiente: el costo de cada unidad adicional (tasa de cambio). 40 es el intercepto: el costo fijo cuando se producen 0 unidades.` }
     ],
     errores: [
-      `Invertir el orden en solo uno de los dos restos: calcular {{(y₂ − y₁)/(x₁ − x₂)}}. Si restas arriba en cierto orden, debes restar abajo en el mismo orden; de lo contrario el signo de {{m}} sale al revés.`,
+      `Invertir el orden en solo uno de las dos restas: calcular {{(y₂ − y₁)/(x₁ − x₂)}}. Si restas arriba en cierto orden, debes restar abajo en el mismo orden; de lo contrario el signo de {{m}} sale al revés.`,
       `Perder el signo al sustituir en punto-pendiente: con {{x₁ = −2}} la expresión es {{x − (−2) = x + 2}}, no {{x − 2}}. Escribe siempre el paréntesis antes de simplificar.`,
       `Escribir la pendiente de una recta vertical como 0 (o la de una horizontal como "indefinida"). Recuerda: horizontal tiene {{m = 0}}; vertical no tiene pendiente.`,
       `Leer mal la forma general: la pendiente es {{−A/B}}, no {{A/B}}; olvidar el signo menos es el error más frecuente al pasar de {{Ax + By + C = 0}} a {{y = mx + b}}.`
