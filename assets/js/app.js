@@ -1701,3 +1701,5 @@
     init();
   }
 })();
+
+document.addEventListener('click', function (e) { var d = document.getElementById('navLegacy'); if (d && d.open && (e.target.closest('.nav-pop .nav-link') || !e.target.closest('#navLegacy'))) d.open = false; });

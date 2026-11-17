@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=13">
+<link rel="stylesheet" href="assets/css/style.css?v=16">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -51,7 +51,7 @@
     <nav class="nav" id="nav" aria-label="Navegación principal">
       <button class="nav-link active" data-section="inicio">Inicio</button>
       <button class="nav-link nav-new" data-section="segundo">2.º año</button>
-      <span class="nav-group"><span class="nav-group-label">1.er año · IV período</span>
+      <details class="nav-group" id="navLegacy"><summary class="nav-sum">1.er año · IV período ▾</summary><div class="nav-pop">
       <button class="nav-link" data-section="teoria">Teoría</button>
       <button class="nav-link" data-section="vectores">Vectores</button>
       <button class="nav-link" data-section="complejos">Complejos</button>
@@ -59,7 +59,7 @@
       <button class="nav-link" data-section="estadistica">Estadística</button>
       <button class="nav-link" data-section="ejercicios">Ejercicios</button>
       <button class="nav-link" data-section="bancos">Bancos</button>
-      <button class="nav-link" data-section="examen">Examen</button></span>
+      <button class="nav-link" data-section="examen">Examen</button></div></details>
     </nav>
 
     <div class="topbar-actions">
@@ -1011,6 +1011,6 @@
 <script src="assets/js/segundo-calc.js?v=7"></script>
 <script src="assets/js/segundo.js?v=8"></script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=6"></script>
+<script src="assets/js/app.js?v=7"></script>
 </body>
 </html>
