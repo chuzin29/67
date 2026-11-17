@@ -470,5 +470,13 @@
     renderHome();
   }
 
+  function act(a) {
+    var nav = document.querySelector('.nav-link[data-section="segundo"]'); if (nav) nav.click();
+    mount(); if (!mounted) return;
+    if (a === 'exams') { view.mode = 'examenes'; renderExamHub(); }
+    else if (a.indexOf('period:') === 0) { view.per = a.split(':')[1]; view.q = ''; view.mode = 'home'; renderHome(); }
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-s2act]'); if (b) act(b.getAttribute('data-s2act')); });
   global.Segundo = { mount: mount };
 })(window);

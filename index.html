@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=11">
+<link rel="stylesheet" href="assets/css/style.css?v=13">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -32,7 +32,7 @@
 
 <div class="announce">
   <div class="wrap announce-inner">
-    <p>Guía 2026 abierta. 122 recursos de práctica, gratis y sin instalar nada.</p>
+    <p>2.º año de Bachillerato completo: 24 temas con teoría, video, práctica y examen. Gratis y sin instalar nada.</p>
     <button type="button" data-go="bancos">Practicar
       <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10 10 2M4 2h6v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -51,6 +51,7 @@
     <nav class="nav" id="nav" aria-label="Navegación principal">
       <button class="nav-link active" data-section="inicio">Inicio</button>
       <button class="nav-link nav-new" data-section="segundo">2.º año</button>
+      <span class="nav-group"><span class="nav-group-label">1.er año · IV período</span>
       <button class="nav-link" data-section="teoria">Teoría</button>
       <button class="nav-link" data-section="vectores">Vectores</button>
       <button class="nav-link" data-section="complejos">Complejos</button>
@@ -58,7 +59,7 @@
       <button class="nav-link" data-section="estadistica">Estadística</button>
       <button class="nav-link" data-section="ejercicios">Ejercicios</button>
       <button class="nav-link" data-section="bancos">Bancos</button>
-      <button class="nav-link" data-section="examen">Examen</button>
+      <button class="nav-link" data-section="examen">Examen</button></span>
     </nav>
 
     <div class="topbar-actions">
@@ -77,52 +78,57 @@
 <!-- ==================== INICIO ==================== -->
 <section id="inicio" class="view active" aria-labelledby="inicio-titulo">
   <div class="wrap">
-    <section class="s2-banner reveal" aria-label="Nuevo: 2.º año de Bachillerato">
-      <div><span class="eyebrow">Nuevo · Matemática 2A</span><h2>2.º año de Bachillerato completo</h2><p>24 temas en 8 unidades y 4 períodos: teoría, ejemplos, práctica por niveles, 24 calculadoras con gráficas y modo examen.</p></div>
-      <span class="stretch" data-variant="primary" data-symbiote="150"><svg class="stretch-stage" aria-hidden="true"></svg><button type="button" class="stretch-btn" data-go="segundo">Empezar 2.º año</button></span>
-    </section>
-    <aside class="credit-card reveal" aria-label="Sobre esta página"><span class="credit-mark" aria-hidden="true">🎓</span><p>Esta página está basada en las clases de precálculo en el Colegio Don Bosco 2026, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de precálculo. Creada con Brandon de Jesús para ayudar.</p></aside>
-    <div class="hero">
+    <div class="hero hero-main">
       <div class="hero-grid">
         <div>
-          <span class="eyebrow">Precálculo · Guía interactiva 2026</span>
-          <h1 id="inicio-titulo">Domina <span class="gradient-text">vectores, complejos<br>y trigonometría</span></h1>
-          <p class="lead">Teoría clara, calculadoras que muestran cada paso y <strong>122 recursos de práctica</strong> organizados por tema. Todo en una sola página, sin instalar nada.</p>
+          <span class="eyebrow">Matemática 2A · Bachillerato 2026</span>
+          <h1 id="inicio-titulo">Domina el <span class="gradient-text">2.º año de Bachillerato</span></h1>
+          <p class="lead">24 temas en 8 unidades y 4 períodos. En cada uno: teoría clara, <strong>video explicativo</strong>, gráficos que puedes mover, ejemplos paso a paso, práctica por niveles, calculadora y examen que se corrige solo.</p>
           <div class="hero-actions">
-            <button class="btn btn-primary" data-go="bancos">
-              Empezar a practicar
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </button>
-            <button class="btn btn-ghost" data-go="teoria">Explorar la teoría</button>
+            <span class="stretch" data-variant="primary" data-symbiote="150"><svg class="stretch-stage" aria-hidden="true"></svg><button type="button" class="stretch-btn" data-go="segundo">Empezar 2.º año <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span>
+            <button class="btn btn-ghost" data-s2act="exams">Modo examen</button>
           </div>
-
           <div class="stats">
-            <div><span class="stat-num" data-count="30">0</span><span class="stat-label">Ejercicios resueltos</span></div>
-            <div><span class="stat-num" data-count="24">0</span><span class="stat-label">Prácticos</span></div>
-            <div><span class="stat-num" data-count="8">0</span><span class="stat-label">De Moivre</span></div>
-            <div><span class="stat-num" data-count="60">0</span><span class="stat-label">Preguntas teóricas</span></div>
+            <div><span class="stat-num" data-count="24">0</span><span class="stat-label">Temas</span></div>
+            <div><span class="stat-num" data-count="264">0</span><span class="stat-label">Ejercicios resueltos</span></div>
+            <div><span class="stat-num" data-count="240">0</span><span class="stat-label">Preguntas de examen</span></div>
+            <div><span class="stat-num" data-count="24">0</span><span class="stat-label">Calculadoras y videos</span></div>
           </div>
         </div>
-
-        <aside class="hero-card" aria-label="Ejemplo de resolución">
-          <span class="eyebrow">Un vistazo</span>
-          <h3 class="mt-1">Teorema de Moivre</h3>
-          <p class="small muted mb-0">Para elevar un complejo en forma polar:</p>
-          <div class="formula">
-            <span class="math">z<sup>n</sup> = r<sup>n</sup>(cos nθ + i sen nθ)</span>
-          </div>
-          <div class="row"><span>Módulo</span><span class="math">r = √(a² + b²)</span></div>
-          <div class="row"><span>Argumento</span><span class="math">θ = arctan(b/a)</span></div>
-          <div class="row"><span>Potencias</span><span class="math">multiplican el ángulo</span></div>
+        <aside class="hero-card" aria-label="Los cuatro períodos">
+          <span class="eyebrow">Un vistazo al año</span>
+          <h3 class="mt-1">4 períodos, 8 unidades</h3>
+          <div class="row"><span>Período I</span><span>Ecuaciones, recta, parábola</span></div>
+          <div class="row"><span>Período II</span><span>Cónicas y exponenciales</span></div>
+          <div class="row"><span>Período III</span><span>Funciones, trigonometría, sucesiones</span></div>
+          <div class="row"><span>Período IV</span><span>Conteo y probabilidad</span></div>
         </aside>
       </div>
     </div>
 
+    <aside class="credit-card reveal" aria-label="Sobre esta página"><span class="credit-mark" aria-hidden="true">🎓</span><p>Esta página está basada en las clases de precálculo en el Colegio Don Bosco 2026, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de precálculo. Creada con Brandon de Jesús para ayudar.</p></aside>
+
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Ruta del año</span>
+        <h2>Elige tu período</h2>
+        <p>Cada tarjeta te lleva directo a sus temas. Puedes saltar entre temas cuando quieras.</p>
+      </div>
+    </div>
+    <div class="period-grid">
+      <button class="period-card u1 reveal" data-s2act="period:I"><span class="period-num">I</span><h3>Período I</h3><p>Ecuaciones bicuadráticas, radicales y sistemas · La recta · La parábola</p><span class="topic-meta">Temas 1.1 a 1.7 <span>→</span></span></button>
+      <button class="period-card u3 reveal" data-s2act="period:II"><span class="period-num">II</span><h3>Período II</h3><p>Circunferencia, elipse e hipérbola · Potencias y funciones exponenciales</p><span class="topic-meta">Temas 1.8 a 1.12 <span>→</span></span></button>
+      <button class="period-card u4 reveal" data-s2act="period:III"><span class="period-num">III</span><h3>Período III</h3><p>Funciones, inversa y logaritmos · Trigonometría · Sucesiones</p><span class="topic-meta">Temas 1.13 a 1.18 <span>→</span></span></button>
+      <button class="period-card u8 reveal" data-s2act="period:IV"><span class="period-num">IV</span><h3>Período IV</h3><p>Conjuntos e intervalos · Conteo y combinaciones · Probabilidad y Bayes</p><span class="topic-meta">Temas 1.19 a 1.24 <span>→</span></span></button>
+    </div>
+
+    <div class="legacy-sep"><span>Material anterior</span></div>
+
     <div class="section-head" id="temas">
       <div>
-        <span class="eyebrow">Explora</span>
-        <h2>Seis temas, una misma lógica</h2>
-        <p>Empieza por la teoría del tema que necesites, compruébalo con la calculadora y consolídalo con los bancos de práctica.</p>
+        <span class="eyebrow">1.er año · IV período</span>
+        <h2>Precálculo base: seis temas, una misma lógica</h2>
+        <p>Es el material con el que arrancó esta página. Empieza por la teoría del tema que necesites, compruébalo con la calculadora y consolídalo con los bancos de práctica.</p>
       </div>
     </div>
 
@@ -1003,7 +1009,7 @@
 <script src="assets/js/data-2a-u8.js?v=5"></script>
 <script src="assets/js/videos-2a.js?v=1"></script>
 <script src="assets/js/segundo-calc.js?v=7"></script>
-<script src="assets/js/segundo.js?v=7"></script>
+<script src="assets/js/segundo.js?v=8"></script>
 <script src="assets/js/symbiote.js?v=9"></script>
 <script src="assets/js/app.js?v=6"></script>
 </body>
