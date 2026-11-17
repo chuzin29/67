@@ -235,9 +235,9 @@
         var sl = (y2 - y1) / (x2 - x1), b = y1 - sl * x1, A = y1 - y2, B = x2 - x1, C = x1 * y2 - x2 * y1;
         var g = gcd(gcd(A, B), C); if (g > 0 && Number.isInteger(A) && Number.isInteger(B) && Number.isInteger(C)) { A /= g; B /= g; C /= g; if (A < 0) { A = -A; B = -B; C = -C; } }
         st.unshift('Pendiente: ' + m('m = (y₂ − y₁)/(x₂ − x₁) = (' + f(y2) + ' − ' + (y1 < 0 ? '(' + f(y1) + ')' : f(y1)) + ')/(' + f(x2) + ' − ' + (x1 < 0 ? '(' + f(x1) + ')' : f(x1)) + ') = ' + frac(sl)) + '.');
-        st.splice(1, 0, 'Punto‑pendiente: ' + m('y − ' + (y1 < 0 ? '(' + f(y1) + ')' : f(y1)) + ' = ' + frac(sl) + '(x − ' + (x1 < 0 ? '(' + f(x1) + ')' : f(x1)) + ')') + '. Pendiente‑ordenada: ' + m('y = ' + frac(sl) + 'x ' + sgn(b)) + '.');
+        st.splice(1, 0, 'Punto‑pendiente: ' + m('y − ' + (y1 < 0 ? '(' + f(y1) + ')' : f(y1)) + ' = ' + frac(sl) + '(x − ' + (x1 < 0 ? '(' + f(x1) + ')' : f(x1)) + ')') + '. Pendiente‑ordenada: ' + m('y = ' + frac(sl) + 'x' + (b === 0 ? '' : ' ' + sgn(b).trim())) + '.');
         st.push('Forma general: ' + m(f(A) + 'x ' + sgn(B) + 'y ' + sgn(C) + ' = 0') + '. Ordenada en el origen: ' + m('b = ' + frac(b)) + (sl !== 0 ? '; abscisa en el origen: ' + m('x = ' + frac(-b / sl)) : '') + '.');
-        res = 'Ecuación: ' + m('y = ' + frac(sl) + 'x ' + sgn(b)) + ' · pendiente ' + m('m = ' + frac(sl));
+        res = 'Ecuación: ' + m('y = ' + frac(sl) + 'x' + (b === 0 ? '' : ' ' + sgn(b).trim())) + ' · pendiente ' + m('m = ' + frac(sl));
         segs = [{ p: [[W.x[0], sl * W.x[0] + b], [W.x[1], sl * W.x[1] + b]], c: 1 }];
       }
       return { steps: st, res: res, plot: plot({ x: W.x, y: W.y, segs: segs, pts: [{ x: x1, y: y1, l: par(x1, y1), c: 2 }, { x: x2, y: y2, l: par(x2, y2), c: 2 }, { x: mid[0], y: mid[1], l: 'M', c: 3 }] }) };
