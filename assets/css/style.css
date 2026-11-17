@@ -2062,3 +2062,10 @@ html[data-theme="dark"] .s2-vplay span::after { border-left-color: hsl(268 30% 8
 .stretch-btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; white-space: nowrap; }
 .stretch-btn svg { width: 17px; height: 17px; flex: none; }
 .stretch { z-index: 3; }
+
+/* ---- gráficos interactivos (deslizadores) ---- */
+.s2-explora { padding: 1.1rem; border-radius: var(--r-lg); border: 1px solid hsl(var(--line)); background: hsl(var(--surface)); }
+.s2-sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .9rem 1.4rem; margin: 1rem 0; }
+.s2-slider { display: grid; gap: .35rem; font-size: .86rem; font-weight: 700; color: hsl(var(--muted-foreground)); } .s2-slider b { color: hsl(var(--primary)); font-size: 1rem; }
+.s2-slider input[type=range] { width: 100%; accent-color: hsl(var(--primary)); height: 1.6rem; cursor: pointer; }
+.s2-explora .s2-plot { margin-top: .8rem; }

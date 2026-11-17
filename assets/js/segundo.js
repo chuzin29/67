@@ -14,7 +14,7 @@
     { id: 'IV', temas: ['1.19', '1.20', '1.21', '1.22', '1.23', '1.24'], resumen: 'Conjuntos, conteo y probabilidad' }
   ];
   var UN = { 1: 'Ecuaciones', 2: 'Geometría analítica de la recta', 3: 'Secciones cónicas', 4: 'Funciones trascendentales I', 5: 'Funciones II', 6: 'Sucesiones', 7: 'Conjuntos y conteo', 8: 'Probabilidad' };
-  var TABS = [['teoria', 'Teoría'], ['video', 'Video'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
+  var TABS = [['teoria', 'Teoría'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 
   var root, mounted = false;
@@ -168,6 +168,53 @@
     return '<details class="s2-acc"' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="s2-acc-body">' + body + '</div></details>' + (extra || '');
   }
 
+  /* ---------- gráficos interactivos con deslizadores ---------- */
+  var anim = null;
+  function stopAnim() { if (anim) { cancelAnimationFrame(anim.raf); anim = null; var b = $('[data-anim]'); if (b) b.textContent = '▶ Animar'; } }
+  function renderExplora(t) {
+    var C = global.S2Calc && global.S2Calc.CALCS[t.calc], X = global.S2Calc && global.S2Calc.EXP[t.calc];
+    if (!C || !X) return '<p class="muted">Este tema no tiene gráfico interactivo.</p>';
+    var byKey = {}; C.f.forEach(function (x) { byKey[x[0]] = x; });
+    var h = '<div class="s2-explora"><div class="s2-calc-head"><h3>' + C.t + ' · explora moviendo los valores</h3><p class="muted">Mueve los deslizadores y mira cómo cambia la gráfica y el resultado al instante. Pulsa <strong>Animar</strong> para ver el primer valor recorriendo su rango.</p></div>' +
+      '<div class="s2-sliders" id="s2Sliders">';
+    X.forEach(function (x) {
+      var def = byKey[x[0]]; if (!def) return;
+      if (x.length === 1) {
+        if (def[3]) h += '<label class="s2-field"><span>' + def[1] + '</span><select name="' + x[0] + '">' + def[3].map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === def[2] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
+        else h += '<label class="s2-field"><span>' + def[1] + '</span><input name="' + x[0] + '" type="text" value="' + esc(def[2]) + '" data-t="text"></label>';
+        return;
+      }
+      var v0 = Math.min(x[3], Math.max(x[2], +def[2]));
+      h += '<label class="s2-slider"><span>' + x[1] + ' = <b data-val="' + x[0] + '">' + v0 + '</b></span><input type="range" name="' + x[0] + '" min="' + x[2] + '" max="' + x[3] + '" step="' + x[4] + '" value="' + v0 + '"></label>';
+    });
+    h += '</div><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-anim>▶ Animar</button><button class="btn btn-ghost btn-sm" data-exp-reset>Valores de ejemplo</button></div><div id="s2ExpOut" class="s2-calc-out" aria-live="polite"></div></div>';
+    return h;
+  }
+  function runExplora() {
+    var t = T()[view.id], C = global.S2Calc.CALCS[t.calc], X = global.S2Calc.EXP[t.calc], box = $('#s2Sliders'), out = $('#s2ExpOut'); if (!box || !out) return;
+    var byKey = {}; C.f.forEach(function (x) { byKey[x[0]] = x; });
+    var v = {};
+    C.f.forEach(function (x) { var el = box.elements ? box.elements[x[0]] : box.querySelector('[name="' + x[0] + '"]'); var raw = el ? el.value : x[2]; v[x[0]] = (x[3] || x[4] === 'text') ? raw : (el ? +raw : (typeof x[2] === 'number' ? x[2] : pnum(x[2]))); });
+    $$('[data-val]', box).forEach(function (b) { b.textContent = v[b.getAttribute('data-val')]; });
+    var r; try { r = C.run(v); } catch (e) { r = { err: 'No se pudo calcular con esos valores.' }; }
+    if (r.err) { out.innerHTML = '<div class="s2-calc-err">' + r.err + ' Mueve otro deslizador para continuar.</div>'; return; }
+    out.innerHTML = '<div class="s2-result">' + M(r.res) + '</div>' + (r.plot ? '<figure class="s2-plot">' + r.plot.replace(/class="s2-draw"/g, '').replace(/s2-bar/g, 'x') + '</figure>' : '') +
+      '<details class="s2-acc"><summary>Ver los pasos del cálculo</summary><div class="s2-acc-body"><ol class="s2-steps">' + r.steps.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol></div></details>';
+  }
+  function toggleAnim() {
+    if (anim) return stopAnim();
+    var t = T()[view.id], X = global.S2Calc.EXP[t.calc], first = X.filter(function (x) { return x.length > 1; })[0], el = first && $('#s2Sliders [name="' + first[0] + '"]');
+    if (!el) return;
+    var lo = +el.min, hi = +el.max, step = +el.step, dir = 1, val = +el.value, acc = 0, last = performance.now();
+    $('[data-anim]').textContent = '⏸ Detener';
+    anim = { raf: 0 };
+    (function loop(now) {
+      acc += now - last; last = now;
+      if (acc > 90) { acc = 0; val += dir * step; if (val >= hi) { val = hi; dir = -1; } else if (val <= lo) { val = lo; dir = 1; } el.value = val; runExplora(); }
+      if (anim) anim.raf = requestAnimationFrame(loop);
+    })(last);
+  }
+
   function videoHtml(t) {
     var v = (global.VIDEOS_2A || {})[t.id], q = encodeURIComponent(t.titulo + ' bachillerato');
     var search = '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/results?search_query=' + q + '" target="_blank" rel="noopener">Buscar más videos de este tema</a>';
@@ -187,6 +234,8 @@
         t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
     } else if (tab === 'video') {
       h = videoHtml(t);
+    } else if (tab === 'explora') {
+      h = renderExplora(t);
     } else if (tab === 'formulas') {
       h = '<div class="s2-formulas">' + t.formulas.map(function (x, i) { return '<div class="s2-formula" style="--i:' + i + '"><span class="s2-flabel">' + esc(x.label) + '</span><div class="formula"><span class="math">' + M(x.html) + '</span></div></div>'; }).join('') + '</div>';
     } else if (tab === 'ejemplos') {
@@ -213,7 +262,7 @@
 
   function renderTab() {
     var id = view.id, t = T()[id], el = $('#s2Panel'), h = '';
-    exam = null;
+    exam = null; stopAnim();
     $$('.s2-tab[data-tab]').forEach(function (x) { var on = view.all ? false : x.dataset.tab === view.tab; x.classList.toggle('active', on); x.setAttribute('aria-selected', on); });
     var allBtn = $('[data-all]'); if (allBtn) { allBtn.classList.toggle('active', !!view.all); allBtn.setAttribute('aria-pressed', !!view.all); }
     if (view.all) {
@@ -222,6 +271,7 @@
     el.innerHTML = h;
     el.classList.remove('s2-swap'); void el.offsetWidth; el.classList.add('s2-swap');
     if (view.all || view.tab === 'calc') runCalc();
+    if (view.all || view.tab === 'explora') runExplora();
     if (view.all || view.tab === 'examen') startExam($('#s2Exam'), shuffle(pool([id])), { key: 't:' + id, title: 'Mini‑examen · ' + t.titulo, intro: true });
   }
 
@@ -387,11 +437,14 @@
     else if (b.hasAttribute('data-step')) { var ex = b.closest('[data-ex]'), nx = $('.s2-step[hidden]', ex), tot = $$('.s2-step', ex).length; if (nx) { nx.hidden = false; } var left = $$('.s2-step[hidden]', ex).length; b.textContent = 'Siguiente paso (' + (tot - left) + '/' + tot + ')'; if (!left) { $('.s2-answer', ex).hidden = false; b.disabled = true; b.textContent = 'Listo ✓'; } }
     else if (b.hasAttribute('data-allsteps')) { var ex2 = b.closest('[data-ex]'); $$('.s2-step', ex2).forEach(function (s) { s.hidden = false; }); $('.s2-answer', ex2).hidden = false; var sb = $('[data-step]', ex2); sb.disabled = true; sb.textContent = 'Listo ✓'; }
     else if (d.play) { var fr = b.closest('.s2-vframe'); fr.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + d.play + '?autoplay=1&rel=0" title="Video del tema" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>'; }
+    else if (b.hasAttribute('data-anim')) toggleAnim();
+    else if (b.hasAttribute('data-exp-reset')) { stopAnim(); renderTab(); }
     else if (b.hasAttribute('data-calc-reset')) resetCalc();
     else if (d.examMode) startMode(d.examMode);
   }
   function onInput(e) {
     if (e.target.id === 's2Search') { view.q = e.target.value; var pos = e.target.selectionStart; renderHome(); var s = $('#s2Search'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) { /* ok */ } }
+    else if (e.target.closest('#s2Sliders')) { if (e.type === 'input' && e.isTrusted) stopAnim(); runExplora(); }
     else if (e.target.closest('#s2Form')) { clearTimeout(onInput.t); onInput.t = setTimeout(runCalc, 160); }
   }
   function onKey(e) {
