@@ -2107,3 +2107,14 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .credit-mark .ico, .topic-icon .ico { width: 1.4rem; height: 1.4rem; }
 .s2-tile .ico { width: 1.6rem; height: 1.6rem; }
 @media (min-width: 861px) { .nav-pop { position: fixed; top: var(--pop-top, 64px); left: var(--pop-left, 0); } }
+
+.gg { position: relative; border-radius: var(--r-md); overflow: hidden; border: 1px solid hsl(var(--line)); background: hsl(var(--surface)); touch-action: pan-y; cursor: grab; user-select: none; }
+.gg.grab { cursor: grabbing; }
+.gg .gg-svg { display: block; width: 100%; height: auto; border: 0; background: transparent; }
+.gg-tools { position: absolute; right: .5rem; top: .5rem; display: grid; gap: .3rem; opacity: .85; }
+.gg-tools button { width: 1.9rem; height: 1.9rem; display: grid; place-items: center; border-radius: 8px; border: 1px solid hsl(var(--line)); background: hsl(var(--surface)); color: hsl(var(--foreground)); cursor: pointer; padding: 0; }
+.gg-tools button:hover { background: hsl(var(--muted)); }
+.s2-note-aviso { margin: 1.4rem auto 0; max-width: 46rem; padding: .9rem 1.1rem; border-radius: var(--r-md); border: 1px dashed hsl(var(--primary) / .5); background: hsl(var(--primary) / .07); font-size: .9rem; line-height: 1.55; display: flex; gap: .7rem; align-items: flex-start; }
+.s2-note-aviso .ico { width: 1.2rem; height: 1.2rem; margin-top: .15rem; color: hsl(var(--primary)); }
+.credit-aviso { font-weight: 700; margin-top: .4rem !important; }
+.gg { max-width: 640px; margin-inline: auto; }

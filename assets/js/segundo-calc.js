@@ -57,61 +57,104 @@
   }
 
   /* o: { x:[a,b], y:[c,d], curves:[{f|pts, c, dash}], segs:[{p:[[x,y],[x,y]], c, dash}], pts:[{x,y,l,c}], fill:[[x0,x1]] , eq:true } */
-  function plot(o) {
-    var W = 460, H = o.h || 320, P = 30;
+  var GG = {}, ggN = 0;
+  function ggView(o, W, H) {
     var x0 = o.x[0], x1 = o.x[1], y0 = o.y[0], y1 = o.y[1];
-    if (o.eq) { // misma escala en ambos ejes (para circunferencias, etc.)
-      var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, sx = (x1 - x0) / (W - 2 * P), sy = (y1 - y0) / (H - 2 * P), s = Math.max(sx, sy);
-      x0 = cx - s * (W - 2 * P) / 2; x1 = cx + s * (W - 2 * P) / 2; y0 = cy - s * (H - 2 * P) / 2; y1 = cy + s * (H - 2 * P) / 2;
+    if (o.eq) {
+      var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, s = Math.max((x1 - x0) / W, (y1 - y0) / H);
+      x0 = cx - s * W / 2; x1 = cx + s * W / 2; y0 = cy - s * H / 2; y1 = cy + s * H / 2;
     }
-    function X(x) { return P + (x - x0) / (x1 - x0) * (W - 2 * P); }
-    function Y(y) { return H - P - (y - y0) / (y1 - y0) * (H - 2 * P); }
-    var g = '', i, st;
-    st = nice(x1 - x0);
-    for (i = Math.ceil(x0 / st); i * st <= x1; i++) {
-      var xv = i * st;
-      g += '<line x1="' + X(xv) + '" y1="' + P + '" x2="' + X(xv) + '" y2="' + (H - P) + '" stroke="var(--line)" stroke-width="1" opacity=".55"/>';
-      if (Math.abs(xv) > 1e-9) g += '<text x="' + X(xv) + '" y="' + (H - P + 14) + '" text-anchor="middle" font-size="10" fill="var(--plot-axis)">' + f(xv, 2) + '</text>';
+    return { x0: x0, x1: x1, y0: y0, y1: y1 };
+  }
+  function ggInner(o, v, W, H, anim) {
+    var x0 = v.x0, x1 = v.x1, y0 = v.y0, y1 = v.y1, i, st, g = '', LN = 'stroke:hsl(var(--line))';
+    function X(x) { return (x - x0) / (x1 - x0) * W; }
+    function Y(y) { return H - (y - y0) / (y1 - y0) * H; }
+    function ticks(lo, hi, isX) {
+      var step = nice(hi - lo), lead = step / Math.pow(10, Math.floor(Math.log10(step))), n = Math.abs(lead - 2) < 1e-6 ? 4 : 5, ms = step / n;
+      var span = isX ? W : H, px = ms / (hi - lo) * span, k;
+      if (px >= 7) for (k = Math.ceil(lo / ms - 1e-9); k * ms <= hi + 1e-9; k++) {
+        if (Math.abs(k % n) < 1e-9) continue; var t = k * ms;
+        g += isX ? '<line x1="' + X(t) + '" y1="0" x2="' + X(t) + '" y2="' + H + '" style="' + LN + '" stroke-width=".6" opacity=".45"/>' : '<line x1="0" y1="' + Y(t) + '" x2="' + W + '" y2="' + Y(t) + '" style="' + LN + '" stroke-width=".6" opacity=".45"/>';
+      }
+      return step;
     }
-    st = nice(y1 - y0);
-    for (i = Math.ceil(y0 / st); i * st <= y1; i++) {
-      var yv = i * st;
-      g += '<line x1="' + P + '" y1="' + Y(yv) + '" x2="' + (W - P) + '" y2="' + Y(yv) + '" stroke="var(--line)" stroke-width="1" opacity=".55"/>';
-      if (Math.abs(yv) > 1e-9) g += '<text x="' + (P - 4) + '" y="' + (Y(yv) + 3) + '" text-anchor="end" font-size="10" fill="var(--plot-axis)">' + f(yv, 2) + '</text>';
+    var sx = ticks(x0, x1, true), sy = ticks(y0, y1, false);
+    var ax = Math.min(Math.max(0, x0), x1), ay = Math.min(Math.max(0, y0), y1);
+    var axs = X(ax), ays = Y(ay), lab = '';
+    for (i = Math.ceil(x0 / sx - 1e-9); i * sx <= x1 + 1e-9; i++) {
+      var xv = i * sx, xp = X(xv);
+      g += '<line x1="' + xp + '" y1="0" x2="' + xp + '" y2="' + H + '" style="' + LN + '" stroke-width="1" opacity=".9"/>';
+      if (Math.abs(xv) > 1e-9 && xp > 14 && xp < W - 14) { var ly = ays > H - 18 ? ays - 7 : ays + 14; lab += '<text x="' + xp + '" y="' + ly + '" text-anchor="middle" font-size="10.5" fill="var(--plot-axis)">' + f(xv, 2) + '</text>'; }
     }
-    if (x0 < 0 && x1 > 0) g += '<line x1="' + X(0) + '" y1="' + P + '" x2="' + X(0) + '" y2="' + (H - P) + '" stroke="var(--plot-axis)" stroke-width="1.6"/>';
-    if (y0 < 0 && y1 > 0) g += '<line x1="' + P + '" y1="' + Y(0) + '" x2="' + (W - P) + '" y2="' + Y(0) + '" stroke="var(--plot-axis)" stroke-width="1.6"/>';
-    var clip = 'c' + Math.random().toString(36).slice(2, 8);
+    for (i = Math.ceil(y0 / sy - 1e-9); i * sy <= y1 + 1e-9; i++) {
+      var yv = i * sy, yp = Y(yv);
+      g += '<line x1="0" y1="' + yp + '" x2="' + W + '" y2="' + yp + '" style="' + LN + '" stroke-width="1" opacity=".9"/>';
+      if (Math.abs(yv) > 1e-9 && yp > 10 && yp < H - 8) { var right = axs < 34; lab += '<text x="' + (right ? axs + 6 : axs - 6) + '" y="' + (yp + 3.5) + '" text-anchor="' + (right ? 'start' : 'end') + '" font-size="10.5" fill="var(--plot-axis)">' + f(yv, 2) + '</text>'; }
+    }
+    if (x0 < 0 && x1 > 0 && y0 < 0 && y1 > 0) lab += '<text x="' + (axs - 6) + '" y="' + (ays + 14) + '" text-anchor="end" font-size="10.5" fill="var(--plot-axis)">0</text>';
+    var AX = 'stroke="var(--plot-axis)" stroke-width="1.7" stroke-linecap="round"';
+    g += '<line x1="0" y1="' + ays + '" x2="' + (W - 4) + '" y2="' + ays + '" ' + AX + '/><line x1="' + axs + '" y1="' + H + '" x2="' + axs + '" y2="4" ' + AX + '/>' +
+      '<path d="M' + (W - 2) + ' ' + ays + 'l-9-4.2v8.4z" fill="var(--plot-axis)"/><path d="M' + axs + ' 2l-4.2 9h8.4z" fill="var(--plot-axis)"/>' +
+      '<text x="' + (W - 10) + '" y="' + Math.max(12, ays - 8) + '" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="var(--plot-axis)">x</text>' +
+      '<text x="' + (axs + 9) + '" y="14" font-size="12" font-style="italic" font-weight="600" fill="var(--plot-axis)">y</text>' + lab;
     var body = '';
-    (o.fill || []).forEach(function (r) {
-      body += '<rect x="' + X(r[0]) + '" y="' + P + '" width="' + Math.max(0, X(r[1]) - X(r[0])) + '" height="' + (H - 2 * P) + '" fill="var(--plot-1)" opacity=".10"/>';
-    });
+    (o.fill || []).forEach(function (r) { body += '<rect x="' + X(r[0]) + '" y="0" width="' + Math.max(0, X(r[1]) - X(r[0])) + '" height="' + H + '" fill="var(--plot-1)" opacity=".10"/>'; });
     (o.curves || []).forEach(function (c) {
       var pts = c.pts, d = '', pen = false, last = null;
-      if (!pts) {
-        pts = [];
-        var a = c.x ? c.x[0] : x0, b = c.x ? c.x[1] : x1, n = 360;
-        for (var k = 0; k <= n; k++) { var xx = a + (b - a) * k / n; pts.push([xx, c.f(xx)]); }
-      }
+      if (!pts) { pts = []; var a = c.x ? c.x[0] : x0, b = c.x ? c.x[1] : x1, n = 520; for (var k = 0; k <= n; k++) { var xx = a + (b - a) * k / n; pts.push([xx, c.f(xx)]); } }
       pts.forEach(function (p) {
         var ok = isFinite(p[0]) && isFinite(p[1]);
         if (ok && last && Math.abs(p[1] - last[1]) > (y1 - y0) * 1.5 && !c.pts) ok = false;
         if (!ok) { pen = false; last = null; return; }
-        d += (pen ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1);
-        pen = true; last = p;
+        d += (pen ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1); pen = true; last = p;
       });
-      body += '<path d="' + d + '" fill="none" stroke="' + COL[c.c || 1] + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"' + (c.dash ? ' stroke-dasharray="6 5"' : '') + ' class="s2-draw"/>';
+      body += '<path d="' + d + '" fill="none" stroke="' + COL[c.c || 1] + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"' + (c.dash ? ' stroke-dasharray="7 6"' : '') + (anim ? ' class="s2-draw"' : '') + '/>';
     });
     (o.segs || []).forEach(function (s) {
-      body += '<line x1="' + X(s.p[0][0]) + '" y1="' + Y(s.p[0][1]) + '" x2="' + X(s.p[1][0]) + '" y2="' + Y(s.p[1][1]) + '" stroke="' + COL[s.c || 2] + '" stroke-width="2"' + (s.dash ? ' stroke-dasharray="6 5"' : '') + ' class="s2-draw"/>';
+      body += '<line x1="' + X(s.p[0][0]) + '" y1="' + Y(s.p[0][1]) + '" x2="' + X(s.p[1][0]) + '" y2="' + Y(s.p[1][1]) + '" stroke="' + COL[s.c || 2] + '" stroke-width="2.2"' + (s.dash ? ' stroke-dasharray="7 6"' : '') + (anim ? ' class="s2-draw"' : '') + '/>';
     });
-    g += '<clipPath id="' + clip + '"><rect x="' + P + '" y="' + P + '" width="' + (W - 2 * P) + '" height="' + (H - 2 * P) + '"/></clipPath><g clip-path="url(#' + clip + ')">' + body + '</g>';
+    g += body;
     (o.pts || []).forEach(function (p) {
       if (!isFinite(p.x) || !isFinite(p.y)) return;
-      g += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="4.6" fill="' + COL[p.c || 2] + '" stroke="var(--surface)" stroke-width="1.5"/>';
-      if (p.l) g += '<text x="' + (X(p.x) + 7) + '" y="' + (Y(p.y) - 7) + '" font-size="11" font-weight="600" fill="var(--foreground)">' + esc(p.l) + '</text>';
+      g += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="5" fill="' + COL[p.c || 2] + '" stroke="var(--surface)" stroke-width="1.8"/>';
+      if (p.l) g += '<text x="' + (X(p.x) + 8) + '" y="' + (Y(p.y) - 8) + '" font-size="12" font-weight="700" paint-order="stroke" stroke="hsl(var(--surface))" stroke-width="3" fill="hsl(var(--foreground))">' + esc(p.l) + '</text>';
     });
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Gráfica" class="s2-svg">' + g + '</svg>';
+    return g;
+  }
+  /* o: { x:[a,b], y:[c,d], curves, segs, pts, fill, eq } — gráfica estilo GeoGebra: rejilla, ejes con flecha, zoom (rueda), arrastrar y botones */
+  function plot(o) {
+    var W = 460, H = o.h || 320, id = 'g' + (++ggN), v = ggView(o, W, H);
+    GG[id] = { o: o, v: v, v0: { x0: v.x0, x1: v.x1, y0: v.y0, y1: v.y1 }, W: W, H: H }; delete GG['g' + (ggN - 60)];
+    var ic = function (d) { return '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">' + d + '</svg>'; };
+    return '<div class="gg" data-gg="' + id + '"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Gráfica en el plano cartesiano" class="s2-svg gg-svg">' + ggInner(o, v, W, H, true) + '</svg>' +
+      '<div class="gg-tools"><button type="button" data-gg-act="in" aria-label="Acercar">' + ic('<path d="M12 5v14M5 12h14"/>') + '</button><button type="button" data-gg-act="out" aria-label="Alejar">' + ic('<path d="M5 12h14"/>') + '</button><button type="button" data-gg-act="home" aria-label="Restablecer vista">' + ic('<path d="M4 11l8-7 8 7M6 10v10h12V10"/>') + '</button></div></div>';
+  }
+  function ggRedraw(el, G) { var svg = el.querySelector('.gg-svg'); svg.innerHTML = ggInner(G.o, G.v, G.W, G.H, false); }
+  function ggZoom(G, k, fx, fy) {
+    var v = G.v, mx = v.x0 + (v.x1 - v.x0) * fx, my = v.y1 - (v.y1 - v.y0) * fy;
+    v.x0 = mx + (v.x0 - mx) * k; v.x1 = mx + (v.x1 - mx) * k; v.y0 = my + (v.y0 - my) * k; v.y1 = my + (v.y1 - my) * k;
+  }
+  if (typeof document !== 'undefined') {
+    var drag = null;
+    document.addEventListener('wheel', function (e) {
+      var el = e.target.closest && e.target.closest('.gg'); if (!el || !GG[el.dataset.gg]) return; e.preventDefault();
+      var G = GG[el.dataset.gg], r = el.querySelector('.gg-svg').getBoundingClientRect();
+      ggZoom(G, e.deltaY > 0 ? 1.15 : 1 / 1.15, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height); ggRedraw(el, G);
+    }, { passive: false });
+    document.addEventListener('pointerdown', function (e) {
+      var b = e.target.closest && e.target.closest('[data-gg-act]'), el = e.target.closest && e.target.closest('.gg');
+      if (!el || !GG[el.dataset.gg]) return; var G = GG[el.dataset.gg];
+      if (b) { var a = b.dataset.ggAct; if (a === 'home') G.v = { x0: G.v0.x0, x1: G.v0.x1, y0: G.v0.y0, y1: G.v0.y1 }; else ggZoom(G, a === 'in' ? 1 / 1.3 : 1.3, .5, .5); ggRedraw(el, G); return; }
+      drag = { el: el, G: G, x: e.clientX, y: e.clientY }; el.classList.add('grab');
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!drag) return; var r = drag.el.querySelector('.gg-svg').getBoundingClientRect(), v = drag.G.v;
+      var dx = (e.clientX - drag.x) / r.width * (v.x1 - v.x0), dy = (e.clientY - drag.y) / r.height * (v.y1 - v.y0);
+      v.x0 -= dx; v.x1 -= dx; v.y0 += dy; v.y1 += dy; drag.x = e.clientX; drag.y = e.clientY; ggRedraw(drag.el, drag.G);
+    });
+    document.addEventListener('pointerup', function () { if (drag) drag.el.classList.remove('grab'); drag = null; });
+    document.addEventListener('dblclick', function (e) { var el = e.target.closest && e.target.closest('.gg'); if (el && GG[el.dataset.gg]) { var G = GG[el.dataset.gg]; G.v = { x0: G.v0.x0, x1: G.v0.x1, y0: G.v0.y0, y1: G.v0.y1 }; ggRedraw(el, G); } });
   }
 
   function bars(items, max, fmt) {
