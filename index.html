@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=20">
+<link rel="stylesheet" href="assets/css/style.css?v=22">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -975,6 +975,7 @@
           <h2>Proyecto</h2>
           <ul>
             <li><a href="https://github.com/chuzin29/67" rel="noopener">Código abierto</a></li>
+            <li><button class="btn-link" id="btnS3" onclick="(function(){var d=document.getElementById('s3Gate');d.hidden=!d.hidden;})()">···</button></li>
             <li><a href="#inicio" data-go="inicio">Volver arriba <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a></li>
           </ul>
         </div>
@@ -986,6 +987,49 @@
     </div>
   </div>
 </footer>
+
+<!-- Sección 3er año — acceso restringido -->
+<div id="s3Gate" hidden style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:hsl(268 30% 4%/0.97);backdrop-filter:blur(6px)">
+  <form id="s3Form" style="display:grid;gap:1rem;padding:2rem;border-radius:1.2rem;border:1px solid hsl(270 88% 74%/0.3);background:hsl(268 30% 10%);min-width:280px;max-width:340px;width:90%">
+    <h2 style="margin:0;color:hsl(270 88% 74%);font-size:1.1rem;text-align:center">Acceso restringido</h2>
+    <p style="margin:0;font-size:.85rem;color:hsl(268 10% 62%);text-align:center">Esta sección es experimental.<br>Introduce la clave para continuar.</p>
+    <input id="s3Pwd" type="password" autocomplete="off" placeholder="Contraseña" style="padding:.65rem .9rem;border-radius:.6rem;border:1px solid hsl(270 88% 74%/0.4);background:hsl(268 30% 7%);color:inherit;font-size:1rem;outline:none" />
+    <div id="s3Err" style="color:hsl(0 80% 65%);font-size:.82rem;min-height:1rem;text-align:center"></div>
+    <div style="display:flex;gap:.7rem">
+      <button type="submit" style="flex:1;padding:.65rem;border-radius:.6rem;background:hsl(270 88% 74%);color:hsl(268 30% 8%);font-weight:800;border:0;cursor:pointer;font-size:.95rem">Entrar</button>
+      <button type="button" onclick="document.getElementById('s3Gate').hidden=true" style="padding:.65rem 1rem;border-radius:.6rem;background:transparent;border:1px solid hsl(268 10% 40%);color:inherit;cursor:pointer;font-size:.95rem">✕</button>
+    </div>
+  </form>
+</div>
+<section id="tercero" hidden>
+  <div class="wrap" id="s3Root"><p class="muted">Cargando Cálculo 3er año…</p></div>
+</section>
+<script>
+(function(){
+  var HASH='522aef6e1680985c3abed27a9ea7cfce339a9fb6809fcfa07cd6364c21d9021f';
+  async function sha256(s){var b=new TextEncoder().encode(s);var ab=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(ab)).map(function(x){return x.toString(16).padStart(2,'0')}).join('');}
+  var unlocked=false;
+  document.getElementById('s3Form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=document.getElementById('s3Pwd').value;
+    sha256(v).then(function(h){
+      if(h===HASH){
+        unlocked=true;
+        document.getElementById('s3Gate').hidden=true;
+        document.getElementById('tercero').hidden=false;
+        if(typeof Tercero!=='undefined') Tercero.mount();
+        window.scrollTo({top:document.getElementById('tercero').offsetTop-80,behavior:'smooth'});
+      } else {
+        document.getElementById('s3Err').textContent='Clave incorrecta';
+        document.getElementById('s3Pwd').value='';
+        document.getElementById('s3Pwd').focus();
+      }
+    });
+  });
+  // No exponer hash ni pwd en consola
+  Object.defineProperty(window,'__s3h',{get:function(){return''},set:function(){}});
+})();
+</script>
 
 <!-- Mascota -->
 <button class="mascota" id="mascota" aria-label="Cheuscita, la mascota del curso">
@@ -1012,5 +1056,6 @@
 <script src="assets/js/segundo.js?v=9"></script>
 <script src="assets/js/symbiote.js?v=9"></script>
 <script src="assets/js/app.js?v=9"></script>
+<script src="assets/js/tercero.js?v=1"></script>
 </body>
 </html>

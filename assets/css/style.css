@@ -2118,3 +2118,17 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .s2-note-aviso .ico { width: 1.2rem; height: 1.2rem; margin-top: .15rem; color: hsl(var(--primary)); }
 .credit-aviso { font-weight: 700; margin-top: .4rem !important; }
 .gg { max-width: 640px; margin-inline: auto; }
+
+/* ---- Sección 3er año ---- */
+.btn-link { background:none;border:0;color:hsl(var(--muted-foreground));cursor:pointer;font:inherit;padding:.2rem .4rem;border-radius:.4rem; }
+.btn-link:hover { color:hsl(var(--foreground));background:hsl(var(--muted)); }
+#s3Gate[hidden] { display:none!important; }
+#tercero { padding-top:4rem; }
+.s3-unit { margin-bottom:2rem; }
+.s3-uhead { font-size:1rem;font-weight:800;color:hsl(var(--primary));margin-bottom:.8rem; }
+.s3-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,16rem),1fr));gap:.8rem; }
+.s3-card { text-align:left;padding:1rem;border-radius:var(--r-md);border:1px solid hsl(var(--line));background:hsl(var(--surface));cursor:pointer;display:grid;gap:.3rem;font:inherit;color:inherit; }
+.s3-card:hover { border-color:hsl(var(--primary)/0.5);background:hsl(var(--primary)/0.06); }
+.s3-card strong { font-size:.95rem; }
+.s3-card p { margin:0;font-size:.82rem;color:hsl(var(--muted-foreground));line-height:1.4; }
+.s3-wip { font-size:.72rem;font-weight:700;color:hsl(var(--primary)/0.7);letter-spacing:.06em; }
