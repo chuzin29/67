@@ -1150,7 +1150,7 @@
               '<div class="answer"><strong>Respuesta:</strong> ' + answerText(ej) + '</div>' +
             '</div></details>' +
             '<div class="item-actions"><button class="btn btn-soft btn-sm" data-done="' + ej.id + '">' +
-              (done ? '✓ Dominado' : 'Marcar como dominado') + '</button></div>' +
+              (done ? 'Dominado' : 'Marcar como dominado') + '</button></div>' +
           '</div>' +
         '</article>';
       }).join('');
@@ -1163,7 +1163,7 @@
         saveDominados();
         var card = button.closest('.item-card');
         if (card) card.classList.toggle('done', dominados.has(id));
-        button.textContent = dominados.has(id) ? '✓ Dominado' : 'Marcar como dominado';
+        button.textContent = dominados.has(id) ? 'Dominado' : 'Marcar como dominado';
         updateExerciseProgress();
       });
     });
@@ -1703,3 +1703,11 @@
 })();
 
 document.addEventListener('click', function (e) { var d = document.getElementById('navLegacy'); if (d && d.open && (e.target.closest('.nav-pop .nav-link') || !e.target.closest('#navLegacy'))) d.open = false; });
+(function () {
+  var d = document.getElementById('navLegacy'); if (!d) return;
+  d.addEventListener('toggle', function () {
+    if (!d.open) return; var r = d.querySelector('summary').getBoundingClientRect();
+    d.style.setProperty('--pop-top', (r.bottom + 6) + 'px'); d.style.setProperty('--pop-left', Math.max(8, Math.min(r.left, innerWidth - 190)) + 'px');
+  });
+  window.addEventListener('scroll', function () { if (d.open) d.open = false; }, { passive: true });
+})();

@@ -240,7 +240,7 @@
           '<span class="math">d = (33 − 17)/(9 − 5) = 16/4 = 4</span>.',
           '<span class="math">a₁ = a₅ − 4d = 17 − 16 = 1</span>.',
           '<span class="math">a₁₂ = 1 + 4(11) = 1 + 44 = 45</span>.',
-          'Comprobación: <span class="math">a₉ = 1 + 4(8) = 33</span>. ✓'
+          'Comprobación: <span class="math">a₉ = 1 + 4(8) = 33</span>.'
         ],
         respuesta: '<span class="math">d = 4</span>, <span class="math">a₁ = 1</span> y <span class="math">a₁₂ = 45</span>.'
       },
@@ -293,7 +293,7 @@
           'Usa la forma con <span class="math">d</span>: <span class="math">S₁₀ = 10/2 · (2 · 5 + d · 9) = 5(10 + 9d)</span>.',
           'Iguala a 185: <span class="math">5(10 + 9d) = 185</span>, luego <span class="math">10 + 9d = 37</span>.',
           '<span class="math">9d = 27</span> y <span class="math">d = 3</span>.',
-          '<span class="math">a₁₀ = 5 + 3(9) = 32</span>. Comprueba: <span class="math">5 · (5 + 32) = 185</span>. ✓'
+          '<span class="math">a₁₀ = 5 + 3(9) = 32</span>. Comprueba: <span class="math">5 · (5 + 32) = 185</span>.'
         ],
         respuesta: '<span class="math">d = 3</span> y <span class="math">a₁₀ = 32</span>.'
       },
@@ -305,7 +305,7 @@
           'Suma: <span class="math">(x − d) + x + (x + d) = 3x = 24</span>, entonces <span class="math">x = 8</span>.',
           'Producto: <span class="math">(8 − d) · 8 · (8 + d) = 8(64 − d²) = 440</span>, luego <span class="math">64 − d² = 55</span> y <span class="math">d² = 9</span>.',
           'Por tanto <span class="math">d = 3</span> o <span class="math">d = −3</span>, y los números son <span class="math">5, 8, 11</span> (o en orden inverso <span class="math">11, 8, 5</span>).',
-          'Comprobación: <span class="math">5 + 8 + 11 = 24</span> y <span class="math">5 · 8 · 11 = 440</span>. ✓'
+          'Comprobación: <span class="math">5 + 8 + 11 = 24</span> y <span class="math">5 · 8 · 11 = 440</span>.'
         ],
         respuesta: 'Los números son 5, 8 y 11.'
       }
@@ -629,7 +629,7 @@
           'Entonces <span class="math">r = 3</span> (la raíz cúbica de 27).',
           '<span class="math">a₁ = a₂/r = 6/3 = 2</span>.',
           '<span class="math">a₇ = 2 · 3⁶ = 2 · 729 = 1458</span>.',
-          'Comprobación: <span class="math">a₅ = 2 · 3⁴ = 162</span>. ✓'
+          'Comprobación: <span class="math">a₅ = 2 · 3⁴ = 162</span>.'
         ],
         respuesta: '<span class="math">r = 3</span>, <span class="math">a₁ = 2</span> y <span class="math">a₇ = 1458</span>.'
       },
@@ -641,7 +641,7 @@
           'Como <span class="math">r &gt; 1</span>, usa <span class="math">Sₙ = a₁ · (rⁿ − 1)/(r − 1)</span>.',
           '<span class="math">S₆ = 2 · (3⁶ − 1)/(3 − 1) = 2 · (729 − 1)/2</span>.',
           '<span class="math">S₆ = 728</span>.',
-          'Verifica sumando: <span class="math">2 + 6 + 18 + 54 + 162 + 486 = 728</span>. ✓'
+          'Verifica sumando: <span class="math">2 + 6 + 18 + 54 + 162 + 486 = 728</span>.'
         ],
         respuesta: '<span class="math">S₆ = 728</span>.'
       },

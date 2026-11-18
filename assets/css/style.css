@@ -2103,3 +2103,7 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .nav-sum { padding: 9px 11px; border-radius: 999px; font-size: .84rem; font-weight: 500; color: hsl(var(--muted-foreground)); white-space: nowrap; }
 .nav-sum:hover, details[open] > .nav-sum { color: hsl(var(--foreground)); background: hsl(var(--muted)); }
 @media (max-width: 860px) { .nav-sum { padding: 11px 14px; font-size: .92rem; } }
+.ico { width: 1em; height: 1em; vertical-align: -.14em; flex: none; }
+.credit-mark .ico, .topic-icon .ico { width: 1.4rem; height: 1.4rem; }
+.s2-tile .ico { width: 1.6rem; height: 1.6rem; }
+@media (min-width: 861px) { .nav-pop { position: fixed; top: var(--pop-top, 64px); left: var(--pop-left, 0); } }

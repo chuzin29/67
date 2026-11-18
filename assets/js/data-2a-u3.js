@@ -133,7 +133,7 @@
           `La directriz es vertical, así que el eje es horizontal y la forma es {{y² = 4px}}.`,
           `El foco está a la derecha del vértice, entonces {{p = 3 > 0}} y abre hacia la derecha.`,
           `Sustituye: {{y² = 4(3)x = 12x}}.`,
-          `Verificación con {{(3, 6)}}: {{36 = 12·3}} ✓. Distancia al foco: 6; distancia a la directriz: {{3 − (−3) = 6}} ✓.`
+          `Verificación con {{(3, 6)}}: {{36 = 12·3}}. Distancia al foco: 6; distancia a la directriz: {{3 − (−3) = 6}}.`
         ],
         respuesta: `{{y² = 12x}}`
       },
@@ -168,7 +168,7 @@
           `Discriminante: {{Δ = 36 − 4(5 − k) = 16 + 4k}}.`,
           `Tangente significa un solo punto: {{Δ = 0}}, entonces {{16 + 4k = 0}} y {{k = −4}}.`,
           `La solución doble es {{x = [[6|2]] = 3}}; {{y = 2(3) − 4 = 2}}.`,
-          `Comprobación en la parábola: {{9 − 12 + 5 = 2}} ✓.`,
+          `Comprobación en la parábola: {{9 − 12 + 5 = 2}}.`,
           `(Si {{k > −4}} la recta es secante; si {{k < −4}} es exterior.)`
         ],
         respuesta: `{{k = −4}}; punto de tangencia {{(3, 2)}}.`
@@ -181,7 +181,7 @@
           `El borde de la antena es el punto {{(0.6, 0.15)}} (mitad del diámetro, profundidad).`,
           `Sustituye: {{0.6² = 4p(0.15)}} → {{0.36 = 0.6p}} → {{p = 0.6}} m.`,
           `El receptor va en el foco, a {{0.6 m = 60 cm}} del fondo.`,
-          `Lado recto: {{LR = 4p = 2.4}} m. Ecuación de la antena: {{x² = 2.4y}}; con {{x = 0.6}} da {{y = 0.15}} ✓.`
+          `Lado recto: {{LR = 4p = 2.4}} m. Ecuación de la antena: {{x² = 2.4y}}; con {{x = 0.6}} da {{y = 0.15}}.`
         ],
         respuesta: `El receptor se coloca a {{60 cm}} del vértice; {{LR = 2.4 m}}.`
       }
@@ -244,7 +244,7 @@
       {
         nivel: 'dificil',
         enunciado: `Halla los puntos de intersección de {{y² = 4x}} con la recta {{y = x − 3}} y la longitud de la cuerda que forman.`,
-        pasos: [`Sustituye: {{(x − 3)² = 4x}} → {{x² − 6x + 9 = 4x}} → {{x² − 10x + 9 = 0}}.`, `Factoriza: {{(x − 1)(x − 9) = 0}} → {{x = 1}} o {{x = 9}}.`, `Con {{y = x − 3}}: {{(1, −2)}} y {{(9, 6)}}.`, `Comprobación: {{4 = 4·1}} ✓ y {{36 = 4·9}} ✓.`, `Cuerda: {{√((9 − 1)² + (6 + 2)²) = √128 = 8√2 ≈ 11.31}}.`],
+        pasos: [`Sustituye: {{(x − 3)² = 4x}} → {{x² − 6x + 9 = 4x}} → {{x² − 10x + 9 = 0}}.`, `Factoriza: {{(x − 1)(x − 9) = 0}} → {{x = 1}} o {{x = 9}}.`, `Con {{y = x − 3}}: {{(1, −2)}} y {{(9, 6)}}.`, `Comprobación: {{4 = 4·1}} y {{36 = 4·9}}.`, `Cuerda: {{√((9 − 1)² + (6 + 2)²) = √128 = 8√2 ≈ 11.31}}.`],
         respuesta: `{{(1, −2)}} y {{(9, 6)}}; longitud {{8√2 ≈ 11.31}}.`
       },
       {
@@ -419,7 +419,7 @@
           `Desarrolla: {{x² + 4x + 4 + y² − 6y + 9 = 16}}.`,
           `Pasa todo a la izquierda: {{x² + y² + 4x − 6y + 13 − 16 = 0}}.`,
           `Simplifica: {{x² + y² + 4x − 6y − 3 = 0}}.`,
-          `Comprobación con la fórmula: {{F = h² + k² − r² = 4 + 9 − 16 = −3}} ✓.`
+          `Comprobación con la fórmula: {{F = h² + k² − r² = 4 + 9 − 16 = −3}}.`
         ],
         respuesta: `{{(x + 2)² + (y − 3)² = 16}}; general: {{x² + y² + 4x − 6y − 3 = 0}}.`
       },
@@ -443,7 +443,7 @@
           `Longitud del diámetro: {{AB = √((5 + 1)² + (6 − 2)²) = √(36 + 16) = √52}}.`,
           `Radio: {{r = [[√52|2]]}}, así que {{r² = [[52|4]] = 13}}.`,
           `Ecuación: {{(x − 2)² + (y − 4)² = 13}}.`,
-          `Comprobación con {{A}}: {{(−3)² + (−2)² = 9 + 4 = 13}} ✓.`
+          `Comprobación con {{A}}: {{(−3)² + (−2)² = 9 + 4 = 13}}.`
         ],
         respuesta: `{{(x − 2)² + (y − 4)² = 13}}`
       },
@@ -468,8 +468,8 @@
           `Simplifica: {{2x² + 4x − 16 = 0}} → {{x² + 2x − 8 = 0}}.`,
           `Factoriza: {{(x + 4)(x − 2) = 0}} → {{x = −4}} o {{x = 2}}.`,
           `Con {{y = x + 2}}: {{(−4, −2)}} y {{(2, 4)}}.`,
-          `Comprobación: {{16 + 4 = 20}} ✓ y {{4 + 16 = 20}} ✓. Dos puntos: la recta es secante.`,
-          `Por distancia: {{d = [[&#124;2&#124;|√2]] = √2 ≈ 1.41 < √20 ≈ 4.47}}, también secante ✓.`
+          `Comprobación: {{16 + 4 = 20}} y {{4 + 16 = 20}}. Dos puntos: la recta es secante.`,
+          `Por distancia: {{d = [[&#124;2&#124;|√2]] = √2 ≈ 1.41 < √20 ≈ 4.47}}, también secante.`
         ],
         respuesta: `{{(−4, −2)}} y {{(2, 4)}}; la recta es secante.`
       }
@@ -532,13 +532,13 @@
       {
         nivel: 'dificil',
         enunciado: `Halla los puntos de intersección de {{x² + y² = 25}} y la recta {{x + y = 7}}.`,
-        pasos: [`Despeja {{y = 7 − x}} y sustituye: {{x² + (7 − x)² = 25}}.`, `{{2x² − 14x + 49 = 25}} → {{2x² − 14x + 24 = 0}} → {{x² − 7x + 12 = 0}}.`, `{{(x − 3)(x − 4) = 0}} → {{x = 3}} o {{x = 4}}.`, `Con {{y = 7 − x}}: {{(3, 4)}} y {{(4, 3)}}.`, `Comprobación: {{9 + 16 = 25}} ✓ y {{16 + 9 = 25}} ✓.`],
+        pasos: [`Despeja {{y = 7 − x}} y sustituye: {{x² + (7 − x)² = 25}}.`, `{{2x² − 14x + 49 = 25}} → {{2x² − 14x + 24 = 0}} → {{x² − 7x + 12 = 0}}.`, `{{(x − 3)(x − 4) = 0}} → {{x = 3}} o {{x = 4}}.`, `Con {{y = 7 − x}}: {{(3, 4)}} y {{(4, 3)}}.`, `Comprobación: {{9 + 16 = 25}} y {{16 + 9 = 25}}.`],
         respuesta: `{{(3, 4)}} y {{(4, 3)}}.`
       },
       {
         nivel: 'dificil',
         enunciado: `Halla la ecuación de la recta tangente a {{x² + y² = 25}} en el punto {{(3, −4)}}. Verifica que es perpendicular al radio.`,
-        pasos: [`Pendiente del radio: {{m<sub>r</sub> = [[−4 − 0|3 − 0]] = −[[4|3]]}}.`, `La tangente es perpendicular: {{m<sub>t</sub> = [[3|4]]}}.`, `Punto-pendiente: {{y + 4 = [[3|4]](x − 3)}} → {{4y + 16 = 3x − 9}}.`, `{{3x − 4y − 25 = 0}}.`, `Con la fórmula {{x₁x + y₁y = 25}}: {{3x − 4y = 25}} ✓. Y {{m<sub>r</sub> · m<sub>t</sub> = −[[4|3]]·[[3|4]] = −1}} ✓.`],
+        pasos: [`Pendiente del radio: {{m<sub>r</sub> = [[−4 − 0|3 − 0]] = −[[4|3]]}}.`, `La tangente es perpendicular: {{m<sub>t</sub> = [[3|4]]}}.`, `Punto-pendiente: {{y + 4 = [[3|4]](x − 3)}} → {{4y + 16 = 3x − 9}}.`, `{{3x − 4y − 25 = 0}}.`, `Con la fórmula {{x₁x + y₁y = 25}}: {{3x − 4y = 25}}. Y {{m<sub>r</sub> · m<sub>t</sub> = −[[4|3]]·[[3|4]] = −1}}.`],
         respuesta: `{{3x − 4y − 25 = 0}}`
       }
     ],
@@ -565,7 +565,7 @@
 <li>El epicentro está en la circunferencia de A: {{x² + y² = 625}} y en la de B: {{(x − 25)² + y² = 900}}.</li>
 <li>Resta las dos ecuaciones: {{(x − 25)² − x² = 900 − 625}} → {{−50x + 625 = 275}} → {{x = 7}}.</li>
 <li>Sustituye en A: {{49 + y² = 625}} → {{y² = 576}} → {{y = ±24}}. Quedan dos candidatos: {{(7, 24)}} y {{(7, −24)}}.</li>
-<li>La estación C ({{(7, 50)}}, 26 km) decide: distancia a {{(7, 24)}} = {{|50 − 24| = 26}} ✓; a {{(7, −24)}} sería 74. </li>
+<li>La estación C ({{(7, 50)}}, 26 km) decide: distancia a {{(7, 24)}} = {{|50 − 24| = 26}}; a {{(7, −24)}} sería 74. </li>
 </ol>
 <p><strong>Epicentro: {{(7, 24)}}.</strong> Esto es la triangulación: dos circunferencias dejan dos puntos posibles y la tercera elige uno.</p>
 <p><strong>Fumigación.</strong> Un aspersor está en {{(10, 5)}} (en metros) y alcanza 12 m. Su zona cubierta es {{(x − 10)² + (y − 5)² = 144}} y su área es {{πr² = π(144) ≈ 452.39 m²}}. Un cultivo en {{(16, 15)}} queda a {{√(36 + 100) = √136 ≈ 11.66}} m: está dentro del alcance.</p>`
@@ -1064,7 +1064,7 @@
           `{{b² = c² − a² = 25 − 9 = 16}}.`,
           `Curva: {{[[x²|9]] − [[y²|16]] = 1}}. Como está más cerca de {{B}}, está en la rama derecha ({{x > 0}}).`,
           `Con {{y = 8}}: {{[[x²|9]] = 1 + [[64|16]] = 5}} → {{x² = 45}} → {{x = 3√5 ≈ 6.71}}.`,
-          `Comprobación: {{PA = √(11.71² + 64) ≈ 14.18}}, {{PB = √(1.71² + 64) ≈ 8.18}}; diferencia 6.00 ✓.`
+          `Comprobación: {{PA = √(11.71² + 64) ≈ 14.18}}, {{PB = √(1.71² + 64) ≈ 8.18}}; diferencia 6.00.`
         ],
         respuesta: `{{[[x²|9]] − [[y²|16]] = 1}} (rama derecha); abscisa {{x = 3√5 ≈ 6.71 km}}.`
       }
@@ -1115,7 +1115,7 @@
       {
         nivel: 'intermedio',
         enunciado: `Clasifica cada ecuación como parábola, circunferencia, elipse o hipérbola:<br>a) {{2x² + 2y² − 8x + 12y + 5 = 0}}<br>b) {{x² − 6x − 4y + 1 = 0}}<br>c) {{4x² + 9y² − 16x + 54y + 61 = 0}}<br>d) {{x² − 4y² + 6x + 8y − 11 = 0}}<br>e) {{5y² + 20x − 10y + 3 = 0}}`,
-        pasos: [`a) {{A = C = 2}}: coeficientes iguales → circunferencia.`, `b) Solo aparece {{x²}} ({{C = 0}}) → parábola.`, `c) {{A = 4}}, {{C = 9}}: mismo signo, distintos → elipse. (Al completar: {{4(x − 2)² + 9(y + 3)² = 36}} ✓ real.)`, `d) {{A = 1}}, {{C = −4}}: signos contrarios → hipérbola. (Al completar: {{(x + 3)² − 4(y − 1)² = 16}}.)`, `e) Solo aparece {{y²}} ({{A = 0}}) → parábola horizontal.`],
+        pasos: [`a) {{A = C = 2}}: coeficientes iguales → circunferencia.`, `b) Solo aparece {{x²}} ({{C = 0}}) → parábola.`, `c) {{A = 4}}, {{C = 9}}: mismo signo, distintos → elipse. (Al completar: {{4(x − 2)² + 9(y + 3)² = 36}} real.)`, `d) {{A = 1}}, {{C = −4}}: signos contrarios → hipérbola. (Al completar: {{(x + 3)² − 4(y − 1)² = 16}}.)`, `e) Solo aparece {{y²}} ({{A = 0}}) → parábola horizontal.`],
         respuesta: `a) circunferencia; b) parábola; c) elipse; d) hipérbola; e) parábola.`
       },
       {

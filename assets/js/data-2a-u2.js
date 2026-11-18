@@ -102,7 +102,7 @@
           `Distribuye: {{y − 4 = −3x − 3}}.`,
           `Despeja {{y}}: {{y = −3x + 1}} (pendiente −3, intercepto 1).`,
           `Pasa todo a la izquierda: {{3x + y − 1 = 0}}.`,
-          `Comprueba con el punto: {{3(−1) + 4 − 1 = 0}} ✓.`
+          `Comprueba con el punto: {{3(−1) + 4 − 1 = 0}}.`
         ],
         respuesta: `{{y = −3x + 1}}, o en forma general {{3x + y − 1 = 0}}`
       },
@@ -114,7 +114,7 @@
           `Punto-pendiente con {{(1, −2)}}: {{y + 2 = 2(x − 1)}}.`,
           `Distribuye y despeja: {{y + 2 = 2x − 2}} ⟹ {{y = 2x − 4}}.`,
           `Forma general: {{2x − y − 4 = 0}}.`,
-          `Verifica con el otro punto: {{2(5) − 6 − 4 = 0}} ✓.`
+          `Verifica con el otro punto: {{2(5) − 6 − 4 = 0}}.`
         ],
         respuesta: `{{y = 2x − 4}} (general: {{2x − y − 4 = 0}})`
       },
@@ -145,7 +145,7 @@
           `Identifica {{A = 4, B = −6, C = 9}}.`,
           `Pendiente: {{m = −A/B = −4/(−6) = 2/3}}.`,
           `Intercepto: {{b = −C/B = −9/(−6) = 3/2}}.`,
-          `Comprobación despejando: {{6y = 4x + 9}} ⟹ {{y = (2/3)x + 3/2}} ✓.`
+          `Comprobación despejando: {{6y = 4x + 9}} ⟹ {{y = (2/3)x + 3/2}}.`
         ],
         respuesta: `{{m = 2/3}}, {{b = 3/2}}; {{y = (2/3)x + 3/2}}`
       }
@@ -178,13 +178,13 @@
       {
         nivel: 'intermedio',
         enunciado: `Halla la ecuación general de la recta que pasa por {{(−3, 2)}} y {{(1, −6)}}.`,
-        pasos: [`Pendiente: {{m = (−6 − 2)/(1 − (−3)) = −8/4 = −2}}.`, `Punto-pendiente con {{(−3, 2)}}: {{y − 2 = −2(x + 3)}}.`, `Distribuye: {{y − 2 = −2x − 6}} ⟹ {{y = −2x − 4}}.`, `Forma general: {{2x + y + 4 = 0}}. Verifica con {{(1, −6)}}: {{2 − 6 + 4 = 0}} ✓.`],
+        pasos: [`Pendiente: {{m = (−6 − 2)/(1 − (−3)) = −8/4 = −2}}.`, `Punto-pendiente con {{(−3, 2)}}: {{y − 2 = −2(x + 3)}}.`, `Distribuye: {{y − 2 = −2x − 6}} ⟹ {{y = −2x − 4}}.`, `Forma general: {{2x + y + 4 = 0}}. Verifica con {{(1, −6)}}: {{2 − 6 + 4 = 0}}.`],
         respuesta: `{{2x + y + 4 = 0}}`
       },
       {
         nivel: 'intermedio',
         enunciado: `De la recta {{5x + 2y − 10 = 0}} halla la pendiente y el intercepto con el eje {{y}}.`,
-        pasos: [`{{A = 5, B = 2, C = −10}}.`, `{{m = −A/B = −5/2}}.`, `{{b = −C/B = 10/2 = 5}}.`, `Comprobación: {{2y = −5x + 10}} ⟹ {{y = −(5/2)x + 5}} ✓.`],
+        pasos: [`{{A = 5, B = 2, C = −10}}.`, `{{m = −A/B = −5/2}}.`, `{{b = −C/B = 10/2 = 5}}.`, `Comprobación: {{2y = −5x + 10}} ⟹ {{y = −(5/2)x + 5}}.`],
         respuesta: `{{m = −5/2}}, {{b = 5}}`
       },
       {
@@ -202,13 +202,13 @@
       {
         nivel: 'dificil',
         enunciado: `Halla el valor de {{k}} para que la recta que pasa por {{A(k, 3)}} y {{B(5, k + 1)}} tenga pendiente {{2}}.`,
-        pasos: [`{{m = ((k + 1) − 3)/(5 − k) = (k − 2)/(5 − k)}}.`, `Iguala a 2: {{(k − 2)/(5 − k) = 2}} ⟹ {{k − 2 = 10 − 2k}}.`, `{{3k = 12}} ⟹ {{k = 4}}.`, `Verifica: {{A(4, 3)}}, {{B(5, 5)}}, {{m = 2/1 = 2}} ✓.`],
+        pasos: [`{{m = ((k + 1) − 3)/(5 − k) = (k − 2)/(5 − k)}}.`, `Iguala a 2: {{(k − 2)/(5 − k) = 2}} ⟹ {{k − 2 = 10 − 2k}}.`, `{{3k = 12}} ⟹ {{k = 4}}.`, `Verifica: {{A(4, 3)}}, {{B(5, 5)}}, {{m = 2/1 = 2}}.`],
         respuesta: `{{k = 4}}`
       },
       {
         nivel: 'dificil',
         enunciado: `Halla la ecuación general de la recta que pasa por el punto medio de {{A(−2, 4)}} y {{B(6, 8)}} y tiene la misma pendiente que {{3x − 2y + 5 = 0}}.`,
-        pasos: [`Punto medio: {{((−2 + 6)/2, (4 + 8)/2) = (2, 6)}}.`, `Pendiente de {{3x − 2y + 5 = 0}}: {{m = −3/(−2) = 3/2}}.`, `Punto-pendiente: {{y − 6 = (3/2)(x − 2)}}. Multiplica por 2: {{2y − 12 = 3x − 6}}.`, `Pasa todo a un lado: {{3x − 2y + 6 = 0}}. Verifica con {{(2, 6)}}: {{6 − 12 + 6 = 0}} ✓.`],
+        pasos: [`Punto medio: {{((−2 + 6)/2, (4 + 8)/2) = (2, 6)}}.`, `Pendiente de {{3x − 2y + 5 = 0}}: {{m = −3/(−2) = 3/2}}.`, `Punto-pendiente: {{y − 6 = (3/2)(x − 2)}}. Multiplica por 2: {{2y − 12 = 3x − 6}}.`, `Pasa todo a un lado: {{3x − 2y + 6 = 0}}. Verifica con {{(2, 6)}}: {{6 − 12 + 6 = 0}}.`],
         respuesta: `{{3x − 2y + 6 = 0}}`
       },
       {
@@ -254,10 +254,10 @@
       { tipo: 'num', q: `Una recta de pendiente {{−2}} pasa por {{(3, 1)}}. Escrita como {{y = mx + b}}, ¿cuánto vale {{b}}?`, r: 7, tol: 0.01, pasos: [`{{y − 1 = −2(x − 3)}}.`, `{{y − 1 = −2x + 6}} ⟹ {{y = −2x + 7}}.`, `Por tanto {{b = 7}}.`] },
       { tipo: 'num', q: `¿Cuál es la pendiente de la recta {{6x − 3y + 12 = 0}}?`, r: 2, tol: 0.01, pasos: [`{{A = 6, B = −3}}.`, `{{m = −A/B = −6/(−3) = 2}}.`] },
       { tipo: 'par', q: `La recta {{y = 2x − 1}} pasa por un punto cuya abscisa es {{x = 4}}. Da ese punto {{(x, y)}}.`, r: [4, 7], tol: 0.01, pasos: [`Sustituye {{x = 4}}: {{y = 2(4) − 1}}.`, `{{y = 7}}, así que el punto es {{(4, 7)}}.`] },
-      { tipo: 'num', q: `La recta que pasa por {{(1, k)}} y {{(3, 7)}} tiene pendiente {{2}}. Halla {{k}}.`, r: 3, tol: 0.01, pasos: [`{{(7 − k)/(3 − 1) = 2}}.`, `{{7 − k = 4}}.`, `{{k = 3}}. Verifica: {{(7 − 3)/2 = 2}} ✓.`] },
+      { tipo: 'num', q: `La recta que pasa por {{(1, k)}} y {{(3, 7)}} tiene pendiente {{2}}. Halla {{k}}.`, r: 3, tol: 0.01, pasos: [`{{(7 − k)/(3 − 1) = 2}}.`, `{{7 − k = 4}}.`, `{{k = 3}}. Verifica: {{(7 − 3)/2 = 2}}.`] },
       { tipo: 'opt', q: `¿Cuál de estas rectas tiene pendiente negativa?`, opciones: [`{{2x − y + 1 = 0}}`, `{{x + 2y − 4 = 0}}`, `{{y = 5}}`, `{{x = −3}}`], correcta: 1, pasos: [`{{2x − y + 1 = 0}}: {{m = −2/(−1) = 2}} (positiva).`, `{{x + 2y − 4 = 0}}: {{m = −1/2}} (negativa).`, `{{y = 5}} tiene {{m = 0}} y {{x = −3}} no tiene pendiente.`] },
       { tipo: 'num', q: `Con el modelo de costo {{C = 0.15q + 40}} (dólares), ¿cuánto cuesta producir {{q = 500}} unidades?`, r: 115, tol: 0.01, pasos: [`Sustituye {{q = 500}}.`, `{{C = 0.15(500) + 40 = 75 + 40}}.`, `{{C = 115}} dólares.`] },
-      { tipo: 'opt', q: `La ecuación de la recta que pasa por {{(0, 4)}} y {{(2, 0)}} es:`, opciones: [`{{2x − y + 4 = 0}}`, `{{x + 2y − 4 = 0}}`, `{{2x + y + 4 = 0}}`, `{{2x + y − 4 = 0}}`], correcta: 3, pasos: [`{{m = (0 − 4)/(2 − 0) = −2}} y el intercepto es {{b = 4}}.`, `{{y = −2x + 4}}.`, `Pasa todo a la izquierda: {{2x + y − 4 = 0}}. Verifica con {{(2, 0)}}: {{4 + 0 − 4 = 0}} ✓.`] }
+      { tipo: 'opt', q: `La ecuación de la recta que pasa por {{(0, 4)}} y {{(2, 0)}} es:`, opciones: [`{{2x − y + 4 = 0}}`, `{{x + 2y − 4 = 0}}`, `{{2x + y + 4 = 0}}`, `{{2x + y − 4 = 0}}`], correcta: 3, pasos: [`{{m = (0 − 4)/(2 − 0) = −2}} y el intercepto es {{b = 4}}.`, `{{y = −2x + 4}}.`, `Pasa todo a la izquierda: {{2x + y − 4 = 0}}. Verifica con {{(2, 0)}}: {{4 + 0 − 4 = 0}}.`] }
     ]
   };
 
@@ -362,7 +362,7 @@
           `Pendiente de la dada: {{m = −2/(−3) = 2/3}}.`,
           `Paralela ⟹ misma pendiente {{2/3}}.`,
           `Punto-pendiente: {{y + 1 = (2/3)(x − 3)}} ⟹ {{3y + 3 = 2x − 6}}.`,
-          `Forma general: {{2x − 3y − 9 = 0}}. Verifica con {{(3, −1)}}: {{6 + 3 − 9 = 0}} ✓.`
+          `Forma general: {{2x − 3y − 9 = 0}}. Verifica con {{(3, −1)}}: {{6 + 3 − 9 = 0}}.`
         ],
         respuesta: `{{2x − 3y − 9 = 0}}`
       },
@@ -373,7 +373,7 @@
           `Pendiente de la dada: {{m₁ = −3/1 = −3}}.`,
           `Perpendicular: {{m₂ = −1/m₁ = −1/(−3) = 1/3}}.`,
           `Punto-pendiente: {{y − 5 = (1/3)(x − 2)}} ⟹ {{3y − 15 = x − 2}}.`,
-          `Forma general: {{x − 3y + 13 = 0}}. Verifica con {{(2, 5)}}: {{2 − 15 + 13 = 0}} ✓.`
+          `Forma general: {{x − 3y + 13 = 0}}. Verifica con {{(2, 5)}}: {{2 − 15 + 13 = 0}}.`
         ],
         respuesta: `{{x − 3y + 13 = 0}}`
       },
@@ -383,7 +383,7 @@
         pasos: [
           `Suma las dos ecuaciones para eliminar {{y}}: {{3x = 6}} ⟹ {{x = 2}}.`,
           `Sustituye en {{x − y = −1}}: {{2 − y = −1}} ⟹ {{y = 3}}.`,
-          `Comprueba en la primera: {{2(2) + 3 = 7}} ✓.`
+          `Comprueba en la primera: {{2(2) + 3 = 7}}.`
         ],
         respuesta: `{{(2, 3)}}`
       },
@@ -434,13 +434,13 @@
       {
         nivel: 'intermedio',
         enunciado: `Halla la ecuación general de la recta perpendicular a {{5x − 2y + 3 = 0}} que pasa por {{(−2, 4)}}.`,
-        pasos: [`Pendiente de la dada: {{m = −5/(−2) = 5/2}}.`, `Perpendicular: {{m' = −2/5}}.`, `{{y − 4 = −(2/5)(x + 2)}}. Multiplica por 5: {{5y − 20 = −2x − 4}}.`, `General: {{2x + 5y − 16 = 0}}. Verifica con {{(−2, 4)}}: {{−4 + 20 − 16 = 0}} ✓.`],
+        pasos: [`Pendiente de la dada: {{m = −5/(−2) = 5/2}}.`, `Perpendicular: {{m' = −2/5}}.`, `{{y − 4 = −(2/5)(x + 2)}}. Multiplica por 5: {{5y − 20 = −2x − 4}}.`, `General: {{2x + 5y − 16 = 0}}. Verifica con {{(−2, 4)}}: {{−4 + 20 − 16 = 0}}.`],
         respuesta: `{{2x + 5y − 16 = 0}}`
       },
       {
         nivel: 'intermedio',
         enunciado: `Halla el punto de intersección de {{3x − 2y = 4}} y {{x + 4y = 6}}.`,
-        pasos: [`Multiplica la primera por 2: {{6x − 4y = 8}}.`, `Suma con la segunda: {{7x = 14}} ⟹ {{x = 2}}.`, `En {{x + 4y = 6}}: {{2 + 4y = 6}} ⟹ {{y = 1}}.`, `Verifica en la primera: {{6 − 2 = 4}} ✓.`],
+        pasos: [`Multiplica la primera por 2: {{6x − 4y = 8}}.`, `Suma con la segunda: {{7x = 14}} ⟹ {{x = 2}}.`, `En {{x + 4y = 6}}: {{2 + 4y = 6}} ⟹ {{y = 1}}.`, `Verifica en la primera: {{6 − 2 = 4}}.`],
         respuesta: `{{(2, 1)}}`
       },
       {
@@ -452,13 +452,13 @@
       {
         nivel: 'dificil',
         enunciado: `Halla la ecuación general de la mediatriz del segmento de extremos {{A(−1, 2)}} y {{B(5, 6)}} (la recta perpendicular al segmento por su punto medio).`,
-        pasos: [`Punto medio: {{((−1 + 5)/2, (2 + 6)/2) = (2, 4)}}.`, `Pendiente de {{AB}}: {{(6 − 2)/(5 − (−1)) = 4/6 = 2/3}}.`, `Mediatriz: {{m = −3/2}}. {{y − 4 = −(3/2)(x − 2)}}.`, `Multiplica por 2: {{2y − 8 = −3x + 6}} ⟹ {{3x + 2y − 14 = 0}}. Verifica con {{(2, 4)}}: {{6 + 8 − 14 = 0}} ✓.`],
+        pasos: [`Punto medio: {{((−1 + 5)/2, (2 + 6)/2) = (2, 4)}}.`, `Pendiente de {{AB}}: {{(6 − 2)/(5 − (−1)) = 4/6 = 2/3}}.`, `Mediatriz: {{m = −3/2}}. {{y − 4 = −(3/2)(x − 2)}}.`, `Multiplica por 2: {{2y − 8 = −3x + 6}} ⟹ {{3x + 2y − 14 = 0}}. Verifica con {{(2, 4)}}: {{6 + 8 − 14 = 0}}.`],
         respuesta: `{{3x + 2y − 14 = 0}}`
       },
       {
         nivel: 'dificil',
         enunciado: `Halla el pie de la perpendicular trazada desde {{P(0, 6)}} a la recta {{x + y = 4}} y la distancia de {{P}} a la recta.`,
-        pasos: [`Pendiente de {{x + y = 4}}: {{−1}}. La perpendicular tiene {{m = 1}}.`, `Perpendicular por {{P(0, 6)}}: {{y = x + 6}}.`, `Intersección: {{x + (x + 6) = 4}} ⟹ {{2x = −2}} ⟹ {{x = −1}}, {{y = 5}}. Pie: {{(−1, 5)}} (está en la recta: {{−1 + 5 = 4}} ✓).`, `Distancia: {{√((0 − (−1))² + (6 − 5)²) = √2 ≈ 1.41}}.`],
+        pasos: [`Pendiente de {{x + y = 4}}: {{−1}}. La perpendicular tiene {{m = 1}}.`, `Perpendicular por {{P(0, 6)}}: {{y = x + 6}}.`, `Intersección: {{x + (x + 6) = 4}} ⟹ {{2x = −2}} ⟹ {{x = −1}}, {{y = 5}}. Pie: {{(−1, 5)}} (está en la recta: {{−1 + 5 = 4}}).`, `Distancia: {{√((0 − (−1))² + (6 − 5)²) = √2 ≈ 1.41}}.`],
         respuesta: `Pie {{(−1, 5)}}; distancia {{√2 ≈ 1.41}}`
       },
       {
@@ -499,9 +499,9 @@
     examen: [
       { tipo: 'num', q: `¿En qué valor de {{x}} corta la recta {{3x + 5y − 15 = 0}} al eje {{x}}?`, r: 5, tol: 0.01, pasos: [`Haz {{y = 0}}: {{3x − 15 = 0}}.`, `{{x = 5}}. El intercepto es {{(5, 0)}}.`] },
       { tipo: 'num', q: `¿En qué valor de {{y}} corta la recta {{2x − 4y + 8 = 0}} al eje {{y}}?`, r: 2, tol: 0.01, pasos: [`Haz {{x = 0}}: {{−4y + 8 = 0}}.`, `{{y = 2}}. El intercepto es {{(0, 2)}}.`] },
-      { tipo: 'par', q: `Halla el punto de intersección de {{x + y = 10}} y {{x − y = 2}}.`, r: [6, 4], tol: 0.01, pasos: [`Suma: {{2x = 12}} ⟹ {{x = 6}}.`, `{{6 + y = 10}} ⟹ {{y = 4}}.`, `Verifica: {{6 − 4 = 2}} ✓.`] },
+      { tipo: 'par', q: `Halla el punto de intersección de {{x + y = 10}} y {{x − y = 2}}.`, r: [6, 4], tol: 0.01, pasos: [`Suma: {{2x = 12}} ⟹ {{x = 6}}.`, `{{6 + y = 10}} ⟹ {{y = 4}}.`, `Verifica: {{6 − 4 = 2}}.`] },
       { tipo: 'num', q: `¿Cuál es la pendiente de una recta perpendicular a {{2x − 5y + 1 = 0}}? Escríbela como decimal o fracción.`, r: -2.5, tol: 0.01, pasos: [`Pendiente de la dada: {{m = −2/(−5) = 2/5}}.`, `Perpendicular: {{m' = −1/(2/5) = −5/2}}.`, `{{−5/2 = −2.5}}.`] },
-      { tipo: 'opt', q: `¿Cuál de estas rectas es paralela a {{y = 3x − 7}}?`, opciones: [`{{y = −(1/3)x + 1}}`, `{{3x + y = 2}}`, `{{6x − 2y + 9 = 0}}`, `{{x − 3y = 0}}`], correcta: 2, pasos: [`Buscamos pendiente {{3}}.`, `{{3x + y = 2}} tiene {{m = −3}}; {{x − 3y = 0}} tiene {{m = 1/3}}; la primera tiene {{−1/3}}.`, `{{6x − 2y + 9 = 0}}: {{m = −6/(−2) = 3}} ✓.`] },
+      { tipo: 'opt', q: `¿Cuál de estas rectas es paralela a {{y = 3x − 7}}?`, opciones: [`{{y = −(1/3)x + 1}}`, `{{3x + y = 2}}`, `{{6x − 2y + 9 = 0}}`, `{{x − 3y = 0}}`], correcta: 2, pasos: [`Buscamos pendiente {{3}}.`, `{{3x + y = 2}} tiene {{m = −3}}; {{x − 3y = 0}} tiene {{m = 1/3}}; la primera tiene {{−1/3}}.`, `{{6x − 2y + 9 = 0}}: {{m = −6/(−2) = 3}}.`] },
       { tipo: 'num', q: `Halla {{k}} para que {{kx + 2y = 5}} sea paralela a {{3x − y = 1}}.`, r: -6, tol: 0.01, pasos: [`{{kx + 2y = 5}}: {{m₁ = −k/2}}.`, `{{3x − y = 1}}: {{m₂ = 3}}.`, `Paralelas: {{−k/2 = 3}} ⟹ {{k = −6}}.`] },
       { tipo: 'par', q: `Halla el punto de intersección de {{2x − y = 3}} y {{x + 2y = 14}}.`, r: [4, 5], tol: 0.01, pasos: [`De la primera: {{y = 2x − 3}}.`, `Sustituye: {{x + 2(2x − 3) = 14}} ⟹ {{5x = 20}} ⟹ {{x = 4}}.`, `{{y = 2(4) − 3 = 5}}. Punto {{(4, 5)}}.`] },
       { tipo: 'opt', q: `Las rectas {{y = 2x + 1}} y {{y = 2x − 3}}:`, opciones: [`Se cortan en un solo punto`, `Son paralelas y no tienen punto en común`, `Son coincidentes`, `Son perpendiculares`], correcta: 1, pasos: [`Ambas tienen pendiente {{2}}, así que son paralelas.`, `Sus interceptos ({{1}} y {{−3}}) son distintos: no coinciden y no hay solución al sistema.`] },
@@ -607,7 +607,7 @@
         pasos: [
           `La calculadora da {{arctan(−3/4) ≈ −36.87°}}, que no es un ángulo de inclinación válido.`,
           `Como {{m < 0}}, suma 180°: {{θ = 180° + (−36.87°) = 143.13°}}.`,
-          `Comprobación: {{tan(143.13°) ≈ −0.75}} ✓. El ángulo es obtuso, coherente con una recta que baja.`
+          `Comprobación: {{tan(143.13°) ≈ −0.75}}. El ángulo es obtuso, coherente con una recta que baja.`
         ],
         respuesta: `{{θ ≈ 143.13°}}`
       },
@@ -638,7 +638,7 @@
           `Pendientes: {{m<sub>AB</sub> = 0}}, {{m<sub>AC</sub> = 3/1 = 3}}, {{m<sub>BC</sub> = (3 − 0)/(1 − 4) = −1}}.`,
           `En {{A}}: lados {{AB}} (horizontal) y {{AC}}: {{tan A = |3 − 0|/(1 + 0) = 3}} ⟹ {{A ≈ 71.57°}}.`,
           `En {{B}}: {{BC}} tiene inclinación 135° y {{BA}} mira hacia la izquierda; el interior es {{180° − 135° = 45°}} (con la fórmula: {{|−1 − 0|/(1 + 0) = 1}} ⟹ 45°).`,
-          `En {{C}}: {{180° − 71.57° − 45° = 63.43°}}. Verifica con la fórmula entre {{CA}} (m = 3) y {{CB}} (m = −1): {{|(−1 − 3)/(1 − 3)| = 2}} ⟹ {{arctan 2 ≈ 63.43°}} ✓.`
+          `En {{C}}: {{180° − 71.57° − 45° = 63.43°}}. Verifica con la fórmula entre {{CA}} (m = 3) y {{CB}} (m = −1): {{|(−1 − 3)/(1 − 3)| = 2}} ⟹ {{arctan 2 ≈ 63.43°}}.`
         ],
         respuesta: `{{A ≈ 71.57°}}, {{B = 45°}}, {{C ≈ 63.43°}}`
       },
@@ -758,7 +758,7 @@
       { tipo: 'num', q: `Halla el ángulo agudo (en grados) entre dos rectas de pendientes {{1/3}} y {{2}}.`, r: 45, tol: 0.01, pasos: [`{{tan α = (2 − 1/3)/(1 + (1/3)(2))}}.`, `{{= (5/3)/(5/3) = 1}}.`, `{{α = 45°}}.`] },
       { tipo: 'num', q: `Halla el ángulo agudo (en grados) entre dos rectas de pendientes {{1}} y {{4}}. Redondea a 2 decimales.`, r: 30.96, tol: 0.01, pasos: [`{{tan α = |(4 − 1)/(1 + 4)|}}.`, `{{= 3/5 = 0.6}}.`, `{{α = arctan(0.6) ≈ 30.96°}}.`] },
       { tipo: 'opt', q: `¿Qué ángulo forman dos rectas perpendiculares?`, opciones: [`0°`, `45°`, `90°`, `180°`], correcta: 2, pasos: [`Perpendiculares cumplen {{m₁m₂ = −1}}.`, `Entonces {{1 + m₁m₂ = 0}} y {{tan α}} no existe, lo que ocurre solo con {{α = 90°}}.`] },
-      { tipo: 'opt', q: `El ángulo de inclinación de una recta de pendiente {{−2}} es:`, opciones: [`{{63.43°}}`, `{{−63.43°}}`, `{{153.43°}}`, `{{116.57°}}`], correcta: 3, pasos: [`{{arctan(−2) ≈ −63.43°}}.`, `Como {{m < 0}}, suma 180°: {{180° − 63.43° = 116.57°}}.`, `Comprobación: {{tan(116.57°) ≈ −2}} ✓.`] },
+      { tipo: 'opt', q: `El ángulo de inclinación de una recta de pendiente {{−2}} es:`, opciones: [`{{63.43°}}`, `{{−63.43°}}`, `{{153.43°}}`, `{{116.57°}}`], correcta: 3, pasos: [`{{arctan(−2) ≈ −63.43°}}.`, `Como {{m < 0}}, suma 180°: {{180° − 63.43° = 116.57°}}.`, `Comprobación: {{tan(116.57°) ≈ −2}}.`] },
       { tipo: 'lista', q: `Entre dos rectas de pendientes {{−4}} y {{1}}, escribe el ángulo agudo y el ángulo obtuso que forman (en grados, redondeados a 2 decimales, separados por coma).`, r: [59.04, 120.96], tol: 0.01, pasos: [`{{tan α = |(1 − (−4))/(1 + (−4)(1))| = |5/(−3)| = 5/3}}.`, `Agudo: {{arctan(5/3) ≈ 59.04°}}.`, `Obtuso: {{180° − 59.04° = 120.96°}}.`] }
     ]
   };

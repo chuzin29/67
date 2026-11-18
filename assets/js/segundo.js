@@ -92,7 +92,7 @@
       '<span class="s2-topic-body"><strong>' + esc(t.titulo) + '</strong><span class="s2-sub">' + M(t.resumen) + '</span>' +
       '<span class="s2-meta"><span>' + t.ejemplos.length + ' ejemplos</span><span>' + n + ' ejercicios</span><span>10 preguntas de examen</span></span>' +
       bar(Math.round(100 * d / n)) +
-      '<span class="s2-flags">' + (store.seen[id] ? '<i class="s2-flag ok">✓ Visto</i>' : '<i class="s2-flag">Nuevo</i>') + (d ? '<i class="s2-flag">' + d + '/' + n + ' dominados</i>' : '') + (best != null ? '<i class="s2-flag gold">Examen ' + best + '/10</i>' : '') + '</span>' +
+      '<span class="s2-flags">' + (store.seen[id] ? '<i class="s2-flag ok"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg> Visto</i>' : '<i class="s2-flag">Nuevo</i>') + (d ? '<i class="s2-flag">' + d + '/' + n + ' dominados</i>' : '') + (best != null ? '<i class="s2-flag gold">Examen ' + best + '/10</i>' : '') + '</span>' +
       '</span></button>';
   }
 
@@ -130,12 +130,12 @@
   }
 
   function drawerHtml(cur) {
-    var h = '<div class="s2-scrim" data-drawer-close hidden></div><aside class="s2-drawer" id="s2Drawer" aria-label="Todos los temas" hidden><header><strong>Ir a otro tema</strong><button class="btn btn-ghost btn-sm" data-drawer-close aria-label="Cerrar">✕</button></header><div class="s2-drawer-body">';
+    var h = '<div class="s2-scrim" data-drawer-close hidden></div><aside class="s2-drawer" id="s2Drawer" aria-label="Todos los temas" hidden><header><strong>Ir a otro tema</strong><button class="btn btn-ghost btn-sm" data-drawer-close aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header><div class="s2-drawer-body">';
     PER.forEach(function (p) {
       h += '<h4>Período ' + p.id + '</h4>';
-      p.temas.forEach(function (id) { var t = T()[id]; h += '<button class="s2-dr-item u' + t.unidad + (id === cur ? ' current' : '') + '" data-jump="' + id + '"><i>' + id + '</i><span>' + esc(t.titulo) + '</span>' + (store.seen[id] ? '<b aria-label="visto">✓</b>' : '') + '</button>'; });
+      p.temas.forEach(function (id) { var t = T()[id]; h += '<button class="s2-dr-item u' + t.unidad + (id === cur ? ' current' : '') + '" data-jump="' + id + '"><i>' + id + '</i><span>' + esc(t.titulo) + '</span>' + (store.seen[id] ? '<b aria-label="visto"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></b>' : '') + '</button>'; });
     });
-    return h + '</div></aside><button class="s2-fab" data-drawer aria-label="Abrir lista de temas">☰ Temas</button>';
+    return h + '</div></aside><button class="s2-fab" data-drawer aria-label="Abrir lista de temas"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Temas</button>';
   }
   function drawer(open) {
     var d = $('#s2Drawer'), sc = $('.s2-scrim'); if (!d) return;
@@ -151,13 +151,13 @@
   /* ---------- tema ---------- */
   function renderTopic() {
     var id = view.id, t = T()[id], p = perOf(id), all = ids(), ix = all.indexOf(id), html = '';
-    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><button class="btn btn-ghost btn-sm" data-drawer>☰ Todos los temas</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
+    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> 2.º año</button><button class="btn btn-ghost btn-sm" data-drawer><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Todos los temas</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
     html += '<header class="s2-head u' + t.unidad + '"><span class="s2-tile big">' + id + '</span><div><h2 id="s2-title">' + esc(t.titulo) + '</h2><p class="lead">' + M(t.resumen) + '</p></div></header>';
     html += '<div class="s2-goals"><strong>Al terminar sabrás:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul></div>';
-    html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '<button class="s2-tab s2-all' + (view.all ? ' active' : '') + '" data-all aria-pressed="' + !!view.all + '" title="Muestra todas las secciones en una sola página">Ver todo ▾</button></div>';
+    html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '<button class="s2-tab s2-all' + (view.all ? ' active' : '') + '" data-all aria-pressed="' + !!view.all + '" title="Muestra todas las secciones en una sola página">Ver todo <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>';
     html += '<div class="s2-panel u' + t.unidad + '" id="s2Panel"></div>';
-    html += '<nav class="s2-pager">' + (ix > 0 ? '<button class="btn btn-ghost" data-jump="' + all[ix - 1] + '">← ' + all[ix - 1] + ' ' + esc(T()[all[ix - 1]].titulo) + '</button>' : '<span></span>') +
-      (ix < all.length - 1 ? '<button class="btn btn-primary" data-jump="' + all[ix + 1] + '">' + all[ix + 1] + ' ' + esc(T()[all[ix + 1]].titulo) + ' →</button>' : '<span></span>') + '</nav>';
+    html += '<nav class="s2-pager">' + (ix > 0 ? '<button class="btn btn-ghost" data-jump="' + all[ix - 1] + '"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> ' + all[ix - 1] + ' ' + esc(T()[all[ix - 1]].titulo) + '</button>' : '<span></span>') +
+      (ix < all.length - 1 ? '<button class="btn btn-primary" data-jump="' + all[ix + 1] + '">' + all[ix + 1] + ' ' + esc(T()[all[ix + 1]].titulo) + ' <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' : '<span></span>') + '</nav>';
     html += drawerHtml(id);
     root.innerHTML = html;
     store.seen[id] = true; store.last = id; save();
@@ -170,7 +170,7 @@
 
   /* ---------- gráficos interactivos con deslizadores ---------- */
   var anim = null;
-  function stopAnim() { if (anim) { cancelAnimationFrame(anim.raf); anim = null; var b = $('[data-anim]'); if (b) b.textContent = '▶ Animar'; } }
+  function stopAnim() { if (anim) { cancelAnimationFrame(anim.raf); anim = null; var b = $('[data-anim]'); if (b) b.innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5l12 7-12 7z" fill="currentColor"/></svg> Animar'; } }
   function renderExplora(t) {
     var C = global.S2Calc && global.S2Calc.CALCS[t.calc], X = global.S2Calc && global.S2Calc.EXP[t.calc];
     if (!C || !X) return '<p class="muted">Este tema no tiene gráfico interactivo.</p>';
@@ -187,7 +187,7 @@
       var v0 = Math.min(x[3], Math.max(x[2], +def[2]));
       h += '<label class="s2-slider"><span>' + x[1] + ' = <b data-val="' + x[0] + '">' + v0 + '</b></span><input type="range" name="' + x[0] + '" min="' + x[2] + '" max="' + x[3] + '" step="' + x[4] + '" value="' + v0 + '"></label>';
     });
-    h += '</div><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-anim>▶ Animar</button><button class="btn btn-ghost btn-sm" data-exp-reset>Valores de ejemplo</button></div><div id="s2ExpOut" class="s2-calc-out" aria-live="polite"></div></div>';
+    h += '</div><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-anim><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5l12 7-12 7z" fill="currentColor"/></svg> Animar</button><button class="btn btn-ghost btn-sm" data-exp-reset>Valores de ejemplo</button></div><div id="s2ExpOut" class="s2-calc-out" aria-live="polite"></div></div>';
     return h;
   }
   function runExplora() {
@@ -206,7 +206,7 @@
     var t = T()[view.id], X = global.S2Calc.EXP[t.calc], first = X.filter(function (x) { return x.length > 1; })[0], el = first && $('#s2Sliders [name="' + first[0] + '"]');
     if (!el) return;
     var lo = +el.min, hi = +el.max, step = +el.step, dir = 1, val = +el.value, acc = 0, last = performance.now();
-    $('[data-anim]').textContent = '⏸ Detener';
+    $('[data-anim]').innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> Detener';
     anim = { raf: 0 };
     (function loop(now) {
       acc += now - last; last = now;
@@ -222,7 +222,7 @@
     var url = 'https://www.youtube.com/watch?v=' + v.id;
     return '<div class="s2-video"><div class="s2-vframe" data-vid="' + v.id + '"><button class="s2-vplay" data-play="' + v.id + '" aria-label="Reproducir video: ' + esc(v.t) + '" style="background-image:url(https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg)"><span aria-hidden="true"></span></button></div>' +
       '<div class="s2-vinfo"><strong>' + esc(v.t) + '</strong><p class="muted small">Video externo de YouTube que explica este tema con más detalle. No se carga hasta que pulses reproducir.</p>' +
-      '<div class="s2-toolrow"><a class="btn btn-ghost btn-sm" href="' + url + '" target="_blank" rel="noopener">Abrir en YouTube ↗</a>' + search + '</div></div></div>' +
+      '<div class="s2-toolrow"><a class="btn btn-ghost btn-sm" href="' + url + '" target="_blank" rel="noopener">Abrir en YouTube <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 16L18 6M9 6h9v9"/></svg></a>' + search + '</div></div></div>' +
       '<div class="s2-goals s2-watch"><strong>Mientras lo ves, fíjate en:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul>' +
       '<p class="muted small">Después, pasa a <button class="link" data-tab="ejemplos">Ejemplos</button> y comprueba que puedes resolverlos tú solo.</p></div>';
   }
@@ -250,7 +250,7 @@
     } else if (tab === 'preguntas') {
       h = '<p class="s2-hint">Responde en voz alta o por escrito antes de abrir la respuesta modelo.</p><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Abrir todas</button><button class="btn btn-ghost btn-sm" data-acc="close">Cerrar todas</button></div>' + t.teoricas.map(function (x, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + M(x.q), M(x.a), false); }).join('');
     } else if (tab === 'errores') {
-      h = '<h3 class="s2-h">Errores comunes</h3><div class="s2-errs">' + t.errores.map(function (e) { return '<div class="s2-err"><span aria-hidden="true">⚠</span><div>' + M(e) + '</div></div>'; }).join('') + '</div>' +
+      h = '<h3 class="s2-h">Errores comunes</h3><div class="s2-errs">' + t.errores.map(function (e) { return '<div class="s2-err"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3zM12 10v4M12 17v.01"/></svg><div>' + M(e) + '</div></div>'; }).join('') + '</div>' +
         '<h3 class="s2-h">En la vida real · ' + esc(t.aplicacion.titulo) + '</h3><div class="s2-app">' + M(t.aplicacion.html) + '</div>';
     } else if (tab === 'calc') {
       h = renderCalc(t);
@@ -284,7 +284,7 @@
     t.ejercicios.forEach(function (e, i) {
       var dn = store.done[id + ':' + i];
       if ((view.nivel !== 'todos' && e.nivel !== view.nivel) || (view.pend && dn)) return;
-      h += '<article class="s2-prob' + (dn ? ' done' : '') + '" style="--i:' + i + '"><div class="s2-prob-top"><span class="s2-num">' + (i + 1) + '</span><span class="s2-lvl ' + e.nivel + '">' + LVL[e.nivel] + '</span><button class="btn btn-ghost btn-sm" data-done="' + i + '" aria-pressed="' + !!dn + '">' + (dn ? '✓ Dominado' : 'Marcar como dominado') + '</button></div>' +
+      h += '<article class="s2-prob' + (dn ? ' done' : '') + '" style="--i:' + i + '"><div class="s2-prob-top"><span class="s2-num">' + (i + 1) + '</span><span class="s2-lvl ' + e.nivel + '">' + LVL[e.nivel] + '</span><button class="btn btn-ghost btn-sm" data-done="' + i + '" aria-pressed="' + !!dn + '">' + (dn ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg> Dominado' : 'Marcar como dominado') + '</button></div>' +
         '<div class="s2-stmt">' + M(e.enunciado) + '</div>' +
         '<details class="s2-acc s2-sol"><summary>Ver solución paso a paso</summary><div class="s2-acc-body"><ol class="s2-steps">' + e.pasos.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol><div class="s2-answer"><span>Respuesta</span>' + M(e.respuesta) + '</div></div></details></article>';
     });
@@ -360,7 +360,7 @@
     exam.locked = true; if (ok) exam.ok++; else exam.miss.push(exam.i);
     if (q.tipo === 'opt') $$('.s2-opt', exam.box).forEach(function (b, k) { b.disabled = true; if (k === q.correcta) b.classList.add('right'); else if (k === +raw) b.classList.add('wrong'); });
     else { var i2 = $('.s2-q-input', exam.box); i2.disabled = true; i2.classList.add(ok ? 'right' : 'wrong'); var cb = $('[data-check]', exam.box); if (cb) cb.hidden = true; }
-    $('#s2Fb').innerHTML = '<div class="s2-fb ' + (ok ? 'ok' : 'no') + '"><strong>' + (ok ? '¡Correcto! ✓' : 'Todavía no ✗') + '</strong>' + (ok ? '' : '<p>La respuesta era: ' + M(correctText(q)) + '</p>') +
+    $('#s2Fb').innerHTML = '<div class="s2-fb ' + (ok ? 'ok' : 'no') + '"><strong>' + (ok ? '¡Correcto!' : 'Todavía no') + '</strong>' + (ok ? '' : '<p>La respuesta era: ' + M(correctText(q)) + '</p>') +
       '<ol class="s2-steps">' + q.pasos.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol>' +
       '<button class="btn btn-primary" data-next>' + (exam.i === exam.qs.length - 1 ? 'Ver resultado' : 'Siguiente pregunta') + '</button></div>';
     var nb = $('[data-next]', exam.box); if (nb) nb.focus({ preventScroll: true });
@@ -390,8 +390,8 @@
 
   /* ---------- hub de exámenes ---------- */
   function renderExamHub() {
-    var all = ids(), h = '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home">← 2.º año</button><span>Modo examen</span></div>';
-    h += '<header class="s2-head"><span class="s2-tile big">★</span><div><h2 id="s2-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
+    var all = ids(), h = '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-s2="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> 2.º año</button><span>Modo examen</span></div>';
+    h += '<header class="s2-head"><span class="s2-tile big"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z"/></svg></span><div><h2 id="s2-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
     h += '<h3 class="s2-h">Por período</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>Período ' + p.id + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Por unidad</h3><div class="s2-modes">' + Object.keys(UN).map(function (u) { var b = store.best['u:' + u]; return '<button class="s2-mode u' + u + '" data-exam-mode="u:' + u + '"><strong>Unidad ' + u + '</strong><span>' + UN[u] + '</span><em>10 preguntas' + (b != null ? ' · mejor ' + b + '/10' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 24 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
@@ -434,8 +434,8 @@
     else if (d.nivel) { view.nivel = d.nivel; renderTab(); }
     else if (b.hasAttribute('data-pend')) { view.pend = !view.pend; renderTab(); }
     else if (d.done != null) { var k = view.id + ':' + d.done; if (store.done[k]) delete store.done[k]; else store.done[k] = true; save(); renderTab(); }
-    else if (b.hasAttribute('data-step')) { var ex = b.closest('[data-ex]'), nx = $('.s2-step[hidden]', ex), tot = $$('.s2-step', ex).length; if (nx) { nx.hidden = false; } var left = $$('.s2-step[hidden]', ex).length; b.textContent = 'Siguiente paso (' + (tot - left) + '/' + tot + ')'; if (!left) { $('.s2-answer', ex).hidden = false; b.disabled = true; b.textContent = 'Listo ✓'; } }
-    else if (b.hasAttribute('data-allsteps')) { var ex2 = b.closest('[data-ex]'); $$('.s2-step', ex2).forEach(function (s) { s.hidden = false; }); $('.s2-answer', ex2).hidden = false; var sb = $('[data-step]', ex2); sb.disabled = true; sb.textContent = 'Listo ✓'; }
+    else if (b.hasAttribute('data-step')) { var ex = b.closest('[data-ex]'), nx = $('.s2-step[hidden]', ex), tot = $$('.s2-step', ex).length; if (nx) { nx.hidden = false; } var left = $$('.s2-step[hidden]', ex).length; b.textContent = 'Siguiente paso (' + (tot - left) + '/' + tot + ')'; if (!left) { $('.s2-answer', ex).hidden = false; b.disabled = true; b.textContent = 'Listo'; } }
+    else if (b.hasAttribute('data-allsteps')) { var ex2 = b.closest('[data-ex]'); $$('.s2-step', ex2).forEach(function (s) { s.hidden = false; }); $('.s2-answer', ex2).hidden = false; var sb = $('[data-step]', ex2); sb.disabled = true; sb.textContent = 'Listo'; }
     else if (d.play) { var fr = b.closest('.s2-vframe'); fr.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + d.play + '?autoplay=1&rel=0" title="Video del tema" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>'; }
     else if (b.hasAttribute('data-anim')) toggleAnim();
     else if (b.hasAttribute('data-exp-reset')) { stopAnim(); renderTab(); }

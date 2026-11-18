@@ -191,7 +191,7 @@
       var ok = [];
       cand.forEach(function (x) {
         var rad = a * x + b, rhs = c * x + d, good = rad >= -1e-9 && rhs >= -1e-9 && Math.abs(Math.sqrt(Math.max(rad, 0)) - rhs) < 1e-7;
-        st.push('Comprobación con ' + m('x = ' + frac(x)) + ': ' + m('√' + f(rad) + ' = ' + f(Math.sqrt(Math.max(rad, 0))) + '') + ' y ' + m('c x + d = ' + f(rhs)) + ' → ' + (good ? '<strong>sirve ✓</strong>' : '<strong>raíz extraña ✗</strong>') + '.');
+        st.push('Comprobación con ' + m('x = ' + frac(x)) + ': ' + m('√' + f(rad) + ' = ' + f(Math.sqrt(Math.max(rad, 0))) + '') + ' y ' + m('c x + d = ' + f(rhs)) + ' → ' + (good ? '<strong>sirve</strong>' : '<strong>raíz extraña</strong>') + '.');
         if (good) ok.push(x);
       });
       var xs = cand.concat([0, -b / (a || 1)]), W = window2(xs, [0, d, 3], 0.4);
@@ -426,13 +426,13 @@
     run: function (v) {
       var a = v.a, b = v.b, c = v.c, d = v.d, x0 = v.x0, st = [], det = a * d - b * c;
       if (Math.abs(det) < 1e-12) return { err: 'ad − bc = 0: la función es constante y no tiene inversa.' };
-      st.push('Condición de inversa: ' + m('ad − bc = ' + f(det) + ' ≠ 0') + ' ✓.');
+      st.push('Condición de inversa: ' + m('ad − bc = ' + f(det) + ' ≠ 0') + '.');
       st.push('Escribe ' + m('y = (' + f(a) + 'x ' + sgn(b) + ')/(' + f(c) + 'x ' + sgn(d) + ')') + ', intercambia x ↔ y y despeja.');
       st.push('Inversa: ' + m('f⁻¹(x) = (' + f(d) + 'x ' + sgn(-b) + ')/(' + f(-c) + 'x ' + sgn(a) + ')') + '.');
       var dom = c !== 0 ? 'x ≠ ' + frac(-d / c) : 'ℝ', ran = c !== 0 ? 'y ≠ ' + frac(a / c) : 'ℝ';
       st.push('Dominio de f: ' + m(dom) + '; recorrido de f: ' + m(ran) + ' (que es el dominio de f⁻¹).');
       var F = function (x) { return (a * x + b) / (c * x + d); }, G = function (x) { return (d * x - b) / (-c * x + a); }, lines = '';
-      if (c === 0 || Math.abs(c * x0 + d) > 1e-12) { var y0 = F(x0); lines = 'Comprobación: ' + m('f(' + f(x0) + ') = ' + frac(y0)) + ' y ' + m('f⁻¹(' + frac(y0) + ') = ' + frac(G(y0))) + (Math.abs(G(y0) - x0) < 1e-7 ? ' ✓ regresa a ' + m(f(x0)) + '.' : '.'); }
+      if (c === 0 || Math.abs(c * x0 + d) > 1e-12) { var y0 = F(x0); lines = 'Comprobación: ' + m('f(' + f(x0) + ') = ' + frac(y0)) + ' y ' + m('f⁻¹(' + frac(y0) + ') = ' + frac(G(y0))) + (Math.abs(G(y0) - x0) < 1e-7 ? ' regresa a ' + m(f(x0)) + '.' : '.'); }
       else lines = 'x₀ está fuera del dominio de f.';
       st.push(lines);
       return { steps: st, res: 'Inversa: ' + m('f⁻¹(x) = (' + f(d) + 'x ' + sgn(-b) + ')/(' + f(-c) + 'x ' + sgn(a) + ')'),

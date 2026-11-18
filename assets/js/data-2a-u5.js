@@ -469,7 +469,7 @@
 <p><span class="math">(f ∘ f<sup>−1</sup>)(x) = x</span> para todo <span class="math">x</span> en <span class="math">Dom(f<sup>−1</sup>)</span>, y <span class="math">(f<sup>−1</sup> ∘ f)(x) = x</span> para todo <span class="math">x</span> en <span class="math">Dom(f)</span>.</p>
 <p>Esta propiedad sirve de <strong>comprobación</strong>: tras calcular una inversa, compón las dos funciones; si el resultado no es exactamente <span class="math">x</span>, hubo un error.</p>
 <p>Ejemplo: <span class="math">f(x) = 2x + 6</span> y <span class="math">f<sup>−1</sup>(x) = (x − 6)/2</span>.</p>
-<p><span class="math">f(f<sup>−1</sup>(x)) = 2·(x − 6)/2 + 6 = x − 6 + 6 = x</span> ✓.</p>
+<p><span class="math">f(f<sup>−1</sup>(x)) = 2·(x − 6)/2 + 6 = x − 6 + 6 = x</span>.</p>
 <p>Intuición: ponerte el zapato y luego quitártelo te deja como estabas. Las operaciones inversas se aplican en orden contrario: si <span class="math">f</span> primero multiplica por 2 y después suma 6, <span class="math">f<sup>−1</sup></span> primero resta 6 y luego divide entre 2.</p>`
       },
       {
@@ -538,7 +538,7 @@
           'Escribe <span class="math">y = 3x − 7</span>.',
           'Despeja <span class="math">x</span>: <span class="math">y + 7 = 3x</span>, entonces <span class="math">x = (y + 7)/3</span>.',
           'Intercambia variables: <span class="math">f<sup>−1</sup>(x) = (x + 7)/3</span>.',
-          'Comprobación: <span class="math">f(f<sup>−1</sup>(x)) = 3·(x + 7)/3 − 7 = x + 7 − 7 = x</span> ✓.'
+          'Comprobación: <span class="math">f(f<sup>−1</sup>(x)) = 3·(x + 7)/3 − 7 = x + 7 − 7 = x</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = (x + 7)/3</span>.'
       },
@@ -562,7 +562,7 @@
           'Escribe <span class="math">y = x² + 2</span>, así que <span class="math">x² = y − 2</span> y <span class="math">x = ±√(y − 2)</span>.',
           'Si <span class="math">x ≥ 0</span>, se elige el signo <strong>más</strong>: <span class="math">x = √(y − 2)</span>. Intercambiando, <span class="math">f<sup>−1</sup>(x) = √(x − 2)</span>.',
           'Si <span class="math">x ≤ 0</span>, se elige el signo <strong>menos</strong>: <span class="math">f<sup>−1</sup>(x) = −√(x − 2)</span>.',
-          'En ambos casos <span class="math">Dom(f<sup>−1</sup>) = R<sub>f</sub> = [2, +∞[</span>. Comprobación (primer caso): <span class="math">f(f<sup>−1</sup>(3)) = (√1)² + 2 = 3</span> ✓.'
+          'En ambos casos <span class="math">Dom(f<sup>−1</sup>) = R<sub>f</sub> = [2, +∞[</span>. Comprobación (primer caso): <span class="math">f(f<sup>−1</sup>(3)) = (√1)² + 2 = 3</span>.'
         ],
         respuesta: 'Para <span class="math">x ≥ 0</span>: <span class="math">f<sup>−1</sup>(x) = √(x − 2)</span>. Para <span class="math">x ≤ 0</span>: <span class="math">f<sup>−1</sup>(x) = −√(x − 2)</span>. Dominio de ambas: <span class="math">[2, +∞[</span>.'
       },
@@ -574,7 +574,7 @@
           'Distribuye: <span class="math">xy − 3y = 2x + 1</span>. Junta los términos con <span class="math">x</span>: <span class="math">xy − 2x = 1 + 3y</span>.',
           'Factoriza: <span class="math">x(y − 2) = 1 + 3y</span>, luego <span class="math">x = (1 + 3y)/(y − 2)</span>.',
           'Intercambia variables: <span class="math">f<sup>−1</sup>(x) = (3x + 1)/(x − 2)</span>, con dominio <span class="math">ℝ − {2}</span> (que es el rango de <span class="math">f</span>).',
-          'Comprobación: <span class="math">f<sup>−1</sup>(5) = 16/3</span> y <span class="math">f(16/3) = (32/3 + 1)/(16/3 − 3) = (35/3)/(7/3) = 5</span> ✓.'
+          'Comprobación: <span class="math">f<sup>−1</sup>(5) = 16/3</span> y <span class="math">f(16/3) = (32/3 + 1)/(16/3 − 3) = (35/3)/(7/3) = 5</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = (3x + 1)/(x − 2)</span>, con <span class="math">x ≠ 2</span>.'
       }
@@ -614,7 +614,7 @@
         pasos: [
           '<span class="math">y = x/2 + 4</span>, entonces <span class="math">y − 4 = x/2</span> y <span class="math">x = 2(y − 4)</span>.',
           'Intercambia: <span class="math">f<sup>−1</sup>(x) = 2x − 8</span>.',
-          'Verificación: <span class="math">f(2x − 8) = (2x − 8)/2 + 4 = x − 4 + 4 = x</span> ✓.'
+          'Verificación: <span class="math">f(2x − 8) = (2x − 8)/2 + 4 = x − 4 + 4 = x</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = 2x − 8</span>.'
       },
@@ -635,7 +635,7 @@
           '<span class="math">y = x³ + 2</span>, entonces <span class="math">x³ = y − 2</span>.',
           'Raíz cúbica (existe para cualquier real): <span class="math">x = ∛(y − 2)</span>.',
           'Intercambia: <span class="math">f<sup>−1</sup>(x) = ∛(x − 2)</span>.',
-          'Verificación: <span class="math">f(∛(x − 2)) = (x − 2) + 2 = x</span> ✓.'
+          'Verificación: <span class="math">f(∛(x − 2)) = (x − 2) + 2 = x</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = ∛(x − 2)</span>, dominio <span class="math">ℝ</span>.'
       },
@@ -647,7 +647,7 @@
           '<span class="math">x = 4/y − 1 = (4 − y)/y</span>.',
           'Intercambia: <span class="math">f<sup>−1</sup>(x) = (4 − x)/x</span>.',
           'El rango de <span class="math">f</span> es <span class="math">ℝ − {0}</span> (la fracción nunca vale 0), así que <span class="math">x ≠ 0</span>.',
-          'Verificación: <span class="math">f((4 − x)/x) = 4/((4 − x)/x + 1) = 4/(4/x) = x</span> ✓.'
+          'Verificación: <span class="math">f((4 − x)/x) = 4/((4 − x)/x + 1) = 4/(4/x) = x</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = (4 − x)/x</span>, con <span class="math">x ≠ 0</span>.'
       },
@@ -669,7 +669,7 @@
           '<span class="math">y(3x − 1) = x + 2</span>, o sea <span class="math">3xy − y = x + 2</span>.',
           'Junta términos con <span class="math">x</span>: <span class="math">3xy − x = y + 2</span>, y factoriza <span class="math">x(3y − 1) = y + 2</span>.',
           '<span class="math">x = (y + 2)/(3y − 1)</span>. Intercambia variables: <span class="math">f<sup>−1</sup>(x) = (x + 2)/(3x − 1)</span>.',
-          'Es exactamente la misma función: <span class="math">f<sup>−1</sup> = f</span>. Comprobación con la fórmula homográfica (<span class="math">a = 1, b = 2, c = 3, d = −1</span>): <span class="math">(−dx + b)/(cx − a) = (x + 2)/(3x − 1)</span> ✓.',
+          'Es exactamente la misma función: <span class="math">f<sup>−1</sup> = f</span>. Comprobación con la fórmula homográfica (<span class="math">a = 1, b = 2, c = 3, d = −1</span>): <span class="math">(−dx + b)/(cx − a) = (x + 2)/(3x − 1)</span>.',
           'Su gráfica es simétrica respecto a la recta <span class="math">y = x</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = (x + 2)/(3x − 1) = f(x)</span>: la función es su propia inversa (involutiva).'
@@ -682,7 +682,7 @@
           '<span class="math">y = (x − 2)² + 3</span>, luego <span class="math">(x − 2)² = y − 3</span> y <span class="math">x − 2 = ±√(y − 3)</span>.',
           'Como <span class="math">x ≥ 2</span>, <span class="math">x − 2 ≥ 0</span> y se toma el signo más: <span class="math">x = 2 + √(y − 3)</span>.',
           'Intercambia: <span class="math">f<sup>−1</sup>(x) = 2 + √(x − 3)</span>, dominio <span class="math">[3, +∞[</span>.',
-          '<span class="math">f<sup>−1</sup>(7) = 2 + √4 = 4</span>. Comprobación: <span class="math">f(4) = 16 − 16 + 7 = 7</span> ✓.'
+          '<span class="math">f<sup>−1</sup>(7) = 2 + √4 = 4</span>. Comprobación: <span class="math">f(4) = 16 − 16 + 7 = 7</span>.'
         ],
         respuesta: '<span class="math">f<sup>−1</sup>(x) = 2 + √(x − 3)</span>, dominio <span class="math">[3, +∞[</span>, y <span class="math">f<sup>−1</sup>(7) = 4</span>.'
       },
@@ -693,7 +693,7 @@
           'Llama <span class="math">u = 2x + 1</span>; entonces <span class="math">x = (u − 1)/2</span>.',
           'Reescribe el lado derecho con <span class="math">u</span>: <span class="math">4x² + 4x + 3 = (2x)² + 2(2x) + 3 = (u − 1)² + 2(u − 1) + 3</span>.',
           'Desarrolla: <span class="math">u² − 2u + 1 + 2u − 2 + 3 = u² + 2</span>.',
-          'Entonces <span class="math">g(u) = u² + 2</span>. Comprobación: <span class="math">g(f(x)) = (2x + 1)² + 2 = 4x² + 4x + 3</span> ✓.'
+          'Entonces <span class="math">g(u) = u² + 2</span>. Comprobación: <span class="math">g(f(x)) = (2x + 1)² + 2 = 4x² + 4x + 3</span>.'
         ],
         respuesta: '<span class="math">g(x) = x² + 2</span>.'
       }
@@ -745,7 +745,7 @@
 <p><strong>2) Inversa:</strong> para pasar de Fahrenheit a Celsius necesitas <span class="math">F<sup>−1</sup></span>. Despeja: <span class="math">F = 1.8C + 32</span> da <span class="math">C = (F − 32)/1.8</span>. Como <span class="math">F</span> es lineal con pendiente distinta de 0, es biyectiva y la inversa existe. Si un termómetro marca <span class="math">95 °F</span>: <span class="math">C = (95 − 32)/1.8 = 63/1.8 = 35 °C</span>.</p>
 <p><strong>3) Composición:</strong> la escala Kelvin se obtiene de Celsius con <span class="math">K(C) = C + 273.15</span>. Para ir de Fahrenheit a Kelvin compones: <span class="math">(K ∘ F<sup>−1</sup>)(F) = (F − 32)/1.8 + 273.15</span>.</p>
 <p>Con <span class="math">95 °F</span>: <span class="math">35 + 273.15 = 308.15 K</span>.</p>
-<p><strong>Comprobación con la propiedad de identidad:</strong> <span class="math">F(F<sup>−1</sup>(95)) = 1.8·35 + 32 = 63 + 32 = 95</span> ✓. Este es el patrón de las conversiones: cada cambio de unidades es una función biyectiva, y volver atrás es aplicar su inversa.</p>`
+<p><strong>Comprobación con la propiedad de identidad:</strong> <span class="math">F(F<sup>−1</sup>(95)) = 1.8·35 + 32 = 63 + 32 = 95</span>. Este es el patrón de las conversiones: cada cambio de unidades es una función biyectiva, y volver atrás es aplicar su inversa.</p>`
     },
     calc: 'inversa',
     examen: [
@@ -953,7 +953,7 @@
           'Producto: <span class="math">log<sub>2</sub>[x(x − 1)] = 1</span>.',
           'Forma exponencial: <span class="math">x(x − 1) = 2¹ = 2</span>, entonces <span class="math">x² − x − 2 = 0</span>.',
           'Factoriza: <span class="math">(x − 2)(x + 1) = 0</span>, así que <span class="math">x = 2</span> o <span class="math">x = −1</span>.',
-          'Comprobación: <span class="math">x = −1</span> no está en el dominio (<span class="math">log<sub>2</sub>(−1)</span> no existe): se descarta. Para <span class="math">x = 2</span>: <span class="math">log<sub>2</sub>(2) + log<sub>2</sub>(1) = 1 + 0 = 1</span> ✓.'
+          'Comprobación: <span class="math">x = −1</span> no está en el dominio (<span class="math">log<sub>2</sub>(−1)</span> no existe): se descarta. Para <span class="math">x = 2</span>: <span class="math">log<sub>2</sub>(2) + log<sub>2</sub>(1) = 1 + 0 = 1</span>.'
         ],
         respuesta: '<span class="math">x = 2</span>.'
       },
@@ -961,10 +961,10 @@
         titulo: 'Logaritmo igual a número y logaritmo igual a logaritmo',
         enunciado: 'Resuelve: (a) <span class="math">log<sub>5</sub>(3x − 2) = 2</span>; (b) <span class="math">ln(2x − 1) = ln(x + 4)</span>.',
         pasos: [
-          '(a) Dominio: <span class="math">3x − 2 &gt; 0</span>. Forma exponencial: <span class="math">3x − 2 = 5² = 25</span>, entonces <span class="math">3x = 27</span> y <span class="math">x = 9</span>. Comprobación: <span class="math">3·9 − 2 = 25 &gt; 0</span> y <span class="math">log<sub>5</sub>(25) = 2</span> ✓.',
+          '(a) Dominio: <span class="math">3x − 2 &gt; 0</span>. Forma exponencial: <span class="math">3x − 2 = 5² = 25</span>, entonces <span class="math">3x = 27</span> y <span class="math">x = 9</span>. Comprobación: <span class="math">3·9 − 2 = 25 &gt; 0</span> y <span class="math">log<sub>5</sub>(25) = 2</span>.',
           '(b) Dominio: <span class="math">2x − 1 &gt; 0</span> y <span class="math">x + 4 &gt; 0</span>, o sea <span class="math">x &gt; 1/2</span>.',
           'Como ambos lados son <span class="math">ln</span> de algo, los argumentos son iguales: <span class="math">2x − 1 = x + 4</span>, de donde <span class="math">x = 5</span>.',
-          'Comprobación: <span class="math">5 &gt; 1/2</span>; <span class="math">ln(9) = ln(9)</span> ✓.'
+          'Comprobación: <span class="math">5 &gt; 1/2</span>; <span class="math">ln(9) = ln(9)</span>.'
         ],
         respuesta: '(a) <span class="math">x = 9</span>; (b) <span class="math">x = 5</span>.'
       },
@@ -988,7 +988,7 @@
           'Sustitución: <span class="math">u = log<sub>2</sub>(x)</span>. La ecuación queda <span class="math">u² − 3u + 2 = 0</span>.',
           'Factoriza: <span class="math">(u − 1)(u − 2) = 0</span>, entonces <span class="math">u = 1</span> o <span class="math">u = 2</span>.',
           'Regresa a <span class="math">x</span>: si <span class="math">log<sub>2</sub>(x) = 1</span>, <span class="math">x = 2¹ = 2</span>. Si <span class="math">log<sub>2</sub>(x) = 2</span>, <span class="math">x = 2² = 4</span>.',
-          'Comprobación: ambos son positivos. Con <span class="math">x = 4</span>: <span class="math">2² − 3·2 + 2 = 0</span> ✓.'
+          'Comprobación: ambos son positivos. Con <span class="math">x = 4</span>: <span class="math">2² − 3·2 + 2 = 0</span>.'
         ],
         respuesta: '<span class="math">x = 2</span> o <span class="math">x = 4</span>.'
       }
@@ -1027,7 +1027,7 @@
         pasos: [
           'Dominio: <span class="math">x &gt; 0</span>.',
           'Forma exponencial: <span class="math">x = 2⁵ = 32</span>.',
-          'Comprobación: <span class="math">log<sub>2</sub>(32) = 5</span> ✓.'
+          'Comprobación: <span class="math">log<sub>2</sub>(32) = 5</span>.'
         ],
         respuesta: '<span class="math">x = 32</span>.'
       },
@@ -1056,7 +1056,7 @@
         pasos: [
           'Dominio: <span class="math">x − 3 &gt; 0</span>, o sea <span class="math">x &gt; 3</span>.',
           'Forma exponencial: <span class="math">x − 3 = 2⁴ = 16</span>.',
-          '<span class="math">x = 19</span>. Comprobación: <span class="math">19 &gt; 3</span> y <span class="math">log<sub>2</sub>(16) = 4</span> ✓.'
+          '<span class="math">x = 19</span>. Comprobación: <span class="math">19 &gt; 3</span> y <span class="math">log<sub>2</sub>(16) = 4</span>.'
         ],
         respuesta: '<span class="math">x = 19</span>.'
       },
@@ -1078,7 +1078,7 @@
           'Producto: <span class="math">log[x(x − 21)] = 2</span>, así que <span class="math">x(x − 21) = 10² = 100</span>.',
           '<span class="math">x² − 21x − 100 = 0</span>. Factoriza: <span class="math">(x − 25)(x + 4) = 0</span>.',
           '<span class="math">x = 25</span> o <span class="math">x = −4</span>. Se descarta <span class="math">−4</span> (no cumple <span class="math">x &gt; 21</span>).',
-          'Comprobación: <span class="math">log(25) + log(4) = log(100) = 2</span> ✓.'
+          'Comprobación: <span class="math">log(25) + log(4) = log(100) = 2</span>.'
         ],
         respuesta: '<span class="math">x = 25</span>.'
       },
@@ -1089,7 +1089,7 @@
           'Aplica <span class="math">ln</span> a ambos lados: <span class="math">(x + 1)·ln(2) = x·ln(3)</span>.',
           'Distribuye: <span class="math">x·ln(2) + ln(2) = x·ln(3)</span>. Pasa los términos con <span class="math">x</span> a un lado: <span class="math">ln(2) = x·(ln(3) − ln(2))</span>.',
           '<span class="math">x = ln(2)/(ln(3) − ln(2)) = ln(2)/ln(1.5) ≈ 0.6931/0.4055 ≈ 1.7095</span>.',
-          'Comprobación: <span class="math">2<sup>2.71</sup> ≈ 6.55</span> y <span class="math">3<sup>1.71</sup> ≈ 6.55</span> ✓.'
+          'Comprobación: <span class="math">2<sup>2.71</sup> ≈ 6.55</span> y <span class="math">3<sup>1.71</sup> ≈ 6.55</span>.'
         ],
         respuesta: '<span class="math">x ≈ 1.71</span>.'
       },
@@ -1352,7 +1352,7 @@
           'Opuesto = 5, adyacente = 12, hipotenusa = 13.',
           '<span class="math">sen θ = 5/13</span>, <span class="math">cos θ = 12/13</span>, <span class="math">tan θ = 5/12</span>.',
           'Recíprocas: <span class="math">csc θ = 13/5</span>, <span class="math">sec θ = 13/12</span>, <span class="math">cot θ = 12/5</span>.',
-          'Comprobación con la identidad: <span class="math">(5/13)² + (12/13)² = 25/169 + 144/169 = 1</span> ✓.'
+          'Comprobación con la identidad: <span class="math">(5/13)² + (12/13)² = 25/169 + 144/169 = 1</span>.'
         ],
         respuesta: '<span class="math">sen θ = 5/13</span>, <span class="math">cos θ = 12/13</span>, <span class="math">tan θ = 5/12</span>, <span class="math">csc θ = 13/5</span>, <span class="math">sec θ = 13/12</span>, <span class="math">cot θ = 12/5</span>.'
       },
@@ -1363,7 +1363,7 @@
           '(a) En el triángulo 30°-60°-90° los lados son <span class="math">k, k√3, 2k</span>. Hipotenusa <span class="math">2k = 10</span>, así que <span class="math">k = 5</span>.',
           'Cateto opuesto a 30°: <span class="math">5</span>. Cateto opuesto a 60°: <span class="math">5√3 ≈ 8.66</span>.',
           '(b) Catetos <span class="math">k = 6</span>: hipotenusa <span class="math">k√2 = 6√2</span>. En decimales, <span class="math">6·1.4142 ≈ 8.49</span>.',
-          'Comprobación con Pitágoras: <span class="math">6² + 6² = 72 = (6√2)²</span> ✓.'
+          'Comprobación con Pitágoras: <span class="math">6² + 6² = 72 = (6√2)²</span>.'
         ],
         respuesta: '(a) Catetos <span class="math">5</span> y <span class="math">5√3 ≈ 8.66</span>; (b) hipotenusa <span class="math">6√2 ≈ 8.49</span>.'
       },
@@ -1407,7 +1407,7 @@
           'Ángulo <span class="math">C</span> (opuesto al lado mayor): <span class="math">cos C = (a² + b² − c²)/(2ab) = (49 + 64 − 81)/(2·7·8) = 32/112 = 2/7 ≈ 0.2857</span>, así que <span class="math">C ≈ 73.40°</span>.',
           'Ángulo <span class="math">A</span>: <span class="math">cos A = (b² + c² − a²)/(2bc) = (64 + 81 − 49)/(2·8·9) = 96/144 = 2/3</span>, así que <span class="math">A ≈ 48.19°</span>.',
           'Ángulo <span class="math">B</span> con la suma de ángulos: <span class="math">B = 180° − 73.40° − 48.19° ≈ 58.41°</span>.',
-          'Comprobación: por la ley del seno, <span class="math">a/sen A = 7/0.7454 ≈ 9.39</span> y <span class="math">b/sen B = 8/0.8528 ≈ 9.38</span> ✓.'
+          'Comprobación: por la ley del seno, <span class="math">a/sen A = 7/0.7454 ≈ 9.39</span> y <span class="math">b/sen B = 8/0.8528 ≈ 9.38</span>.'
         ],
         respuesta: '<span class="math">A ≈ 48.19°</span>, <span class="math">B ≈ 58.41°</span>, <span class="math">C ≈ 73.40°</span>.'
       }
@@ -1449,7 +1449,7 @@
         pasos: [
           'Cateto opuesto a 30°: <span class="math">20·sen 30° = 20·(1/2) = 10</span>.',
           'Cateto adyacente: <span class="math">20·cos 30° = 20·√3/2 = 10√3 ≈ 17.32</span>.',
-          'Comprobación: <span class="math">10² + (10√3)² = 100 + 300 = 400 = 20²</span> ✓.'
+          'Comprobación: <span class="math">10² + (10√3)² = 100 + 300 = 400 = 20²</span>.'
         ],
         respuesta: 'Catetos <span class="math">10</span> y <span class="math">10√3 ≈ 17.32</span>.'
       },
@@ -1580,7 +1580,7 @@
 <li>Racionaliza multiplicando por <span class="math">(3 + √3)</span>: <span class="math">h = 40√3(3 + √3)/6 = 20(√3 + 1)</span>.</li>
 </ol>
 <p>Numéricamente: <span class="math">h = 20(1.7321 + 1) ≈ 54.64</span> m.</p>
-<p>Comprobación: <span class="math">x = h = 54.64</span> y <span class="math">tan 30° = 54.64/(54.64 + 40) = 54.64/94.64 ≈ 0.577</span>, que coincide con <span class="math">tan 30° = 0.577</span> ✓. Esta técnica de "doble observación" se usa en topografía para medir alturas inaccesibles de torres, cerros y volcanes.</p>`
+<p>Comprobación: <span class="math">x = h = 54.64</span> y <span class="math">tan 30° = 54.64/(54.64 + 40) = 54.64/94.64 ≈ 0.577</span>, que coincide con <span class="math">tan 30° = 0.577</span>. Esta técnica de "doble observación" se usa en topografía para medir alturas inaccesibles de torres, cerros y volcanes.</p>`
     },
     calc: 'triangulo',
     examen: [
