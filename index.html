@@ -1012,11 +1012,18 @@
     e.preventDefault();
     if(unlocked)return;
     var pwd=document.getElementById('s3Pwd').value;
-    errEl.textContent='Verificando…';
-    fetch('assets/s3.bin?v=1')
-      .then(function(r){return r.text();})
-      .then(function(b64){
-        var raw=atob(b64);
+    if(!pwd){errEl.textContent='Escribe la contraseña.';return;}
+    errEl.textContent='⏳ Cargando…';
+    document.getElementById('s3Pwd').disabled=true;
+    fetch('assets/s3.b64?v=1')
+      .then(function(r){
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        return r.arrayBuffer();
+      })
+      .then(function(ab){
+        // El archivo es base64 en texto — decodificar a bytes
+        var text=new TextDecoder().decode(ab).replace(/\s/g,'');
+        var raw=atob(text);
         var bytes=new Uint8Array(raw.length);
         for(var i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
         var salt=bytes.slice(0,16);
@@ -1035,6 +1042,7 @@
             unlocked=true;
             document.getElementById('s3Gate').hidden=true;
             document.getElementById('s3Pwd').value='';
+            document.getElementById('s3Pwd').disabled=false;
             errEl.textContent='';
             if(window.showSection)window.showSection('tercero');
             else{
@@ -1043,10 +1051,12 @@
             }
           });
       })
-      .catch(function(){
-        errEl.textContent='Contraseña incorrecta.';
-        document.getElementById('s3Pwd').value='';
-        document.getElementById('s3Pwd').focus();
+      .catch(function(e){
+        var pw=document.getElementById('s3Pwd');
+        pw.disabled=false;
+        errEl.textContent=(e&&e.name==='OperationError')?'Contraseña incorrecta.':'Error al cargar. Recarga la página e inténtalo de nuevo.';
+        pw.value='';
+        pw.focus();
       });
   });
 })();
