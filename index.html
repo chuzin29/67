@@ -1044,6 +1044,7 @@
             document.getElementById('s3Pwd').value='';
             document.getElementById('s3Pwd').disabled=false;
             errEl.textContent='';
+            document.getElementById('tercero').hidden=false;
             if(window.showSection)window.showSection('tercero');
             else{
               document.querySelectorAll('section.view').forEach(function(s){s.hidden=true;});
