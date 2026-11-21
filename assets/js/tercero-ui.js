@@ -456,7 +456,7 @@
   function mount() {
     if (mounted) return;
     root = $('#s3Root'); if (!root) return;
-    if (!ids().length) { root.innerHTML = '<p class="muted">No se pudo cargar el contenido de 2.º año.</p>'; return; }
+    if (!ids().length) { root.innerHTML = '<p class="muted">No se pudo cargar el contenido de 3.er año.</p>'; return; }
     mounted = true; load();
     document.addEventListener('keydown', onKey);
     root.addEventListener('click', onClick); root.addEventListener('input', onInput); root.addEventListener('change', onInput); root.addEventListener('submit', onSubmit);

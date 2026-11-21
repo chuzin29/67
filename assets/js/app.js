@@ -175,9 +175,7 @@
     });
 
     var initial = (location.hash || '').replace('#', '');
-    // No permitir acceso directo a #tercero por URL — requiere contraseña
-    if (initial === 'tercero') initial = 'inicio';
-    showSection(sections.indexOf(initial) !== -1 ? initial : 'inicio', { scroll: false });
+        showSection(sections.indexOf(initial) !== -1 ? initial : 'inicio', { scroll: false });
     window.showSection = showSection;
   }
 

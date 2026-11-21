@@ -51,6 +51,7 @@
     <nav class="nav" id="nav" aria-label="Navegación principal">
       <button class="nav-link active" data-section="inicio">Inicio</button>
       <button class="nav-link nav-new" data-section="segundo">2.º año</button>
+      <button class="nav-link nav-new" data-section="tercero">3.er año</button>
       <details class="nav-group" id="navLegacy"><summary class="nav-sum">1.er año · IV período <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
       <button class="nav-link" data-section="teoria">Teoría</button>
       <button class="nav-link" data-section="vectores">Vectores</button>
@@ -936,7 +937,7 @@
     </div>
   </div>
 </section>
-<section id="tercero" class="view" hidden>
+<section id="tercero" class="view" aria-label="3.er año">
   <div class="wrap" id="s3Root"></div>
 </section>
 </main>
@@ -978,7 +979,6 @@
           <h2>Proyecto</h2>
           <ul>
             <li><a href="https://github.com/chuzin29/67" rel="noopener">Código abierto</a></li>
-            <li><button class="btn-link" id="btnS3" onclick="(function(){var d=document.getElementById('s3Gate');d.hidden=!d.hidden;})()">···</button></li>
             <li><a href="#inicio" data-go="inicio">Volver arriba <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a></li>
           </ul>
         </div>
@@ -990,78 +990,6 @@
     </div>
   </div>
 </footer>
-
-<!-- Sección 3er año — acceso restringido -->
-<div id="s3Gate" hidden style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:hsl(268 30% 4%/0.97);backdrop-filter:blur(6px)">
-  <form id="s3Form" style="display:grid;gap:1rem;padding:2rem;border-radius:1.2rem;border:1px solid hsl(270 88% 74%/0.3);background:hsl(268 30% 10%);min-width:280px;max-width:340px;width:90%">
-    <h2 style="margin:0;color:hsl(270 88% 74%);font-size:1.1rem;text-align:center">Acceso restringido</h2>
-    <p style="margin:0;font-size:.85rem;color:hsl(268 10% 62%);text-align:center">Esta sección es experimental.<br>Introduce la clave para continuar.</p>
-    <input id="s3Pwd" type="password" autocomplete="off" placeholder="Contraseña" style="padding:.65rem .9rem;border-radius:.6rem;border:1px solid hsl(270 88% 74%/0.4);background:hsl(268 30% 7%);color:inherit;font-size:1rem;outline:none" />
-    <div id="s3Err" style="color:hsl(0 80% 65%);font-size:.82rem;min-height:1rem;text-align:center"></div>
-    <div style="display:flex;gap:.7rem">
-      <button type="submit" style="flex:1;padding:.65rem;border-radius:.6rem;background:hsl(270 88% 74%);color:hsl(268 30% 8%);font-weight:800;border:0;cursor:pointer;font-size:.95rem">Entrar</button>
-      <button type="button" onclick="document.getElementById('s3Gate').hidden=true" style="padding:.65rem 1rem;border-radius:.6rem;background:transparent;border:1px solid hsl(268 10% 40%);color:inherit;cursor:pointer;font-size:.95rem">✕</button>
-    </div>
-  </form>
-</div>
-<script>
-(function(){
-  var errEl=document.getElementById('s3Err');
-  var unlocked=false;
-  document.getElementById('s3Form').addEventListener('submit',function(e){
-    e.preventDefault();
-    if(unlocked)return;
-    var pwd=document.getElementById('s3Pwd').value;
-    if(!pwd){errEl.textContent='Escribe la contraseña.';return;}
-    errEl.textContent='⏳ Cargando…';
-    document.getElementById('s3Pwd').disabled=true;
-    fetch('assets/s3.b64?v=1')
-      .then(function(r){
-        if(!r.ok)throw new Error('HTTP '+r.status);
-        return r.arrayBuffer();
-      })
-      .then(function(ab){
-        // El archivo es base64 en texto — decodificar a bytes
-        var text=new TextDecoder().decode(ab).replace(/\s/g,'');
-        var raw=atob(text);
-        var bytes=new Uint8Array(raw.length);
-        for(var i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
-        var salt=bytes.slice(0,16);
-        var iv=bytes.slice(16,28);
-        var data=bytes.slice(28);
-        return crypto.subtle.importKey('raw',new TextEncoder().encode(pwd),'PBKDF2',false,['deriveKey'])
-          .then(function(km){
-            return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:250000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
-          })
-          .then(function(key){
-            return crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,data);
-          })
-          .then(function(plain){
-            var code=new TextDecoder().decode(plain);
-            (0,eval)(code);
-            unlocked=true;
-            document.getElementById('s3Gate').hidden=true;
-            document.getElementById('s3Pwd').value='';
-            document.getElementById('s3Pwd').disabled=false;
-            errEl.textContent='';
-            document.getElementById('tercero').hidden=false;
-            if(window.showSection)window.showSection('tercero');
-            else{
-              document.querySelectorAll('section.view').forEach(function(s){s.hidden=true;});
-              document.getElementById('tercero').hidden=false;
-            }
-          });
-      })
-      .catch(function(e){
-        var pw=document.getElementById('s3Pwd');
-        pw.disabled=false;
-        errEl.textContent=(e&&e.name==='OperationError')?'Contraseña incorrecta.':'Error al cargar. Recarga la página e inténtalo de nuevo.';
-        pw.value='';
-        pw.focus();
-      });
-  });
-})();
-</script>
 
 <!-- Mascota -->
 <button class="mascota" id="mascota" aria-label="Cheuscita, la mascota del curso">
@@ -1086,7 +1014,17 @@
 <script src="assets/js/videos-2a.js?v=1"></script>
 <script src="assets/js/segundo-calc.js?v=8"></script>
 <script src="assets/js/segundo.js?v=9"></script>
+<script src="assets/js/data-3a-u1.js?v=1"></script>
+<script src="assets/js/data-3a-u2.js?v=1"></script>
+<script src="assets/js/data-3a-u3.js?v=1"></script>
+<script src="assets/js/data-3a-u4.js?v=1"></script>
+<script src="assets/js/data-3a-u5.js?v=1"></script>
+<script src="assets/js/data-3a-u6.js?v=1"></script>
+<script src="assets/js/videos-3a.js?v=2"></script>
+<script src="assets/js/tercero-calc.js?v=1"></script>
+<script src="assets/js/tercero-ui.js?v=2"></script>
+<script>if(window.Tercero)Tercero.mount(document.getElementById("s3Root"));</script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=10"></script>
+<script src="assets/js/app.js?v=11"></script>
 </body>
 </html>
