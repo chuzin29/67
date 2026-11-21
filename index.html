@@ -936,6 +936,9 @@
     </div>
   </div>
 </section>
+<section id="tercero" class="view" hidden>
+  <div class="wrap" id="s3Root"></div>
+</section>
 </main>
 
 <!-- ==================== PIE ==================== -->
@@ -1001,33 +1004,51 @@
     </div>
   </form>
 </div>
-<section id="tercero" hidden>
-  <div class="wrap" id="s3Root"><p class="muted">Cargando Cálculo 3er año…</p></div>
-</section>
 <script>
 (function(){
-  var HASH='522aef6e1680985c3abed27a9ea7cfce339a9fb6809fcfa07cd6364c21d9021f';
-  async function sha256(s){var b=new TextEncoder().encode(s);var ab=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(ab)).map(function(x){return x.toString(16).padStart(2,'0')}).join('');}
+  var errEl=document.getElementById('s3Err');
   var unlocked=false;
   document.getElementById('s3Form').addEventListener('submit',function(e){
     e.preventDefault();
-    var v=document.getElementById('s3Pwd').value;
-    sha256(v).then(function(h){
-      if(h===HASH){
-        unlocked=true;
-        document.getElementById('s3Gate').hidden=true;
-        document.getElementById('tercero').hidden=false;
-        if(typeof Tercero!=='undefined') Tercero.mount();
-        window.scrollTo({top:document.getElementById('tercero').offsetTop-80,behavior:'smooth'});
-      } else {
-        document.getElementById('s3Err').textContent='Clave incorrecta';
+    if(unlocked)return;
+    var pwd=document.getElementById('s3Pwd').value;
+    errEl.textContent='Verificando…';
+    fetch('assets/s3.bin?v=1')
+      .then(function(r){return r.text();})
+      .then(function(b64){
+        var raw=atob(b64);
+        var bytes=new Uint8Array(raw.length);
+        for(var i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+        var salt=bytes.slice(0,16);
+        var iv=bytes.slice(16,28);
+        var data=bytes.slice(28);
+        return crypto.subtle.importKey('raw',new TextEncoder().encode(pwd),'PBKDF2',false,['deriveKey'])
+          .then(function(km){
+            return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:250000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+          })
+          .then(function(key){
+            return crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,data);
+          })
+          .then(function(plain){
+            var code=new TextDecoder().decode(plain);
+            (0,eval)(code);
+            unlocked=true;
+            document.getElementById('s3Gate').hidden=true;
+            document.getElementById('s3Pwd').value='';
+            errEl.textContent='';
+            if(window.showSection)window.showSection('tercero');
+            else{
+              document.querySelectorAll('section.view').forEach(function(s){s.hidden=true;});
+              document.getElementById('tercero').hidden=false;
+            }
+          });
+      })
+      .catch(function(){
+        errEl.textContent='Contraseña incorrecta.';
         document.getElementById('s3Pwd').value='';
         document.getElementById('s3Pwd').focus();
-      }
-    });
+      });
   });
-  // No exponer hash ni pwd en consola
-  Object.defineProperty(window,'__s3h',{get:function(){return''},set:function(){}});
 })();
 </script>
 
@@ -1055,7 +1076,6 @@
 <script src="assets/js/segundo-calc.js?v=8"></script>
 <script src="assets/js/segundo.js?v=9"></script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=9"></script>
-<script src="assets/js/tercero.js?v=1"></script>
+<script src="assets/js/app.js?v=10"></script>
 </body>
 </html>

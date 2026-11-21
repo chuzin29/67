@@ -119,7 +119,7 @@
   /* ---------------------------------------------------------
      Navegación
      --------------------------------------------------------- */
-  var sections = ['inicio', 'segundo', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen'];
+  var sections = ['inicio', 'segundo', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen', 'tercero'];
   var rendered = { ejercicios: false, bancos: false, examen: false };
 
   function showSection(id, options) {
@@ -175,7 +175,10 @@
     });
 
     var initial = (location.hash || '').replace('#', '');
+    // No permitir acceso directo a #tercero por URL — requiere contraseña
+    if (initial === 'tercero') initial = 'inicio';
     showSection(sections.indexOf(initial) !== -1 ? initial : 'inicio', { scroll: false });
+    window.showSection = showSection;
   }
 
   /* ---------------------------------------------------------
