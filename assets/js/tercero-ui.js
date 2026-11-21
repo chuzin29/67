@@ -172,30 +172,38 @@
   var anim = null;
   function stopAnim() { if (anim) { cancelAnimationFrame(anim.raf); anim = null; var b = $('[data-anim]'); if (b) b.innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5l12 7-12 7z" fill="currentColor"/></svg> Animar'; } }
   function renderExplora(t) {
-    // T3Calc no tiene EXP — redirige a la calculadora del tema
-    return renderCalc(t);
+    var C = global.T3Calc && global.T3Calc.CALCS[t.calc];
+    if (!C || !global.T3Graf || !global.T3Graf.has(t.calc)) return '<p class="muted">Este tema no tiene gráfico interactivo.</p>';
+    var vars = C.vars || [], h = '<div class="s2-explora"><p class="muted small">Mueve los deslizadores y mira cómo cambia la gráfica.</p>';
+    if (vars.length) {
+      h += '<div class="s2-sliders" id="s3Sliders">';
+      vars.forEach(function (x) {
+        h += '<label class="s2-field"><span>' + esc(x.label) + '</span><input name="' + x.id + '" type="range" min="' + x.min + '" max="' + x.max + '" step="' + x.step + '" value="' + x.def + '"><b class="s2-rval" data-val="' + x.id + '">' + x.def + '</b></label>';
+      });
+      h += '</div><div class="s2-toolrow"><button class="btn btn-ghost btn-sm" type="button" data-anim><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5l12 7-12 7z" fill="currentColor"/></svg> Animar</button></div>';
+    } else h += '<div id="s3Sliders" hidden></div>';
+    return h + '<div id="s3ExpOut"></div></div>';
   }
   function runExplora() {
-    runCalc();
-    var t = T()[view.id], box = $('#s3Sliders'), out = $('#s3ExpOut'); if (!box || !out) return;
+    var t = T()[view.id], C = global.T3Calc && global.T3Calc.CALCS[t.calc], box = $('#s3Sliders'), out = $('#s3ExpOut');
+    if (!C || !out || !box) return;
     var v = {};
-    C.f.forEach(function (x) { var el = box.elements ? box.elements[x[0]] : box.querySelector('[name="' + x[0] + '"]'); var raw = el ? el.value : x[2]; v[x[0]] = (x[3] || x[4] === 'text') ? raw : (el ? +raw : (typeof x[2] === 'number' ? x[2] : pnum(x[2]))); });
+    (C.vars || []).forEach(function (x) { var el = box.querySelector('[name="' + x.id + '"]'); v[x.id] = el ? +el.value : x.def; });
     $$('[data-val]', box).forEach(function (b) { b.textContent = v[b.getAttribute('data-val')]; });
-    var r; try { r = C.run(v); } catch (e) { r = { err: 'No se pudo calcular con esos valores.' }; }
-    if (r.err) { out.innerHTML = '<div class="s2-calc-err">' + r.err + ' Mueve otro deslizador para continuar.</div>'; return; }
-    out.innerHTML = '<div class="s2-result">' + M(r.res) + '</div>' + (r.plot ? '<figure class="s2-plot">' + r.plot.replace(/class="s2-draw"/g, '').replace(/s2-bar/g, 'x') + '</figure>' : '') +
-      '<details class="s2-acc"><summary>Ver los pasos del cálculo</summary><div class="s2-acc-body"><ol class="s2-steps">' + r.steps.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol></div></details>';
+    var g = global.T3Graf.draw(t.calc, v);
+    if (!g) { out.innerHTML = '<div class="s2-calc-err">No se pudo dibujar con esos valores.</div>'; return; }
+    out.innerHTML = '<figure class="s2-plot t3-plot">' + g.svg + '<figcaption>' + M(g.nota) + '</figcaption></figure>';
   }
   function toggleAnim() {
     if (anim) return stopAnim();
-    var t = T()[view.id], X = global.T3Calc.EXP[t.calc], first = X.filter(function (x) { return x.length > 1; })[0], el = first && $('#s3Sliders [name="' + first[0] + '"]');
+    var el = $('#s3Sliders input[type=range]');
     if (!el) return;
-    var lo = +el.min, hi = +el.max, step = +el.step, dir = 1, val = +el.value, acc = 0, last = performance.now();
+    var lo = +el.min, hi = +el.max, step = (hi - lo) / 40, dir = 1, val = +el.value, acc = 0, last = performance.now();
     $('[data-anim]').innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> Detener';
     anim = { raf: 0 };
     (function loop(now) {
       acc += now - last; last = now;
-      if (acc > 90) { acc = 0; val += dir * step; if (val >= hi) { val = hi; dir = -1; } else if (val <= lo) { val = lo; dir = 1; } el.value = val; runExplora(); }
+      if (acc > 70) { acc = 0; val += dir * step; if (val >= hi) { val = hi; dir = -1; } else if (val <= lo) { val = lo; dir = 1; } el.value = val; runExplora(); }
       if (anim) anim.raf = requestAnimationFrame(loop);
     })(last);
   }
@@ -436,7 +444,7 @@
     else if (d.examMode) startMode(d.examMode);
   }
   function onInput(e) {
-    if (e.target.id === 's2Search') { view.q = e.target.value; var pos = e.target.selectionStart; renderHome(); var s = $('#s3Search'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) { /* ok */ } }
+    if (e.target.id === 's3Search') { view.q = e.target.value; var pos = e.target.selectionStart; renderHome(); var s = $('#s3Search'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) { /* ok */ } }
     else if (e.target.closest('#s3Sliders')) { if (e.type === 'input' && e.isTrusted) stopAnim(); runExplora(); }
     else if (e.target.closest('#s3Form')) { clearTimeout(onInput.t); onInput.t = setTimeout(runCalc, 160); }
   }
@@ -451,7 +459,7 @@
     else if (!e.altKey && !view.all && e.key === 'ArrowLeft' && ti > 0) { view.tab = TABS[ti - 1][0]; renderTab(); }
     else if (e.key.toLowerCase() === 't' && !e.altKey) drawer(true);
   }
-  function onSubmit(e) { if (e.target.id === 's2Form') { e.preventDefault(); runCalc(); } }
+  function onSubmit(e) { if (e.target.id === 's3Form') { e.preventDefault(); runCalc(); } }
 
   function mount() {
     if (mounted) return;

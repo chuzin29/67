@@ -1,2 +1,29 @@
-/* videos-3a.js — id de YouTube por tema (clave = id del tema, p. ej. "1.1"). Vacío: se muestra enlace de búsqueda. */
-window.VIDEOS_3A = {};
+/* videos-3a.js — id de YouTube por tema. */
+window.VIDEOS_3A = {
+  '1.1': { id: 'nTaiyaoyJhw', t: 'Límite en un punto (Matemáticas profe Alex)' },
+  '1.2': { id: 'o334wYiRDcw', t: 'Límites laterales: ejercicios resueltos (Matemóvil)' },
+  '1.3': { id: 'h9lEAU5-CSg', t: 'Solución de límites por factorización (Matemáticas profe Alex)' },
+  '1.4': { id: 'YijB5BhcFw8', t: 'Límites al infinito (Matemáticas profe Alex)' },
+  '1.5': { id: 'VvILwqxWG8g', t: 'Continuidad de una función (julioprofe)' },
+  '1.6': { id: '3FjBlgSSlok', t: 'Identidades trigonométricas (Matemáticas profe Alex)' },
+  '1.7': { id: 'kqOPi_-gWjs', t: 'Límites trigonométricos (Matemáticas profe Alex)' },
+  '1.8': { id: '3V95YcRLx6Y', t: 'Forma binómica a polar o cis (Juliana la profe)' },
+  '1.9': { id: 'hpuVm36gGrk', t: 'Teorema de Moivre: potencia y raíz de complejos (Profe Aztlán)' },
+  '1.10': { id: 'L0BZlkBbZmI', t: 'Derivada usando la definición (Matemáticas profe Alex)' },
+  '1.11': { id: 'RtGeFkxzxfs', t: 'Derivada de un producto (Matemáticas profe Alex)' },
+  '1.12': { id: 'wAK_XEDuhyc', t: 'Derivada de una función compuesta: regla de la cadena (Yo también odio las Mates)' },
+  '1.13': { id: 'cP1Ss34Mkz8', t: 'Reglas para derivar funciones trigonométricas (julioprofe)' },
+  '1.14': { id: 'u0BP7ZMRsms', t: 'Derivación implícita (Matemáticas profe Alex)' },
+  '1.15': { id: 'H3Ydr96kbUA', t: 'Rectas tangente y normal a una curva (julioprofe)' },
+  '1.16': { id: '8W6M3AZcBBw', t: 'Máximos y mínimos de una función (Matemáticas profe Alex)' },
+  '1.17': { id: '_XT_ABMvyqI', t: 'Antiderivadas o integral indefinida (Willington Profe)' },
+  '1.18': { id: 'me4h_Ye3o3Y', t: 'Integración por sustitución (Matemáticas profe Alex)' },
+  '1.19': { id: 'SCKpUCax5ss', t: 'Teorema fundamental del cálculo (julioprofe)' },
+  '1.20': { id: 'f8U9AWBfmEA', t: 'Área entre curvas (MateFacil)' },
+  '1.21': { id: '6nu-snYlA0Q', t: 'Integración por partes (Matemáticas profe Alex)' },
+  '1.22': { id: 'IGskjrHqXVo', t: 'Vectores en R2 y R3 (Ayudinga!)' },
+  '1.23': { id: 'fmAhi1N-uL8', t: 'Producto cruz de dos vectores (julioprofe)' },
+  '1.24': { id: 'Muaub7Lm2Lk', t: 'Ecuación del plano conocidos tres puntos (julioprofe)' },
+  '1.25': { id: 'ZYiblnqy7Ck', t: 'Tablas de verdad (julioprofe)' },
+  '1.27': { id: 'zc1XTQ4jLw8', t: 'Método de inducción matemática (julioprofe)' }
+};

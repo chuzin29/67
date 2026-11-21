@@ -2132,3 +2132,14 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .s3-card strong { font-size:.95rem; }
 .s3-card p { margin:0;font-size:.82rem;color:hsl(var(--muted-foreground));line-height:1.4; }
 .s3-wip { font-size:.72rem;font-weight:700;color:hsl(var(--primary)/0.7);letter-spacing:.06em; }
+
+/* 3.er año · gráficos */
+.t3g { width: 100%; height: auto; display: block; }
+.t3g .g { stroke: hsl(var(--line)); stroke-width: 1; opacity: .55; }
+.t3g .ax { stroke: hsl(var(--muted-foreground)); stroke-width: 1.4; }
+.t3g .cv { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.t3g .cv.dash { stroke-dasharray: 7 5; }
+.t3g .tk { font: 11px system-ui, sans-serif; fill: hsl(var(--muted-foreground)); }
+.t3g .lb { font: 700 12.5px system-ui, sans-serif; }
+.t3-plot figcaption { font-size: .88rem; }
+.s2-sliders { display: grid; gap: .6rem; margin: .6rem 0; }
