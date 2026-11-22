@@ -2143,3 +2143,56 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .t3g .lb { font: 700 12.5px system-ui, sans-serif; }
 .t3-plot figcaption { font-size: .88rem; }
 .s2-sliders { display: grid; gap: .6rem; margin: .6rem 0; }
+
+/* ============ Pizarra (métodos como en clase) ============ */
+.pz-wrap { display: grid; gap: 1.6rem; }
+.pz-lesson { display: grid; gap: .7rem; }
+.pz-head h4 { margin: 0; font-size: 1.1rem; }
+.pz-head p { margin: .2rem 0 0; font-size: .92rem; }
+.pz-frame { padding: 10px; border-radius: 16px; background: linear-gradient(135deg, #b98a57, #8d6238 55%, #a97c4c); box-shadow: 0 8px 22px -10px rgb(0 0 0 / .5), inset 0 1px 0 rgb(255 255 255 / .25); }
+.pz-board { position: relative; min-height: 230px; padding: 1.4rem 1.2rem 1.6rem; border-radius: 8px; color: #f4f6ef; overflow-x: auto;
+  background: radial-gradient(ellipse at 30% 20%, rgb(255 255 255 / .07), transparent 55%), linear-gradient(160deg, #24493b, #1b3a2f);
+  box-shadow: inset 0 0 40px rgb(0 0 0 / .45); font-family: 'Patrick Hand', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 1.3rem; line-height: 1.5; text-align: center; }
+.pz-board .math, .pz-board .math-inline { color: inherit; font-size: 1.12em; }
+.pz-board .frac .den { border-top-color: currentColor; }
+.pz-step { margin: .15rem 0 .55rem; transition: opacity .3s; }
+.pz-step.pz-old { opacity: .62; }
+.pz-step.pz-new { animation: pz-write .55s ease both; }
+@keyframes pz-write { from { opacity: 0; transform: translateY(8px); clip-path: inset(0 100% 0 0); } to { opacity: 1; transform: none; clip-path: inset(0 0 0 0); } }
+.pz-row { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin: .25rem 0; flex-wrap: wrap; }
+.pz-side { font-size: .85em; opacity: .95; white-space: nowrap; }
+.pz-side::before { content: '← '; opacity: .7; }
+.pz-say { margin: .3rem 0; font-size: 1.05em; }
+.pz-c { font-weight: 400; }
+.pz-y { color: #ffe27a; } .pz-p { color: #ff9fc4; } .pz-b { color: #8fd0ff; } .pz-g { color: #9af0b0; } .pz-r { color: #ff8a80; } .pz-w { color: #f4f6ef; }
+.pz-box { display: inline-block; padding: .05em .5em; border: 2.5px solid #ffe27a; border-radius: 10px 14px 12px 16px / 14px 10px 16px 12px; color: #ffe27a; }
+.pz-tach { position: relative; display: inline-block; color: #f4f6ef99; }
+.pz-tach::after { content: ''; position: absolute; left: -4%; right: -4%; top: 52%; border-top: 3px solid #ff8a80; transform: rotate(-8deg); }
+.pz-flecha { display: inline-flex; align-items: center; gap: .5rem; margin: .1rem 0; font-size: .95em; }
+.pz-flecha svg { width: 16px; height: 28px; }
+.pz-ambos { display: flex; justify-content: center; gap: 3.2rem; font-size: .95em; margin: -.1rem 0 .1rem; }
+.pz-llave { display: inline-flex; align-items: stretch; gap: .25rem; vertical-align: middle; }
+.pz-llave svg { width: 14px; min-height: 60px; }
+.pz-llave-l { display: flex; flex-direction: column; justify-content: center; gap: .1rem; text-align: left; }
+.pz-tabla { margin: .4rem auto; border-collapse: collapse; }
+.pz-tabla th, .pz-tabla td { padding: .15rem .9rem; border: 2px solid #f4f6ef88; }
+.pz-tabla th { color: #ffe27a; }
+.pz-tabla tr.pz-hl td { background: #ffe27a22; color: #ffe27a; }
+.pz-tij { width: min(100%, 440px); height: auto; display: block; margin: 0 auto; }
+.pz-tij .pz-t { font: 400 25px 'Patrick Hand', 'Segoe Print', cursive; text-anchor: middle; fill: currentColor; }
+.pz-tij .pz-ln { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+.pz-tij .pz-y { color: #ffe27a; fill: #ffe27a; } .pz-tij .pz-p { color: #ff9fc4; fill: #ff9fc4; } .pz-tij .pz-g { fill: #9af0b0; } .pz-tij .pz-w { color: #f4f6ef; fill: #f4f6ef; }
+.pz-ruf { margin: .3rem auto; border-collapse: collapse; }
+.pz-ruf td { padding: .2rem .8rem; min-width: 2.6rem; }
+.pz-ruf tr:first-child td:not(.pz-ruf-e) { border-bottom: 0; }
+.pz-ruf .pz-ruf-r { border-right: 3px solid #f4f6ef; border-bottom: 3px solid #f4f6ef; }
+.pz-ruf-res td:not(.pz-ruf-e) { border-top: 3px solid #f4f6ef; }
+.pz-ruf-m { color: #ff9fc4; }
+.pz-notes { min-height: 3.2rem; }
+.pz-nota { display: flex; gap: .7rem; align-items: flex-start; padding: .75rem .9rem; border-radius: 14px; background: hsl(var(--muted)); }
+.pz-nota p { margin: 0; font-size: 1.02rem; line-height: 1.5; }
+.pz-prof { flex: none; padding: .15rem .6rem; border-radius: 999px; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); font-size: .78rem; font-weight: 700; margin-top: .1rem; }
+.pz-ctrl { display: flex; align-items: center; justify-content: center; gap: .6rem; flex-wrap: wrap; }
+.pz-count { font-weight: 700; min-width: 3.4rem; text-align: center; }
+@media (max-width: 560px) { .pz-board { font-size: 1.1rem; padding: 1rem .6rem 1.2rem; } .pz-ambos { gap: 2rem; } }
+@media (prefers-reduced-motion: reduce) { .pz-step.pz-new { animation: none; } }

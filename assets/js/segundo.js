@@ -14,7 +14,7 @@
     { id: 'IV', temas: ['1.19', '1.20', '1.21', '1.22', '1.23', '1.24'], resumen: 'Conjuntos, conteo y probabilidad' }
   ];
   var UN = { 1: 'Ecuaciones', 2: 'Geometría analítica de la recta', 3: 'Secciones cónicas', 4: 'Funciones trascendentales I', 5: 'Funciones II', 6: 'Sucesiones', 7: 'Conjuntos y conteo', 8: 'Probabilidad' };
-  var TABS = [['teoria', 'Teoría'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
+  var TABS = [['teoria', 'Teoría'], ['pizarra', 'Pizarra'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 
   var root, mounted = false;
@@ -232,6 +232,8 @@
     if (tab === 'teoria') {
       h = '<div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Expandir todo</button><button class="btn btn-ghost btn-sm" data-acc="close">Contraer todo</button></div>' +
         t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
+    } else if (tab === 'pizarra') {
+      h = global.Pizarra ? global.Pizarra.html((global.PIZARRA_2A || {})[t.id]) : '';
     } else if (tab === 'video') {
       h = videoHtml(t);
     } else if (tab === 'explora') {
