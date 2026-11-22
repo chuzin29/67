@@ -208,9 +208,13 @@
     })(last);
   }
 
+  var PL = { 'Límites': 'PLeySRPnY35dG9t51yT4nCwQEtWwCwvBwn', 'Integrales': 'PLeySRPnY35dEHnMLZGaNEXgHzJ2-TPLWw', 'Identidades trigonométricas': 'PLeySRPnY35dHK3mo8UWd3zAnYCG13OgAR', 'Vectores': 'PLeySRPnY35dEaZT3iJUNdDkgLEZE5x-Jd' };
+  var PLT = { '1.1': 'Límites', '1.2': 'Límites', '1.3': 'Límites', '1.4': 'Límites', '1.5': 'Límites', '1.6': 'Identidades trigonométricas', '1.17': 'Integrales', '1.18': 'Integrales', '1.19': 'Integrales', '1.20': 'Integrales', '1.21': 'Integrales', '1.22': 'Vectores', '1.23': 'Vectores', '1.24': 'Vectores' };
   function videoHtml(t) {
     var v = (global.VIDEOS_3A || {})[t.id], q = encodeURIComponent(t.titulo + ' bachillerato');
-    var search = '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/results?search_query=' + q + '" target="_blank" rel="noopener">Buscar más videos de este tema</a>';
+    var pn = PLT[t.id], pl = pn ? '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/playlist?list=' + PL[pn] + '" target="_blank" rel="noopener">Lista de profe Alex · ' + pn + ' (curso completo)</a> ' : '';
+    var pa = '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/results?search_query=' + encodeURIComponent('Matemáticas profe Alex ' + t.titulo) + '" target="_blank" rel="noopener">Buscar en profe Alex</a> ';
+    var search = pl + pa + '<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/results?search_query=' + q + '" target="_blank" rel="noopener">Buscar más videos de este tema</a>';
     if (!v) return '<p class="s2-hint">Aún no hay video para este tema.</p><div class="s2-toolrow">' + search + '</div>';
     var url = 'https://www.youtube.com/watch?v=' + v.id;
     return '<div class="s2-video"><div class="s2-vframe" data-vid="' + v.id + '"><button class="s2-vplay" data-play="' + v.id + '" aria-label="Reproducir video: ' + esc(v.t) + '" style="background-image:url(https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg)"><span aria-hidden="true"></span></button></div>' +

@@ -25,5 +25,6 @@ window.VIDEOS_3A = {
   '1.23': { id: 'fmAhi1N-uL8', t: 'Producto cruz de dos vectores (julioprofe)' },
   '1.24': { id: 'Muaub7Lm2Lk', t: 'Ecuación del plano conocidos tres puntos (julioprofe)' },
   '1.25': { id: 'ZYiblnqy7Ck', t: 'Tablas de verdad (julioprofe)' },
-  '1.27': { id: 'zc1XTQ4jLw8', t: 'Método de inducción matemática (julioprofe)' }
+  '1.27': { id: 'zc1XTQ4jLw8', t: 'Método de inducción matemática (julioprofe)' },
+  '1.26': { id: 'YZRRUFG2UOY', t: 'Operaciones con conjuntos, operaciones combinadas (Matemáticas profe Alex)' }
 };
