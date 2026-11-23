@@ -2201,3 +2201,5 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .pz-auto .pz-board { min-height: 150px; padding: 1rem .8rem 1.2rem; }
 .pz-auto .pz-nota p { font-size: .98rem; }
 .s2-sol .s2-acc-body { padding: .6rem; }
+.years-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.period-card[disabled] { opacity: .6; cursor: not-allowed; }
