@@ -241,11 +241,9 @@
     } else if (tab === 'formulas') {
       h = '<div class="s2-formulas">' + t.formulas.map(function (x, i) { return '<div class="s2-formula" style="--i:' + i + '"><span class="s2-flabel">' + esc(x.label) + '</span><div class="formula"><span class="math">' + M(x.html) + '</span></div></div>'; }).join('') + '</div>';
     } else if (tab === 'ejemplos') {
-      h = '<p class="s2-hint">Tapa la solución, intenta resolver y luego pulsa <strong>Siguiente paso</strong> para comparar.</p>' + t.ejemplos.map(function (e, i) {
+      h = '<p class="s2-hint">Intenta resolverlo tú primero y luego mira la pizarra paso a paso para comparar.</p>' + t.ejemplos.map(function (e, i) {
         return '<article class="s2-ex" data-ex><header><span class="s2-num">' + (i + 1) + '</span><strong>' + esc(e.titulo) + '</strong></header><div class="s2-stmt">' + M(e.enunciado) + '</div>' +
-          '<ol class="s2-steps">' + e.pasos.map(function (s) { return '<li class="s2-step" hidden>' + M(s) + '</li>'; }).join('') + '</ol>' +
-          '<div class="s2-answer" hidden><span>Respuesta</span>' + M(e.respuesta) + '</div>' +
-          '<div class="s2-ex-actions"><button class="btn btn-ghost btn-sm" data-step>Siguiente paso (0/' + e.pasos.length + ')</button><button class="btn btn-ghost btn-sm" data-allsteps>Mostrar todo</button></div></article>';
+          (global.Pizarra ? global.Pizarra.auto(e) : '') + '</article>';
       }).join('');
     } else if (tab === 'practica') {
       h = renderPractica();
@@ -288,7 +286,7 @@
       if ((view.nivel !== 'todos' && e.nivel !== view.nivel) || (view.pend && dn)) return;
       h += '<article class="s2-prob' + (dn ? ' done' : '') + '" style="--i:' + i + '"><div class="s2-prob-top"><span class="s2-num">' + (i + 1) + '</span><span class="s2-lvl ' + e.nivel + '">' + LVL[e.nivel] + '</span><button class="btn btn-ghost btn-sm" data-done="' + i + '" aria-pressed="' + !!dn + '">' + (dn ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg> Dominado' : 'Marcar como dominado') + '</button></div>' +
         '<div class="s2-stmt">' + M(e.enunciado) + '</div>' +
-        '<details class="s2-acc s2-sol"><summary>Ver solución paso a paso</summary><div class="s2-acc-body"><ol class="s2-steps">' + e.pasos.map(function (s) { return '<li class="s2-step">' + M(s) + '</li>'; }).join('') + '</ol><div class="s2-answer"><span>Respuesta</span>' + M(e.respuesta) + '</div></div></details></article>';
+        '<details class="s2-acc s2-sol"><summary>Ver solución en la pizarra</summary><div class="s2-acc-body">' + (global.Pizarra ? global.Pizarra.auto(e) : '') + '</div></details></article>';
     });
     return h + '</div>';
   }

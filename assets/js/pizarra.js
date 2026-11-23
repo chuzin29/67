@@ -112,8 +112,29 @@
     if (a === 'next') show(root, cur + 1); else if (a === 'prev') show(root, cur - 1); else if (a === 'all') show(root, n - 1);
   });
 
+
+  /* ---------- pizarra automática para ejemplos y ejercicios ---------- */
+  var MATH_RE = /<span class="math">([\s\S]*?)<\/span>/g;
+  function mathsOf(h) { var o = [], m; MATH_RE.lastIndex = 0; while ((m = MATH_RE.exec(String(h || '')))) o.push(m[1]); return o; }
+  function plain(h) { return String(h || '').replace(MATH_RE, '$1').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function mathLine(x, col) { return '<div class="pz-row"><span class="pz-main pz-' + col + '"><span class="math">' + x + '</span></span></div>'; }
+  function autoLesson(e) {
+    var pasos = [], ms = mathsOf(e.enunciado), pasosArr = e.pasos || [];
+    pasos.push({ nota: '<b>Problema:</b> ' + e.enunciado, html: ms.length ? ms.slice(0, 3).map(function (x) { return mathLine(x, 'w'); }).join('') : PZ.say(esc(plain(e.enunciado).slice(0, 120)), 'w') });
+    pasosArr.forEach(function (t, i) {
+      var m = mathsOf(t), last = m.length - 1, h;
+      if (m.length) h = m.slice(-2).map(function (x, k, a) { return mathLine(x, k === a.length - 1 ? 'y' : 'b'); }).join('');
+      else h = PZ.say(esc(plain(t).slice(0, 140)), 'b');
+      pasos.push({ nota: t, html: h });
+    });
+    pasos.push({ nota: '<b>Respuesta:</b> ' + e.respuesta, html: PZ.say(PZ.box(String(e.respuesta)), 'g') });
+    return { titulo: e.titulo || 'Resolución', pasos: pasos };
+  }
+
   global.PZ = PZ;
   global.Pizarra = {
+    /* pizarra de un solo ejercicio/ejemplo (usa sus pasos y respuesta) */
+    auto: function (e) { var L = autoLesson(e); return '<div class="pz-wrap pz-auto">' + lessonHtml(L).replace(/<header class="pz-head">[\s\S]*?<\/header>/, '') + '</div>'; },
     html: function (lessons, vacio) {
       if (!lessons || !lessons.length) return vacio || '<p class="muted">Este tema aún no tiene método en pizarra.</p>';
       return '<div class="pz-wrap"><p class="muted small pz-hint">Pulsa <b>Siguiente paso</b> y mira cómo se va escribiendo en la pizarra, como en clase.</p>' + lessons.map(lessonHtml).join('') + '</div>';

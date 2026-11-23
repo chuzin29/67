@@ -2197,3 +2197,7 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 @media (max-width: 560px) { .pz-board { font-size: 1.1rem; padding: 1rem .6rem 1.2rem; } .pz-ambos { gap: 2rem; } }
 @media (prefers-reduced-motion: reduce) { .pz-step.pz-new { animation: none; } }
 .pz-tabla th, .pz-tabla td { background: transparent; } .pz-tabla { width: auto; }
+.pz-auto { gap: .6rem; }
+.pz-auto .pz-board { min-height: 150px; padding: 1rem .8rem 1.2rem; }
+.pz-auto .pz-nota p { font-size: .98rem; }
+.s2-sol .s2-acc-body { padding: .6rem; }
