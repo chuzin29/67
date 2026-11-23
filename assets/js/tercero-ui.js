@@ -14,7 +14,7 @@
     { id: 'IV', temas: ['1.22', '1.23', '1.24', '1.25', '1.26', '1.27'], resumen: 'Álgebra vectorial y matemática discreta' }
   ];
   var UN = { 1: 'Límites y continuidad', 2: 'Trigonometría y complejos', 3: 'Derivadas', 4: 'Integrales', 5: 'Álgebra vectorial', 6: 'Matemática discreta' };
-  var TABS = [['teoria', 'Teoría'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
+  var TABS = [['teoria', 'Teoría'], ['pizarra', 'Pizarra'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 
   var root, mounted = false;
@@ -229,6 +229,8 @@
     if (tab === 'teoria') {
       h = '<div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Expandir todo</button><button class="btn btn-ghost btn-sm" data-acc="close">Contraer todo</button></div>' +
         t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
+    } else if (tab === 'pizarra') {
+      h = global.Pizarra ? global.Pizarra.html((global.PIZARRA_3A || {})[t.id]) : '';
     } else if (tab === 'video') {
       h = videoHtml(t);
     } else if (tab === 'explora') {
