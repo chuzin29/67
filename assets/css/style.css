@@ -2216,3 +2216,10 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .hero-years .nav-pop button { color: hsl(var(--foreground)); }
 .hero-years { position: relative; display: inline-block; }
 .hero-years .nav-pop[hidden] { display: none; }
+
+.pz-num { display: inline-flex; align-items: center; justify-content: center; width: 1.45em; height: 1.45em; margin-right: .35em; border: 2px solid currentColor; border-radius: 50%; font-size: .85em; line-height: 1; }
+.pz-paso { padding: .2rem 0 .4rem; border-top: 2px dashed #f4f6ef33; margin-top: .35rem; }
+.pz-paso:first-child { border-top: 0; margin-top: 0; }
+.pz-down { text-align: center; color: #ffe27acc; font-size: 1.15em; line-height: 1; margin: -.05rem 0; }
+.pz-auto .pz-say { text-align: center; }
+.pz-lesson:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 4px; border-radius: 10px; }

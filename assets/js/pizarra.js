@@ -81,13 +81,14 @@
     var notes = L.pasos.map(function (p, i) {
       return '<div class="pz-nota" data-i="' + i + '"' + (i ? ' hidden' : '') + '><span class="pz-prof" aria-hidden="true">Profe</span><p>' + M(p.nota || '') + '</p></div>';
     }).join('');
-    return '<article class="pz-lesson" id="' + id + '" data-pz data-n="' + n + '" data-cur="0">' +
+    return '<article class="pz-lesson" id="' + id + '" tabindex="0" data-pz data-n="' + n + '" data-cur="0">' +
       '<header class="pz-head"><h4>' + esc(L.titulo) + '</h4>' + (L.intro ? '<p class="muted">' + M(L.intro) + '</p>' : '') + '</header>' +
       '<div class="pz-frame"><div class="pz-board" aria-live="polite">' + steps + '<div class="pz-chalk" aria-hidden="true"></div></div></div>' +
       '<div class="pz-notes">' + notes + '</div>' +
       '<div class="pz-ctrl"><button class="btn btn-ghost btn-sm" type="button" data-pz-act="prev" disabled>← Atrás</button>' +
       '<span class="pz-count"><b data-pz-n>1</b> / ' + n + '</span>' +
       '<button class="btn btn-primary btn-sm" type="button" data-pz-act="next">Siguiente paso →</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-pz-act="play">▶ Reproducir</button>' +
       '<button class="btn btn-ghost btn-sm" type="button" data-pz-act="all">Ver todo</button></div></article>';
   }
 
@@ -118,18 +119,42 @@
   function mathsOf(h) { var o = [], m; MATH_RE.lastIndex = 0; while ((m = MATH_RE.exec(String(h || '')))) o.push(m[1]); return o; }
   function plain(h) { return String(h || '').replace(MATH_RE, '$1').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
   function mathLine(x, col) { return '<div class="pz-row"><span class="pz-main pz-' + col + '"><span class="math">' + x + '</span></span></div>'; }
+  function cut(t, n) { t = String(t || ''); if (t.length <= n) return t; var c = t.slice(0, n), i = c.lastIndexOf(' '); return (i > n * .6 ? c.slice(0, i) : c) + '…'; }
+  function firstSentence(t) { var x = plain(t), m = x.match(/^(.+?[.:;!?])(\s|$)/); return cut(m ? m[1] : x, 80); }
   function autoLesson(e) {
     var pasos = [], ms = mathsOf(e.enunciado), pasosArr = e.pasos || [];
-    pasos.push({ nota: '<b>Problema:</b> ' + e.enunciado, html: ms.length ? ms.slice(0, 3).map(function (x) { return mathLine(x, 'w'); }).join('') : PZ.say(esc(plain(e.enunciado).slice(0, 120)), 'w') });
+    var ARR = '<div class="pz-down" aria-hidden="true">↓</div>';
+    pasos.push({ nota: '<b>Problema:</b> ' + e.enunciado,
+      html: PZ.say('<span class="pz-num">?</span> Problema', 'y') +
+        (ms.length ? ms.slice(0, 3).map(function (x) { return mathLine(x, 'w'); }).join('') : PZ.say(esc(cut(plain(e.enunciado), 160)), 'w')) });
     pasosArr.forEach(function (t, i) {
-      var m = mathsOf(t), last = m.length - 1, h;
-      if (m.length) h = m.slice(-2).map(function (x, k, a) { return mathLine(x, k === a.length - 1 ? 'y' : 'b'); }).join('');
-      else h = PZ.say(esc(plain(t).slice(0, 140)), 'b');
-      pasos.push({ nota: t, html: h });
+      var m = mathsOf(t).slice(-3), h = '<div class="pz-paso">' + PZ.say('<span class="pz-num">' + (i + 1) + '</span> ' + esc(firstSentence(t)), 'p');
+      if (m.length) h += m.map(function (x, k) { return (k ? ARR : '') + mathLine(x, k === m.length - 1 ? 'y' : 'b'); }).join('');
+      else h += PZ.say(esc(cut(plain(t), 220)), 'b');
+      pasos.push({ nota: t, html: h + '</div>' });
     });
-    pasos.push({ nota: '<b>Respuesta:</b> ' + e.respuesta, html: PZ.say(PZ.box(String(e.respuesta)), 'g') });
+    pasos.push({ nota: '<b>Respuesta:</b> ' + e.respuesta, html: PZ.say('<span class="pz-num">✓</span> Respuesta', 'g') + PZ.say(PZ.box(String(e.respuesta)), 'g') });
     return { titulo: e.titulo || 'Resolución', pasos: pasos };
   }
+
+  /* reproducir solo + teclado */
+  var timers = new WeakMap();
+  function stop(root) { var t = timers.get(root); if (t) { clearInterval(t); timers.delete(root); } var b = root.querySelector('[data-pz-act="play"]'); if (b) b.textContent = '▶ Reproducir'; }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-pz-act]'); if (!b) return;
+    var root = b.closest('[data-pz]'); if (!root) return; var a = b.getAttribute('data-pz-act');
+    if (a === 'play') {
+      if (timers.get(root)) { stop(root); return; }
+      var n = +root.getAttribute('data-n'); if (+root.getAttribute('data-cur') >= n - 1) show(root, 0);
+      b.textContent = '⏸ Pausa';
+      timers.set(root, setInterval(function () { var c = +root.getAttribute('data-cur'); if (c >= n - 1) stop(root); else show(root, c + 1); }, 2600));
+    } else stop(root);
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    var root = e.target.closest && e.target.closest('[data-pz]'); if (!root || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    var cur = +root.getAttribute('data-cur');
+    if (e.key === 'ArrowRight') { show(root, cur + 1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { show(root, cur - 1); e.preventDefault(); }
+  });
 
   global.PZ = PZ;
   global.Pizarra = {
