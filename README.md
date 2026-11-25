@@ -86,7 +86,7 @@ Es un proyecto abierto y pensado para modificarse, con o sin Claude:
 2. Abre la carpeta con [Claude Code](https://claude.com/claude-code) y descríbele lo que quieres («agrega un tema», «mejora la pizarra del tema 1.7 de 2.º año», «cambia los colores»). Claude lee `CLAUDE.md` y ya sabe cómo está organizado.
 3. Pruébalo en local (abajo) y abre un *pull request*.
 
-Ideas que aún faltan: videos reales para más temas (los de 1.er año están vacíos), más pizarras hechas a mano para los ejercicios, y modos de práctica interactivos.
+Ideas que aún faltan: videos para los temas que aún no tengan, más pizarras hechas a mano para los ejercicios, y modos de práctica interactivos.
 
 ## Uso local
 

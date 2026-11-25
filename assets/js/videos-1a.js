@@ -1,2 +1,16 @@
-/* videos-1a.js — id de YouTube por tema (clave = id del tema). Vacío: se muestra enlace de búsqueda. */
-window.VIDEOS_1A = {};
+/* videos-1a.js — id de YouTube por tema (clave = id del tema). */
+window.VIDEOS_1A = {
+  '1.1': { id: 'QI8Mqd8Arlg', t: 'Racionalizar denominadores con binomios' },
+  '1.2': { id: 'TsBWIp2-1fg', t: 'Productos notables desde cero' },
+  '1.3': { id: 'a8CUEopWCN0', t: 'Factorización: los 6 métodos más usados (Matemáticas profe Alex)' },
+  '1.4': { id: 'EN36f08aZ1k', t: 'Teorema del residuo y división sintética' },
+  '1.5': { id: 'u9wOdyR-E9U', t: 'Desigualdad racional' },
+  '1.6': { id: 'Z78f87TZ6JA', t: 'Dominio, rango y gráfica de la función lineal' },
+  '1.7': { id: 'RYjnWsHklQI', t: 'Función cuadrática: vértice, cortes, gráfica, dominio y rango' },
+  '1.8': { id: 'BuCSeFMTiOE', t: 'Dominio y rango de la función racional (Matemáticas profe Alex)' },
+  '1.9': { id: 'QgabX26plwc', t: 'Razones trigonométricas con el ángulo de elevación' },
+  '1.10': { id: 'PbvKVSWyvpI', t: 'Identidades trigonométricas: introducción (Matemáticas profe Alex)' },
+  '1.11': { id: 'yNxVjLMzEe8', t: 'Ley de senos y cosenos: triángulos oblicuángulos' },
+  '1.12': { id: 'rtxUMjExgKk', t: 'Vectores en el plano: suma, resta y multiplicación por un escalar' },
+  '1.13': { id: 'KchkttM-9-M', t: 'Potencia de números complejos: teorema de De Moivre' }
+};
