@@ -1,6 +1,6 @@
 # Precálculo 67
 
-Sitio web interactivo para aprender, practicar y evaluarte en **precálculo** y en **Matemática de 2.º año de Bachillerato**.
+Sitio web interactivo para aprender, practicar y evaluarte en **Precálculo (1.º y 2.º año)** y **Cálculo (3.er año)** de Bachillerato.
 
 > **Esta página está basada en las clases de precálculo en el Colegio Don Bosco 2026, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de precálculo. Creada por Brandon de Jesús con ayuda de Claude.**
 >
@@ -10,54 +10,56 @@ Todo en una sola página, sin dependencias ni instalación: https://chuzin29.git
 
 ## Qué incluye
 
-### 2.º año de Bachillerato (Matemática 2A)
+Tres años, una misma metodología (64 temas):
 
-24 temas en 8 unidades y 4 períodos:
-
-| Período | Unidades y temas |
-| --- | --- |
-| I | U1 Ecuaciones (1.1–1.3) · U2 Recta (1.4–1.6) · U3 Parábola (1.7) |
-| II | U3 Circunferencia, elipse e hipérbola (1.8–1.10) · U4 Funciones trascendentales I (1.11–1.12) |
-| III | U5 Funciones II: inyectividad, inversa, logaritmos y trigonometría (1.13–1.16) · U6 Sucesiones (1.17–1.18) |
-| IV | U7 Conjuntos y conteo (1.19–1.21) · U8 Probabilidad y Bayes (1.22–1.24) |
+| Año | Curso | Temas |
+| --- | --- | --- |
+| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 13 (1.1–1.13) |
+| 2.º año | Precálculo: ecuaciones, rectas, cónicas, funciones, logaritmos, sucesiones, conteo y probabilidad | 24 (1.1–1.24) |
+| 3.er año | Cálculo: límites, trigonometría y complejos, derivadas, integrales, vectores y matemática discreta | 27 (1.1–1.27) |
 
 Cada tema tiene:
 
-- **Teoría** en acordeones, **fórmulas clave** y un **video de YouTube** explicativo.
-- **Gráficos interactivos** con deslizadores y animación.
-- **Ejemplos** que se revelan paso a paso.
-- **Práctica** con 11 ejercicios por niveles (fácil, intermedio, difícil), solución completa y progreso.
+- **Teoría** en acordeones y **fórmulas clave**.
+- **Pizarra**: el método explicado paso a paso, como en clase (tijeras, Ruffini, árboles, figuras…).
+- **Video** de YouTube y **gráficos interactivos** con deslizadores.
+- **Ejemplos** y **práctica** por niveles (fácil, intermedio, difícil); las soluciones también se ven en la pizarra.
 - **Preguntas teóricas**, errores comunes y una aplicación real.
-- **Calculadora** con gráfica y pasos, y **mini‑examen** autocorregible.
-- **Modo examen** por tema, unidad, período o simulacro mixto del año.
-- Navegación libre: menú con todos los temas, «Ver todo» en una página, atajos de teclado y búsqueda.
-
-### Precálculo base
-
-- **Vectores** y **números complejos** (con teorema de Moivre).
-- **Trigonometría**: ley del seno, ley del coseno, caso ambiguo e identidades.
-- **Estadística descriptiva**: media, mediana, moda, varianza y desviación típica.
-- 30 ejercicios resueltos, 24 prácticos, 8 de Moivre y 60 preguntas teóricas, con filtros y buscador.
+- **Calculadora** y **mini‑examen** autocorregible, más modo examen por tema, unidad o período.
 
 ## Estructura
 
 ```
 .
-├── index.html
+├── index.html                       # Portada, menú, secciones de cada año y scripts
+├── CLAUDE.md                        # Guía para modificar el proyecto con Claude Code
 └── assets
     ├── css/style.css
     └── js
-        ├── math-render.js, format.js     # Notación matemática
-        ├── data-core.js, data-bancos.js, data-teoria.js   # Precálculo base
-        ├── data-2a-u1.js … data-2a-u8.js # Contenido de 2.º año (por unidad)
-        ├── videos-2a.js                  # Video por tema
-        ├── segundo-calc.js               # 24 calculadoras y gráficos interactivos
-        ├── segundo.js                    # Vista de 2.º año, práctica y exámenes
-        ├── symbiote.js                   # Botones con efecto líquido
-        └── app.js                        # Navegación, calculadoras y exámenes base
+        ├── app.js                   # Navegación, tema claro/oscuro, portada
+        ├── math-render.js, format.js
+        ├── pizarra.js               # Motor de la pizarra (PZ.*) y pizarra automática
+        ├── symbiote.js              # Botones con efecto líquido
+        ├── data-1a-u1…u4.js         # Contenido de 1.er año
+        ├── pizarra-1a-1…4.js        # Pizarras hechas a mano de 1.er año
+        ├── primero-ui.js, primero-calc.js, primero-graf.js, videos-1a.js
+        ├── data-2a-u1…u8.js, pizarra-2a-1…6.js
+        ├── segundo.js, segundo-calc.js, videos-2a.js
+        ├── data-3a-u1…u6.js, pizarra-3a-1…5.js
+        └── tercero-ui.js, tercero-calc.js, tercero-graf.js, videos-3a.js
 ```
 
 HTML, CSS y JavaScript sin frameworks ni compilación.
+
+## ¿Quieres cambiar o mejorar algo?
+
+Es un proyecto abierto y pensado para modificarse, con o sin Claude:
+
+1. Haz un *fork* o clona el repositorio.
+2. Abre la carpeta con [Claude Code](https://claude.com/claude-code) y descríbele lo que quieres («agrega un tema», «mejora la pizarra del tema 1.7 de 2.º año», «cambia los colores»). Claude lee `CLAUDE.md` y ya sabe cómo está organizado.
+3. Pruébalo en local (abajo) y abre un *pull request*.
+
+Ideas que aún faltan: videos reales para más temas (los de 1.er año están vacíos), más pizarras hechas a mano para los ejercicios, y modos de práctica interactivos.
 
 ## Uso local
 
