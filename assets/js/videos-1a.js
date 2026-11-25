@@ -13,4 +13,9 @@ window.VIDEOS_1A = {
   '1.11': { id: 'yNxVjLMzEe8', t: 'Ley de senos y cosenos: triángulos oblicuángulos' },
   '1.12': { id: 'rtxUMjExgKk', t: 'Vectores en el plano: suma, resta y multiplicación por un escalar' },
   '1.13': { id: 'KchkttM-9-M', t: 'Potencia de números complejos: teorema de De Moivre' }
+  '1.14': { id: 'dfxCsCZ1c3A', t: 'Medidas de tendencia central: media, mediana y moda (Matemáticas profe Alex)' },
+  '1.15': { id: 'P-PhOy9F7Sg', t: 'Elipse: trazado y elementos (Matemáticas profe Alex)' },
+  '1.16': { id: 'C0vUje9Uduc', t: 'Función logarítmica: gráfica, dominio y rango (Matemáticas profe Alex)' },
+  '1.17': { id: 'RS6MWaHigcw', t: 'Progresión aritmética: término general (Matemáticas profe Alex)' },
+  '1.18': { id: 'EZR7zTNblKQ', t: 'Diferenciar entre combinación, permutación o variación (Matemáticas profe Alex)' },
 };
