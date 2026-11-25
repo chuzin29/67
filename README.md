@@ -2,7 +2,7 @@
 
 Sitio web interactivo para aprender, practicar y evaluarte en **Precálculo (1.º y 2.º año)** y **Cálculo (3.er año)** de Bachillerato.
 
-> **Esta página está basada en las clases de precálculo en el Colegio Don Bosco 2026, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de precálculo. Creada por Brandon de Jesús con ayuda de Claude.**
+> **Esta página está basada en las clases de precálculo en el Colegio Don Bosco 2026, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de precálculo. Creada por Brandon de Jesús y Jimena con ayuda de Claude.**
 >
 > **Esta página no contiene respuestas ni soluciones de exámenes: solo busca ayudar a aprender los temas.**
 
@@ -106,6 +106,6 @@ Luego visita `http://localhost:8000`.
 
 Contenido basado en las clases de precálculo del Colegio Don Bosco (2026) y en el resumen del curso de Matemática 2A. Diseño inspirado en el proyecto [TORNUTI](https://github.com/chuzin29/TORNUTI).
 
-Creada por Brandon de Jesús con ayuda de Claude, para ayudar a más estudiantes a aprender.
+Creada por Brandon de Jesús y Jimena con ayuda de Claude, para ayudar a más estudiantes a aprender.
 
 Esta página no contiene respuestas ni soluciones de exámenes: solo busca ayudar a aprender los temas.
