@@ -166,5 +166,50 @@
     }
   };
 
+  /* ---------- temas complementarios ---------- */
+  function R(x) { return r2(x, 4); }
+  C['estadistica'] = {
+    titulo: 'Media, mediana y desviación de cinco datos',
+    vars: ['a', 'b', 'c', 'd', 'e'].map(function (k, i) { return { id: k, label: 'Dato ' + (i + 1), min: 0, max: 20, step: 1, def: [4, 7, 7, 9, 13][i] }; }),
+    run: function (v) {
+      var d = [v.a, v.b, v.c, v.d, v.e].sort(function (x, y) { return x - y; }), med = d.reduce(function (s, x) { return s + x; }, 0) / 5;
+      var vz = d.reduce(function (s, x) { return s + (x - med) * (x - med); }, 0) / 5;
+      return { tipo: 'texto', resultado: 'Media ' + R(med) + ' · Mediana ' + d[2] + ' · σ ≈ ' + R(Math.sqrt(vz)), pasos: ['Ordenados: ' + d.join(', '), 'Media = ' + R(med), 'Varianza poblacional = ' + R(vz)] };
+    }
+  };
+  C['conica'] = {
+    titulo: 'Elipse x²/a² + y²/b² = 1',
+    vars: [{ id: 'a', label: 'a', min: 1, max: 10, step: 1, def: 5 }, { id: 'b', label: 'b', min: 1, max: 10, step: 1, def: 3 }],
+    run: function (v) {
+      var M = Math.max(v.a, v.b), n = Math.min(v.a, v.b), c = Math.sqrt(M * M - n * n);
+      return { tipo: 'texto', resultado: c === 0 ? 'Circunferencia de radio ' + M : 'c ≈ ' + R(c) + ' · focos sobre el eje ' + (v.a > v.b ? 'x' : 'y'), pasos: ['c² = ' + (M * M) + ' − ' + (n * n) + ' = ' + (M * M - n * n), 'Eje mayor = ' + 2 * M] };
+    }
+  };
+  C['exponencial'] = {
+    titulo: 'y = a elevado a x',
+    vars: [{ id: 'a', label: 'Base a', min: 0.25, max: 4, step: 0.25, def: 2 }, { id: 'x', label: 'x', min: -4, max: 6, step: 1, def: 3 }],
+    run: function (v) {
+      var y = Math.pow(v.a, v.x);
+      return { tipo: 'valor', resultado: R(y), extra: v.a === 1 ? 'Base 1: función constante, sin logaritmo' : (v.a > 1 ? 'Función creciente' : 'Función decreciente'), pasos: ['y = ' + v.a + '<sup>' + v.x + '</sup> = ' + R(y)] };
+    }
+  };
+  C['sucesion'] = {
+    titulo: 'Progresión aritmética',
+    vars: [{ id: 'a', label: 'Primer término', min: -10, max: 20, step: 1, def: 3 }, { id: 'd', label: 'Diferencia d', min: -5, max: 10, step: 1, def: 4 }, { id: 'n', label: 'n', min: 1, max: 20, step: 1, def: 10 }],
+    run: function (v) {
+      var an = v.a + (v.n - 1) * v.d, S = v.n * (v.a + an) / 2;
+      return { tipo: 'texto', resultado: 'Término ' + v.n + ' = ' + an + ' · Suma = ' + S, pasos: ['Término = ' + v.a + ' + (' + v.n + ' − 1)(' + v.d + ') = ' + an, 'Suma = ' + v.n + '(' + v.a + ' + ' + an + ')/2 = ' + S] };
+    }
+  };
+  C['conteo'] = {
+    titulo: 'Permutaciones y combinaciones',
+    vars: [{ id: 'n', label: 'n', min: 1, max: 12, step: 1, def: 6 }, { id: 'r', label: 'r', min: 0, max: 12, step: 1, def: 3 }],
+    run: function (v) {
+      if (v.r > v.n) return { tipo: 'texto', resultado: 'r no puede ser mayor que n', pasos: ['Elige r ≤ n'] };
+      var P = 1, f = 1, i; for (i = 0; i < v.r; i++) { P *= v.n - i; f *= i + 1; }
+      return { tipo: 'texto', resultado: 'P = ' + P + ' · C = ' + P / f, pasos: ['P(n, r) = ' + P, 'C(n, r) = ' + P + ' / ' + f + ' = ' + P / f] };
+    }
+  };
+
   global.T1Calc = { CALCS: C };
 })(window);

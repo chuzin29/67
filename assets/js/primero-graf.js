@@ -156,6 +156,39 @@
     return ret(P, 'El módulo |z| = ' + n2(mod, 3) + ' es la distancia del origen al punto (a, b), igual que la hipotenusa de un triángulo.');
   };
 
+  G['estadistica'] = function (v) {
+    var d = [v.a, v.b, v.c, v.d, v.e], med = d.reduce(function (s, x) { return s + x; }, 0) / 5, P = new Plot([0, 6], [0, 22]);
+    d.forEach(function (y, i) { P.line(i + 1, 0, i + 1, y, COL.a, { w: 14 }); }); P.line(0, med, 6, med, COL.d, { dash: 1 });
+    return ret(P, 'Cada barra es un dato; la línea punteada marca la media: ' + n2(med, 2) + '.');
+  };
+  G['conica'] = function (v) {
+    var m = Math.max(v.a, v.b) * 1.25, P = new Plot([-m, m], [-m, m], { eq: 1 });
+    function y(x) { return v.b * Math.sqrt(1 - x * x / (v.a * v.a)); }
+    P.curve(y, COL.a, { a: -v.a, b: v.a }); P.curve(function (x) { return -y(x); }, COL.a, { a: -v.a, b: v.a });
+    var c = Math.sqrt(Math.abs(v.a * v.a - v.b * v.b)), h = v.a >= v.b;
+    P.pt(h ? c : 0, h ? 0 : c, COL.d, 'F'); P.pt(h ? -c : 0, h ? 0 : -c, COL.d, 'F');
+    return ret(P, 'Los puntos F son los focos; si a = b coinciden en el centro y la curva es una circunferencia.');
+  };
+  G['exponencial'] = function (v) {
+    var P = new Plot([-4, 6], [-4, 10], { eq: 1 });
+    P.curve(function (x) { return Math.pow(v.a, x); }, COL.a);
+    if (v.a !== 1) P.curve(function (x) { return x > 0 ? Math.log(x) / Math.log(v.a) : NaN; }, COL.c);
+    P.pt(0, 1, COL.d, '(0, 1)');
+    return ret(P, 'La exponencial y, cuando la base no es 1, su logaritmo (inversa) son simétricas respecto a la recta y = x.');
+  };
+  G['sucesion'] = function (v) {
+    var ys = [], i; for (i = 0; i < v.n; i++) ys.push(v.a + i * v.d);
+    var lo = Math.min.apply(null, ys.concat(0)), hi = Math.max.apply(null, ys.concat(1)), P = new Plot([0, v.n + 1], [lo - 2, hi + 2]);
+    ys.forEach(function (y, k) { P.pt(k + 1, y, COL.a); });
+    return ret(P, 'Los términos de una progresión aritmética quedan alineados.');
+  };
+  G['conteo'] = function (v) {
+    var vals = [], c = 1, k; for (k = 0; k <= v.n; k++) { vals.push(c); c = c * (v.n - k) / (k + 1); }
+    var P = new Plot([-1, v.n + 1], [0, Math.max.apply(null, vals) * 1.15]);
+    vals.forEach(function (y, j) { P.line(j, 0, j, y, j === v.r ? COL.d : COL.a, { w: 10 }); });
+    return ret(P, 'Cada barra es C(' + v.n + ', k); la resaltada corresponde a k = r.');
+  };
+
   global.T1Graf = {
     draw: function (key, v) { var g = G[key]; if (!g) return null; try { return g(v); } catch (e) { return null; } },
     has: function (key) { return !!G[key]; }

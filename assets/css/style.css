@@ -1919,10 +1919,10 @@ html[data-theme="dark"] .masc-dock { color: hsl(268 30% 8%); }
 /* ============================================================
    18 · 2.º año de Bachillerato (vista #segundo) + botón TORNUTI
    ============================================================ */
-.u1 { --tone: 232 74% 45%; } .u2 { --tone: 262 62% 48%; } .u3 { --tone: 285 60% 46%; } .u4 { --tone: 330 62% 46%; }
+.u1 { --tone: 232 74% 45%; } .u2 { --tone: 262 62% 48%; } .u3 { --tone: 285 60% 46%; } .u4 { --tone: 330 62% 46%; } .u5 { --tone: 200 70% 36%; }
 .u5 { --tone: 14 76% 48%; } .u6 { --tone: 183 58% 28%; } .u7 { --tone: 38 78% 40%; } .u8 { --tone: 158 64% 30%; }
 html[data-theme="dark"] .u1 { --tone: 262 88% 76%; } html[data-theme="dark"] .u2 { --tone: 275 84% 76%; }
-html[data-theme="dark"] .u3 { --tone: 290 76% 74%; } html[data-theme="dark"] .u4 { --tone: 322 80% 72%; }
+html[data-theme="dark"] .u3 { --tone: 290 76% 74%; } html[data-theme="dark"] .u4 { --tone: 322 80% 72%; } html[data-theme="dark"] .u5 { --tone: 195 70% 68%; }
 html[data-theme="dark"] .u5 { --tone: 16 88% 66%; } html[data-theme="dark"] .u6 { --tone: 183 55% 58%; }
 html[data-theme="dark"] .u7 { --tone: 40 90% 62%; } html[data-theme="dark"] .u8 { --tone: 158 55% 54%; }
 
@@ -2197,13 +2197,13 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .s3-wip { font-size:.72rem;font-weight:700;color:hsl(var(--primary)/0.7);letter-spacing:.06em; }
 
 /* 3.er año · gráficos */
-.t3g { width: 100%; height: auto; display: block; }
-.t3g .g { stroke: hsl(var(--line)); stroke-width: 1; opacity: .55; }
-.t3g .ax { stroke: hsl(var(--muted-foreground)); stroke-width: 1.4; }
-.t3g .cv { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.t3g .cv.dash { stroke-dasharray: 7 5; }
-.t3g .tk { font: 11px system-ui, sans-serif; fill: hsl(var(--muted-foreground)); }
-.t3g .lb { font: 700 12.5px system-ui, sans-serif; }
+.t3g, .t1g { width: 100%; height: auto; display: block; }
+.t3g .g, .t1g .g { stroke: hsl(var(--line)); stroke-width: 1; opacity: .55; }
+.t3g .ax, .t1g .ax { stroke: hsl(var(--muted-foreground)); stroke-width: 1.4; }
+.t3g .cv, .t1g .cv { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.t3g .cv.dash, .t1g .cv.dash { stroke-dasharray: 7 5; }
+.t3g .tk, .t1g .tk { font: 11px system-ui, sans-serif; fill: hsl(var(--muted-foreground)); }
+.t3g .lb, .t1g .lb { font: 700 12.5px system-ui, sans-serif; }
 .t3-plot figcaption { font-size: .88rem; }
 .s2-sliders { display: grid; gap: .6rem; margin: .6rem 0; }
 

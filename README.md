@@ -27,6 +27,8 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 **Resúmenes de video (v5):** `assets/js/resumenes-video.js` guarda lo que explica cada video (clave = id de YouTube). Por ahora hay resumen de `BuCSeFMTiOE` (1.er año, 1.8) y `PbvKVSWyvpI` (1.er año, 1.10); los demás muestran solo el resumen del tema.
 
+**Temas nuevos de 1.er año:** 1.14 a 1.18 (estadística, cónicas, exponenciales y logaritmos, sucesiones, combinatoria y probabilidad) en `data-1a-u5.js`, con calculadora y gráfico. No venían desarrollados en las fuentes del curso: **conviene que un docente los revise**. Aún no tienen video ni pizarra hecha a mano.
+
 **Archivos**
 
 - Nuevos: `assets/js/mascotas.js` (lógica, frases y sonidos con Web Audio) y `assets/img/mascotas/*.webp`.
@@ -40,11 +42,11 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 ## Qué incluye
 
-Tres años, una misma metodología (64 temas):
+Tres años, una misma metodología (69 temas):
 
 | Año | Curso | Temas |
 | --- | --- | --- |
-| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 13 (1.1–1.13) |
+| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 18 (1.1–1.18) |
 | 2.º año | Precálculo: ecuaciones, rectas, cónicas, funciones, logaritmos, sucesiones, conteo y probabilidad | 24 (1.1–1.24) |
 | 3.er año | Cálculo: límites, trigonometría y complejos, derivadas, integrales, vectores y matemática discreta | 27 (1.1–1.27) |
 

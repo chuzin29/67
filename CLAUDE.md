@@ -4,7 +4,7 @@ Sitio estático (HTML + CSS + JS vanilla, sin build ni dependencias). Idioma de 
 
 ## Estructura
 - `index.html`: portada, menú, una `<section id="primero|segundo|tercero" class="view">` por año y los `<script>` en orden. Al cambiar un JS/CSS, sube el número `?v=N` de su `<script>`/`<link>` para evitar la caché de GitHub Pages.
-- Tres años: **1.er** (`primero-*`, `data-1a-*`, 13 temas), **2.º** (`segundo*`, `data-2a-*`, 24 temas), **3.er** (`tercero-*`, `data-3a-*`, 27 temas). Cada uno se monta una vez al cargar: `Primero.mount(...)`, `Segundo`, `Tercero` (script inline al final de `index.html`).
+- Tres años: **1.er** (`primero-*`, `data-1a-*`, 18 temas), **2.º** (`segundo*`, `data-2a-*`, 24 temas), **3.er** (`tercero-*`, `data-3a-*`, 27 temas). Cada uno se monta una vez al cargar: `Primero.mount(...)`, `Segundo`, `Tercero` (script inline al final de `index.html`).
 - `assets/js/pizarra.js`: motor de la pizarra (`PZ.*`) y `Pizarra.auto(ejercicio)`, que arma una pizarra con los `pasos` de cualquier ejemplo o ejercicio.
 
 ## Contrato de datos de un tema
