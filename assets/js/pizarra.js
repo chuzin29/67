@@ -83,7 +83,8 @@
     }).join('');
     return '<article class="pz-lesson" id="' + id + '" tabindex="0" data-pz data-n="' + n + '" data-cur="0">' +
       '<header class="pz-head"><h4>' + esc(L.titulo) + '</h4>' + (L.intro ? '<p class="muted">' + M(L.intro) + '</p>' : '') + '</header>' +
-      '<div class="pz-frame"><div class="pz-board" aria-live="polite">' + steps + '<div class="pz-chalk" aria-hidden="true"></div></div></div>' +
+      '<div class="pz-frame"><div class="pz-board" aria-live="polite">' + steps + '</div><div class="pz-tray" aria-hidden="true"><i class="pz-gis pz-gy"></i><i class="pz-gis pz-gp"></i><i class="pz-gis pz-gw"></i><i class="pz-borr"></i></div></div>' +
+      '<div class="pz-dots" aria-hidden="true">' + L.pasos.map(function (_, i) { return '<i data-d="' + i + '"></i>'; }).join('') + '</div>' +
       '<div class="pz-notes">' + notes + '</div>' +
       '<div class="pz-ctrl"><button class="btn btn-ghost btn-sm" type="button" data-pz-act="prev" disabled>← Atrás</button>' +
       '<span class="pz-count"><b data-pz-n>1</b> / ' + n + '</span>' +
@@ -101,6 +102,7 @@
       s.hidden = i > cur || !!rep; s.classList.toggle('pz-new', i === cur && cur > 0); s.classList.toggle('pz-old', i < cur);
     });
     Array.prototype.forEach.call(root.querySelectorAll('.pz-nota'), function (s) { s.hidden = +s.getAttribute('data-i') !== cur; });
+    Array.prototype.forEach.call(root.querySelectorAll('.pz-dots i'), function (d) { var i = +d.getAttribute('data-d'); d.className = i < cur ? 'on' : i === cur ? 'now' : ''; });
     root.querySelector('[data-pz-n]').textContent = cur + 1;
     root.querySelector('[data-pz-act="prev"]').disabled = cur === 0;
     var nx = root.querySelector('[data-pz-act="next"]'); nx.disabled = cur === n - 1; nx.textContent = cur === n - 1 ? 'Listo ✓' : 'Siguiente paso →';
