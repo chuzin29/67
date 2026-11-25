@@ -38,6 +38,7 @@
   /* una nota: inicio, duración, frecuencias [desde, pico, hasta], onda, volumen, filtro */
   function nota(t, d, f, tipo, vol, corte) {
     var o = ctx.createOscillator(), g = ctx.createGain(), fl = ctx.createBiquadFilter(), n = ctx.currentTime + t;
+    var k = 0.94 + Math.random() * 0.12; f = f.map(function (x) { return x * k; });
     o.type = tipo; o.frequency.setValueAtTime(f[0], n); o.frequency.exponentialRampToValueAtTime(f[1], n + d * 0.35); o.frequency.exponentialRampToValueAtTime(f[2], n + d);
     fl.type = 'lowpass'; fl.frequency.value = corte || 4000;
     g.gain.setValueAtTime(0.0001, n); g.gain.exponentialRampToValueAtTime(vol, n + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, n + d);
@@ -50,6 +51,14 @@
     grave: function () { nota(0, 0.5, [420, 640, 360], 'sawtooth', 0.06, 1700); },
     fino: function () { nota(0, 0.42, [700, 1050, 560], 'triangle', 0.09, 3000); },
     duo: function () { VOZ.grave(); nota(0.3, 0.42, [700, 1050, 560], 'triangle', 0.08, 3000); },
+    sirena: function () { nota(0, 0.28, [650, 980, 650], 'square', 0.035, 2200); nota(0.28, 0.28, [650, 980, 650], 'square', 0.035, 2200); VOZ.maullan(); },
+    campana: function () { nota(0, 0.5, [1568, 1568, 1560], 'sine', 0.08); nota(0.04, 0.4, [2350, 2350, 2340], 'sine', 0.035); },
+    martillo: function () { [0, 0.14].forEach(function (t) { nota(t, 0.07, [210, 140, 60], 'square', 0.12, 900); }); nota(0.3, 0.13, [260, 420, 130], 'sawtooth', 0.12, 1100); },
+    lupa: function () { [330, 392, 466].forEach(function (f, i) { nota(i * 0.13, 0.12, [f, f, f], 'triangle', 0.09); }); },
+    tic: function () { nota(0, 0.05, [1200, 1500, 1300], 'sine', 0.06); },
+    cerrar: function () { nota(0, 0.1, [600, 400, 250], 'sine', 0.05); },
+    animo: function () { nota(0, 0.2, [440, 440, 430], 'sine', 0.07); nota(0.2, 0.3, [392, 392, 370], 'sine', 0.07); },
+    fiesta: function () { [523, 659, 784, 1047].forEach(function (f, i) { nota(i * 0.09, 0.22, [f, f, f], 'triangle', 0.08); }); VOZ.maullan(); },
     acierto: function () { [523, 659, 784].forEach(function (f, i) { nota(0.5 + i * 0.1, 0.18, [f, f, f], 'sine', 0.07); }); }
   };
   function sonar(v) {
@@ -106,21 +115,53 @@
   function decir(panel, k, html) {
     panel.hidden = false; panel.setAttribute('data-pet', k);
     panel.innerHTML = '<img src="' + img(k) + '" alt=""><div class="masc-txt"><strong>' + PETS[k].n + '</strong>' + html + '</div><button type="button" class="masc-x" aria-label="Cerrar ayuda">×</button>';
-    panel.querySelector('.masc-x').onclick = function () { panel.hidden = true; };
+    panel.querySelector('.masc-x').onclick = function () { panel.hidden = true; sonar('cerrar'); };
+  }
+
+  function boton(donde, texto, fn) { var b = el('button', 'chip masc-accion', texto); b.type = 'button'; b.onclick = function (e) { e.stopPropagation(); fn(); }; donde.appendChild(b); return b; }
+
+  /* Manchita: lista de control, comparar con la respuesta y decidir qué sigue */
+  function auditar(host, panel, data) {
+    decir(panel, 'manchita', revision(data.tema));
+    var txt = panel.querySelector('.masc-txt'), checks = txt.querySelectorAll('input');
+    Array.prototype.forEach.call(checks, function (c) {
+      c.onchange = function () { sonar(Array.prototype.every.call(checks, function (x) { return x.checked; }) ? 'fiesta' : 'tic'); };
+    });
+    var ver = boton(txt, 'Comparar con la respuesta', function () {
+      ver.remove(); sonar('lupa');
+      txt.appendChild(el('p', '', '<b>Respuesta:</b> ' + M(data.item.respuesta)));
+      var fila = el('div', 'masc-fila', '<span>¿Te salió igual?</span>'); txt.appendChild(fila);
+      boton(fila, 'Sí, me salió', function () {
+        sonar('fiesta');
+        fila.innerHTML = '<b>¡Excelente trabajo! 🎉</b>';
+        var d = host.querySelector('[data-done][aria-pressed="false"]');
+        if (d) boton(fila, 'Marcar como dominado', function () { sonar('fiesta'); d.click(); });
+      });
+      boton(fila, 'Todavía no', function () { sonar('animo'); ayudar('pugsito', host, panel, data); });
+    });
   }
 
   function ayudar(k, host, panel, data) {
-    sonar(PETS[k].v);
+    var sigue = k === 'pugsito' && !panel.hidden && panel.getAttribute('data-pet') === k;
+    sonar(sigue ? 'martillo' : k === 'rockytos' ? 'sirena' : k === 'mamoi' ? 'campana' : k === 'rovin' ? 'lupa' : PETS[k].v);
     var it = data.item, t = data.tema, abierto = !panel.hidden && panel.getAttribute('data-pet') === k;
     if (k === 'mamoi') return decir(panel, k, receta(t));
-    if (k === 'rovin') return decir(panel, k, pista(it));
-    if (k === 'manchita') return decir(panel, k, revision(t));
+    if (k === 'rovin') {
+      decir(panel, k, pista(it));
+      var s = panel.querySelector('summary'); if (s) s.onclick = function () { sonar('grave'); };
+      return;
+    }
+    if (k === 'manchita') return auditar(host, panel, data);
     if (k === 'pugsito') {
       var n = abierto ? +panel.getAttribute('data-n') + 1 : 1, total = it.pasos.length;
       n = Math.min(n, total); panel.setAttribute('data-n', n);
-      return decir(panel, k, '<p>Bloque ' + n + ' de ' + total + '. Intenta el siguiente antes de pedirlo.</p><ol>' +
+      decir(panel, k, '<p>Bloque ' + n + ' de ' + total + '. Intenta el siguiente antes de pedirlo.</p><ol>' +
         it.pasos.slice(0, n).map(function (p) { return '<li>' + M(p) + '</li>'; }).join('') + '</ol>' +
-        '<p>' + (n < total ? 'Pulsa otra vez «' + PETS[k].boton + '» para el siguiente.' : '¡Obra terminada! Escribe tú la respuesta final y compárala.') + '</p>');
+        (n < total ? '' : '<p>¡Obra terminada! Escribe tú la respuesta final y compárala.</p>'));
+      var txt = panel.querySelector('.masc-txt');
+      if (n < total) boton(txt, 'Poner el siguiente bloque', function () { ayudar('pugsito', host, panel, data); });
+      else boton(txt, 'Revisar con Manchita', function () { ayudar('manchita', host, panel, data); });
+      return;
     }
     /* Rockytos */
     if (data.examen) {
@@ -139,6 +180,7 @@
     var b = el('div', 'masc-bar'), panel = el('div', 'masc-panel');
     panel.hidden = true; panel.setAttribute('aria-live', 'polite');
     b.setAttribute('role', 'group'); b.setAttribute('aria-label', 'Ayuda de las mascotas');
+    b.appendChild(el('strong', 'masc-titulo', '🐾 ¿Necesitas ayuda? Toca a un compañero'));
     keys.forEach(function (k) {
       var x = el('button', 'masc-btn', '<img src="' + img(k) + '" alt=""><span><b>' + PETS[k].n + '</b><small>' + PETS[k].boton + '</small></span>');
       x.type = 'button'; x.setAttribute('data-pet', k);
@@ -175,6 +217,62 @@
     });
   }
 
+  /* ---------- botón flotante: ayuda siempre a la vista dentro de un tema ---------- */
+  var dock, menu, aviso;
+  function activa() { return document.querySelector('section.view.active'); }
+  /* la tarjeta que más se ve en pantalla (o la siguiente más abajo) */
+  function enPantalla() {
+    var v = activa(); if (!v) return null;
+    var mejor = null, area = 0, abajo = null;
+    Array.prototype.forEach.call(v.querySelectorAll('.s2-q, .s2-prob, .s2-ex'), function (c) {
+      var r = c.getBoundingClientRect(); if (!r.height) return;
+      var a = Math.min(r.bottom, global.innerHeight) - Math.max(r.top, 70);
+      if (a > area) { area = a; mejor = c; }
+      if (!abajo && r.top > 0) abajo = c;
+    });
+    return mejor || abajo;
+  }
+  function abrirMenu(si) {
+    menu.hidden = !si; dock.setAttribute('aria-expanded', String(si)); if (!si) return;
+    var c = enPantalla(); aviso.textContent = c ? 'Te ayudo con el que tienes en pantalla:' : 'Abre la práctica y te ayudamos:';
+    Array.prototype.forEach.call(menu.querySelectorAll('[data-pet]'), function (b) {
+      b.hidden = !(c && c.querySelector('.masc-btn[data-pet="' + b.getAttribute('data-pet') + '"]'));
+    });
+    menu.querySelector('.masc-ir').hidden = !!c;
+  }
+  function actualizarDock() {
+    if (!dock) return;
+    var v = activa(), si = !!(v && v.querySelector('.s2-tabs, .s2-q'));
+    dock.hidden = !si; if (!si) menu.hidden = true;
+  }
+  function crearDock() {
+    dock = el('button', 'masc-dock', '<img src="' + img('rockytos') + '" alt=""><span>Ayuda</span>');
+    dock.type = 'button'; dock.hidden = true; dock.setAttribute('aria-expanded', 'false');
+    menu = el('div', 'masc-menu'); menu.hidden = true; aviso = el('p'); menu.appendChild(aviso);
+    ['rockytos', 'rovin', 'pugsito', 'mamoi', 'manchita'].forEach(function (k) {
+      var b = el('button', 'masc-btn', '<img src="' + img(k) + '" alt=""><span><b>' + PETS[k].n + '</b><small>' + PETS[k].boton + '</small></span>');
+      b.type = 'button'; b.setAttribute('data-pet', k);
+      b.onclick = function () {
+        var c = enPantalla(), x = c && c.querySelector('.masc-btn[data-pet="' + k + '"]'); abrirMenu(false); if (!x) return;
+        x.click();
+        var panel = c.querySelector('.masc-panel'); if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+      menu.appendChild(b);
+    });
+    var ir = boton(menu, 'Ir a practicar', function () {
+      var t = activa().querySelector('.s2-tab[data-tab="practica"]'); abrirMenu(false); if (!t) return;
+      sonar('maullan'); t.click(); setTimeout(function () { var c = enPantalla(); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    });
+    ir.classList.add('masc-ir');
+    dock.onclick = function () { var si = menu.hidden; sonar(si ? 'maullan' : 'cerrar'); abrirMenu(si); };
+    document.body.appendChild(menu); document.body.appendChild(dock);
+    document.addEventListener('click', function (e) {
+      if (!menu.hidden && !menu.contains(e.target) && !dock.contains(e.target)) abrirMenu(false);
+      setTimeout(actualizarDock, 60);
+    }, true);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') abrirMenu(false); setTimeout(actualizarDock, 60); });
+  }
+
   /* ---------- la casa de las mascotas (portada) ---------- */
   function casa() {
     var inicio = document.getElementById('inicio'); if (!inicio) return;
@@ -199,7 +297,7 @@
   global.Mascotas = { mudo: function () { return mudo; } };
 
   var pendiente = false;
-  function programar() { if (pendiente) return; pendiente = true; requestAnimationFrame(function () { pendiente = false; decorar(); }); }
-  casa(); decorar();
+  function programar() { if (pendiente) return; pendiente = true; requestAnimationFrame(function () { pendiente = false; decorar(); actualizarDock(); }); }
+  casa(); crearDock(); decorar(); actualizarDock();
   new MutationObserver(programar).observe(document.body, { childList: true, subtree: true });
 })(window);

@@ -21,6 +21,8 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 | Manchita | Auditora | Ejercicios | Lista para revisar tu respuesta |
 | Manchita y Rovin | Agentes | Examen | Mensajes durante la pregunta y el resultado |
 
+**Ampliación (v3):** botón flotante «Ayuda» dentro de cada tema (actúa sobre el ejercicio en pantalla o lleva a Práctica), sonidos distintos por acción, y Manchita permite comparar la respuesta y marcar el ejercicio como dominado. Versiones actuales: `mascotas.js?v=3`, `style.css?v=32`.
+
 **Archivos**
 
 - Nuevos: `assets/js/mascotas.js` (lógica, frases y sonidos con Web Audio) y `assets/img/mascotas/*.webp`.
