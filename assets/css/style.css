@@ -1570,6 +1570,44 @@ details.acc > summary:hover { color: hsl(var(--tone)); }
 .numeric-answer { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
 .numeric-answer .field { flex: 1 1 120px; }
 
+/* ---------------------------- Equipo de mascotas ---------------------------- */
+.masc-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.masc-btn { display: flex; align-items: center; gap: 8px; padding: 5px 14px 5px 5px; border-radius: 999px; border: 1px solid hsl(var(--foreground) / .18); background: hsl(var(--surface)); color: hsl(var(--foreground)); cursor: pointer; text-align: left; font: inherit; }
+.masc-btn img { width: 42px; height: 42px; border-radius: 50%; transition: transform .2s ease; }
+.masc-btn:hover img { transform: scale(1.15) rotate(-6deg); }
+.masc-btn span { display: grid; line-height: 1.2; }
+.masc-btn b { font-size: .8rem; }
+.masc-btn small { font-size: .7rem; opacity: .75; }
+.masc-panel { display: flex; gap: 12px; align-items: flex-start; padding: 14px; margin: 0 0 12px; border-radius: 16px; background: hsl(var(--surface)); border: 2px solid hsl(var(--foreground) / .2); }
+.masc-panel[hidden] { display: none; }
+.masc-panel > img { width: 56px; height: 56px; border-radius: 50%; }
+.masc-txt { flex: 1; min-width: 0; overflow-x: auto; font-size: .9rem; }
+.masc-txt p { margin: 6px 0; }
+.masc-txt ul, .masc-txt ol { margin: 6px 0; padding-left: 20px; }
+.masc-txt ul { list-style: disc; }
+.masc-txt ol { list-style: decimal; }
+.masc-txt summary { cursor: pointer; font-weight: 700; }
+.masc-check { display: grid; gap: 4px; }
+.masc-x { border: 0; background: none; color: inherit; font-size: 1.4rem; cursor: pointer; line-height: 1; }
+.masc-apagada { opacity: .3; text-decoration: line-through; }
+.masc-duo { display: flex; align-items: center; gap: 10px; margin: 10px 0; font-weight: 600; font-size: .88rem; }
+.masc-duo button { border: 0; background: none; padding: 0; cursor: pointer; }
+.masc-duo img { width: 56px; height: 56px; border-radius: 50%; display: block; }
+.masc-casa { padding-top: 40px; padding-bottom: 56px; }
+.masc-casa-head { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: end; margin-bottom: 20px; }
+.masc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.masc-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 12px; border-radius: 20px; border: 1px solid hsl(var(--foreground) / .18); background: hsl(var(--surface)); color: hsl(var(--foreground)); cursor: pointer; text-align: center; font: inherit; }
+.masc-card img { width: 112px; height: 112px; border-radius: 50%; }
+.masc-card em { font-style: normal; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.masc-card small { font-size: .78rem; line-height: 1.4; }
+.masc-dice { font-size: .82rem; font-weight: 700; }
+.masc-card.salta img { animation: mascSalta .6s ease; }
+.masc-corazon { position: absolute; top: 18px; right: 22%; color: #e5487a; font-style: normal; font-size: 1.6rem; pointer-events: none; animation: mascCorazon .9s ease forwards; }
+@keyframes mascSalta { 30% { transform: translateY(-14px) rotate(-7deg); } 65% { transform: translateY(0) rotate(5deg); } }
+@keyframes mascCorazon { to { transform: translateY(-34px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .masc-card.salta img, .masc-corazon { animation: none; } }
+@media print { .masc-bar, .masc-panel, .masc-duo, .masc-casa { display: none !important; } }
+
 /* ---------------------------- 14. Mascota, toast y pie ---------------------------- */
 .mascota {
   position: fixed;

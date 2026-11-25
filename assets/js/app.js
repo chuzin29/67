@@ -254,6 +254,7 @@
   ];
 
   function chirp() {
+    if (window.Mascotas && window.Mascotas.mudo()) return;
     try {
       var Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;

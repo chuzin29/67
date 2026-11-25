@@ -8,6 +8,30 @@ Sitio web interactivo para aprender, practicar y evaluarte en **Precálculo (1.�
 
 Todo en una sola página, sin dependencias ni instalación: https://chuzin29.github.io/67/
 
+## 📌 Nota para quien mantiene el repo: nuevas mascotas (25/11/2026, Jimena)
+
+Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mantiene.
+
+| Mascota | Oficio | Dónde ayuda | Qué hace |
+| --- | --- | --- | --- |
+| Pugsito | Constructor | Ejercicios | Muestra la solución un paso cada vez |
+| Rockytos | Bomberos | Ejemplos, ejercicios, examen | Errores comunes; en examen apaga 2 opciones o da el primer paso |
+| Mamoi | Cocinera | Ejemplos, ejercicios, examen | Fórmulas del tema |
+| Rovin | Detective | Ejemplos, ejercicios | Datos del enunciado y primera pista |
+| Manchita | Auditora | Ejercicios | Lista para revisar tu respuesta |
+| Manchita y Rovin | Agentes | Examen | Mensajes durante la pregunta y el resultado |
+
+**Archivos**
+
+- Nuevos: `assets/js/mascotas.js` (lógica, frases y sonidos con Web Audio) y `assets/img/mascotas/*.webp`.
+- Cambiados: `assets/css/style.css` (bloque «Equipo de mascotas», `?v=31`), `assets/js/app.js` (el botón de sonido también silencia a Cheuscita, `?v=14`) e `index.html` (script y versiones).
+
+**A tener en cuenta**
+
+- `mascotas.js` se apoya en las clases `.s2-prob`, `.s2-ex`, `.s2-q`, `.s2-fb`, `.s2-result-card`, `.s2-num` y `.s2-head .s2-tile`; si cambian, hay que actualizarlo.
+- La ayuda de Rockytos en el examen no resta puntos.
+- El retrato individual de Manchita es un recorte de la foto en pareja; conviene reemplazar `manchita.webp` cuando haya uno propio.
+
 ## Qué incluye
 
 Tres años, una misma metodología (64 temas):
@@ -40,6 +64,7 @@ Cada tema tiene:
         ├── math-render.js, format.js
         ├── pizarra.js               # Motor de la pizarra (PZ.*) y pizarra automática
         ├── symbiote.js              # Botones con efecto líquido
+        ├── mascotas.js              # Equipo de mascotas (ayudas y sonidos)
         ├── data-1a-u1…u4.js         # Contenido de 1.er año
         ├── pizarra-1a-1…4.js        # Pizarras hechas a mano de 1.er año
         ├── primero-ui.js, primero-calc.js, primero-graf.js, videos-1a.js
