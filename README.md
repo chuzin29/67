@@ -25,6 +25,8 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 **Resumen de Cheuscita (v4):** en la pestaña Video, Cheuscita muestra el resumen, puntos importantes, fórmulas y errores comunes. Se genera con los datos de cada tema (no es una transcripción del video). Versiones actuales: `mascotas.js?v=4`, `style.css?v=33`.
 
+**Resúmenes de video (v5):** `assets/js/resumenes-video.js` guarda lo que explica cada video (clave = id de YouTube). Por ahora hay resumen de `BuCSeFMTiOE` (1.er año, 1.8) y `PbvKVSWyvpI` (1.er año, 1.10); los demás muestran solo el resumen del tema.
+
 **Archivos**
 
 - Nuevos: `assets/js/mascotas.js` (lógica, frases y sonidos con Web Audio) y `assets/img/mascotas/*.webp`.

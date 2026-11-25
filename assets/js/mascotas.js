@@ -196,11 +196,13 @@
     document.querySelectorAll('.s2-video:not([data-masc])').forEach(function (v) {
       v.setAttribute('data-masc', '');
       var t = temaDe(v); if (!t) return;
+      var marco = v.querySelector('.s2-vframe'), vid = marco && (global.RESUMENES_VIDEO || {})[marco.getAttribute('data-vid')];
+      var delVideo = vid ? '<h4>🎬 Lo que explica el video</h4>' + lista(vid) : '<p><b>🎬 Resumen del video:</b> todavía no está disponible. Abajo tienes el resumen del tema.</p>';
       var caja = el('div', 'masc-resumen'), cab = el('button', 'masc-resumen-cab', '<img src="cheuscita.png" alt=""><span><b>Resumen de Cheuscita</b><small>Toca para ver los puntos importantes de «' + t.titulo + '»</small></span>');
-      var cuerpo = el('div', 'masc-txt', '<p>' + M(t.resumen) + '</p><h4>⭐ Puntos importantes</h4>' + lista(t.objetivos) +
+      var cuerpo = el('div', 'masc-txt', delVideo + '<h4>📘 El tema</h4><p>' + M(t.resumen) + '</p><h4>⭐ Puntos importantes</h4>' + lista(t.objetivos) +
         '<h4>📌 Fórmulas clave</h4>' + lista(t.formulas.map(function (f) { return '<b>' + f.label + ':</b> <span class="math">' + f.html + '</span>'; })) +
         '<h4>⚠️ Cuidado con</h4>' + lista(t.errores) +
-        '<p><small>Resumen basado en el contenido de este tema en la página; el video puede explicarlo en otro orden o cubrir solo una parte.</small></p>');
+        '<p><small>La sección del tema sale del contenido de la página. El resumen del video, cuando aparece, se basa en un resumen publicado en Video Highlight.</small></p>');
       cab.type = 'button'; cab.setAttribute('aria-expanded', 'false'); cuerpo.hidden = true;
       cab.onclick = function () { cuerpo.hidden = !cuerpo.hidden; cab.setAttribute('aria-expanded', String(!cuerpo.hidden)); sonar(cuerpo.hidden ? 'cerrar' : 'pio'); };
       caja.appendChild(cab); caja.appendChild(cuerpo); v.parentNode.insertBefore(caja, v.nextSibling);
