@@ -1606,6 +1606,15 @@ details.acc > summary:hover { color: hsl(var(--tone)); }
 @keyframes mascSalta { 30% { transform: translateY(-14px) rotate(-7deg); } 65% { transform: translateY(0) rotate(5deg); } }
 @keyframes mascCorazon { to { transform: translateY(-34px); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .masc-card.salta img, .masc-corazon { animation: none; } }
+/* resumen de Cheuscita */
+.masc-resumen { margin: 14px 0; border-radius: 18px; border: 2px solid #f2bd33; background: hsl(var(--surface)); }
+.masc-resumen-cab { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.masc-resumen-cab img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; background: #fff; }
+.masc-resumen-cab span { display: grid; }
+.masc-resumen .masc-txt { padding: 0 16px 14px; }
+.masc-resumen .masc-txt[hidden] { display: none; }
+.masc-resumen h4 { margin: 12px 0 4px; }
+
 /* ayudas visibles y botón flotante */
 .masc-bar { padding: 12px; border-radius: 18px; border: 2px dashed hsl(var(--primary) / .5); background: hsl(var(--primary) / .07); }
 .masc-titulo { flex-basis: 100%; font-size: .85rem; }

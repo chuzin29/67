@@ -59,6 +59,7 @@
     cerrar: function () { nota(0, 0.1, [600, 400, 250], 'sine', 0.05); },
     animo: function () { nota(0, 0.2, [440, 440, 430], 'sine', 0.07); nota(0.2, 0.3, [392, 392, 370], 'sine', 0.07); },
     fiesta: function () { [523, 659, 784, 1047].forEach(function (f, i) { nota(i * 0.09, 0.22, [f, f, f], 'triangle', 0.08); }); VOZ.maullan(); },
+    pio: function () { [0, 0.09, 0.18].forEach(function (t, i) { nota(t, 0.1, [1500 + i * 320, 2300 + i * 260, 2100 + i * 260], 'sine', 0.06); }); },
     acierto: function () { [523, 659, 784].forEach(function (f, i) { nota(0.5 + i * 0.1, 0.18, [f, f, f], 'sine', 0.07); }); }
   };
   function sonar(v) {
@@ -190,8 +191,25 @@
     host.insertBefore(b, antes || null); host.insertBefore(panel, antes || null);
   }
 
+  /* ---------- resumen de Cheuscita en la pestaña Video ---------- */
+  function resumenes() {
+    document.querySelectorAll('.s2-video:not([data-masc])').forEach(function (v) {
+      v.setAttribute('data-masc', '');
+      var t = temaDe(v); if (!t) return;
+      var caja = el('div', 'masc-resumen'), cab = el('button', 'masc-resumen-cab', '<img src="cheuscita.png" alt=""><span><b>Resumen de Cheuscita</b><small>Toca para ver los puntos importantes de «' + t.titulo + '»</small></span>');
+      var cuerpo = el('div', 'masc-txt', '<p>' + M(t.resumen) + '</p><h4>⭐ Puntos importantes</h4>' + lista(t.objetivos) +
+        '<h4>📌 Fórmulas clave</h4>' + lista(t.formulas.map(function (f) { return '<b>' + f.label + ':</b> <span class="math">' + f.html + '</span>'; })) +
+        '<h4>⚠️ Cuidado con</h4>' + lista(t.errores) +
+        '<p><small>Resumen basado en el contenido de este tema en la página; el video puede explicarlo en otro orden o cubrir solo una parte.</small></p>');
+      cab.type = 'button'; cab.setAttribute('aria-expanded', 'false'); cuerpo.hidden = true;
+      cab.onclick = function () { cuerpo.hidden = !cuerpo.hidden; cab.setAttribute('aria-expanded', String(!cuerpo.hidden)); sonar(cuerpo.hidden ? 'cerrar' : 'pio'); };
+      caja.appendChild(cab); caja.appendChild(cuerpo); v.parentNode.insertBefore(caja, v.nextSibling);
+    });
+  }
+
   /* ---------- se añaden a lo que va apareciendo ---------- */
   function decorar() {
+    resumenes();
     document.querySelectorAll('.s2-prob:not([data-masc]), .s2-ex:not([data-masc])').forEach(function (c) {
       c.setAttribute('data-masc', '');
       var t = temaDe(c), it = t && itemDe(c, t); if (!it) return;

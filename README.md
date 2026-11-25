@@ -23,6 +23,8 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 **Ampliación (v3):** botón flotante «Ayuda» dentro de cada tema (actúa sobre el ejercicio en pantalla o lleva a Práctica), sonidos distintos por acción, y Manchita permite comparar la respuesta y marcar el ejercicio como dominado. Versiones actuales: `mascotas.js?v=3`, `style.css?v=32`.
 
+**Resumen de Cheuscita (v4):** en la pestaña Video, Cheuscita muestra el resumen, puntos importantes, fórmulas y errores comunes. Se genera con los datos de cada tema (no es una transcripción del video). Versiones actuales: `mascotas.js?v=4`, `style.css?v=33`.
+
 **Archivos**
 
 - Nuevos: `assets/js/mascotas.js` (lógica, frases y sonidos con Web Audio) y `assets/img/mascotas/*.webp`.
