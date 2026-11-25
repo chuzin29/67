@@ -30,7 +30,7 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 - `mascotas.js` se apoya en las clases `.s2-prob`, `.s2-ex`, `.s2-q`, `.s2-fb`, `.s2-result-card`, `.s2-num` y `.s2-head .s2-tile`; si cambian, hay que actualizarlo.
 - La ayuda de Rockytos en el examen no resta puntos.
-- El retrato individual de Manchita es un recorte de la foto en pareja; conviene reemplazar `manchita.webp` cuando haya uno propio.
+- Rovin es el siamés de la mancha blanca en la cara; Manchita, el de la nariz y cara más oscuras. Si cambias un retrato, sube el `?v=` de la imagen en `mascotas.js`.
 
 ## Qué incluye
 

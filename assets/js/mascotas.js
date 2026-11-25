@@ -27,7 +27,7 @@
       que: 'Te acompañan en los exámenes y te dicen cómo vas.',
       frases: ['Agentes listos para el examen.', 'Uno investiga y la otra verifica.', 'Calma: pregunta por pregunta.'] }
   };
-  function img(k) { return DIR + (PETS[k].img || k) + '.webp'; }
+  function img(k) { return DIR + (PETS[k].img || k) + '.webp?v=2'; }
   function M(h) { return global.MathRender && global.MathRender.render ? global.MathRender.render(h) : h; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function azar(a) { return a[Math.floor(Math.random() * a.length)]; }
