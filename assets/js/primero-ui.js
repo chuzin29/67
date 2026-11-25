@@ -231,7 +231,11 @@
       h = '<div class="s2-toolrow"><button class="btn btn-ghost btn-sm" data-acc="open">Expandir todo</button><button class="btn btn-ghost btn-sm" data-acc="close">Contraer todo</button></div>' +
         t.teoria.map(function (b, i) { return acc('<span class="s2-num">' + (i + 1) + '</span>' + esc(b.titulo), M(b.html), i === 0 || view.all); }).join('');
     } else if (tab === 'pizarra') {
-      h = global.Pizarra ? global.Pizarra.html((global.PIZARRA_1A || {})[t.id]) : '';
+      var Ls = (global.PIZARRA_1A || {})[t.id];
+      if (global.Pizarra && (!Ls || !Ls.length)) {
+        h = '<div class="pz-wrap"><p class="muted small pz-hint">Mira cómo se resuelve cada ejemplo en la pizarra, paso a paso. Pulsa <b>Siguiente paso</b>.</p>' +
+          (t.ejemplos || []).map(function (e) { return '<h4 class="pz-tt">' + esc(e.titulo || 'Ejemplo') + '</h4>' + global.Pizarra.auto(e); }).join('') + '</div>';
+      } else h = global.Pizarra ? global.Pizarra.html(Ls) : '';
     } else if (tab === 'video') {
       h = videoHtml(t);
     } else if (tab === 'explora') {
