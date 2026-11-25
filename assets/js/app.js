@@ -1703,12 +1703,14 @@
   }
 })();
 
-document.addEventListener('click', function (e) { var d = document.getElementById('navLegacy'); if (d && d.open && (e.target.closest('.nav-pop .nav-link') || !e.target.closest('#navLegacy'))) d.open = false; });
+document.addEventListener('click', function (e) { var d = document.getElementById('navYears'); if (d && d.open && (e.target.closest('.nav-pop .nav-link') || !e.target.closest('#navYears'))) d.open = false; });
 (function () {
-  var d = document.getElementById('navLegacy'); if (!d) return;
+  var d = document.getElementById('navYears'); if (!d) return;
   d.addEventListener('toggle', function () {
     if (!d.open) return; var r = d.querySelector('summary').getBoundingClientRect();
     d.style.setProperty('--pop-top', (r.bottom + 6) + 'px'); d.style.setProperty('--pop-left', Math.max(8, Math.min(r.left, innerWidth - 190)) + 'px');
   });
   window.addEventListener('scroll', function () { if (d.open) d.open = false; }, { passive: true });
 })();
+
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#heroYears .nav-pop [data-go]");if(b){var d=document.getElementById("heroYears");if(d)d.open=false;}});

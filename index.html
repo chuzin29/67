@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=26">
+<link rel="stylesheet" href="assets/css/style.css?v=29">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
 </head>
 <body>
@@ -34,7 +34,7 @@
 <div class="announce">
   <div class="wrap announce-inner">
     <p>Precálculo de 1.º y 2.º año y Cálculo de 3.er año: 64 temas con teoría, pizarra, práctica y examen. Gratis y sin instalar nada.</p>
-    <button type="button" data-go="bancos">Practicar
+    <button type="button" data-go="primero">Empezar
       <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10 10 2M4 2h6v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
@@ -51,17 +51,10 @@
 
     <nav class="nav" id="nav" aria-label="Navegación principal">
       <button class="nav-link active" data-section="inicio">Inicio</button>
-      <button class="nav-link nav-new" data-section="segundo">2.º año</button>
-      <button class="nav-link nav-new" data-section="tercero">3.er año</button>
-      <details class="nav-group" id="navLegacy"><summary class="nav-sum">1.er año · IV período <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
-      <button class="nav-link" data-section="teoria">Teoría</button>
-      <button class="nav-link" data-section="vectores">Vectores</button>
-      <button class="nav-link" data-section="complejos">Complejos</button>
-      <button class="nav-link" data-section="trigonometria">Trigonometría</button>
-      <button class="nav-link" data-section="estadistica">Estadística</button>
-      <button class="nav-link" data-section="ejercicios">Ejercicios</button>
-      <button class="nav-link" data-section="bancos">Bancos</button>
-      <button class="nav-link" data-section="examen">Examen</button></div></details>
+      <details class="nav-group" id="navYears"><summary class="nav-sum">Elige tu año <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
+        <button class="nav-link" data-section="primero">1.er año · Precálculo</button>
+        <button class="nav-link" data-section="segundo">2.º año · Precálculo</button>
+        <button class="nav-link" data-section="tercero">3.er año · Cálculo</button></div></details>
     </nav>
 
     <div class="topbar-actions">
@@ -87,8 +80,10 @@
           <h1 id="inicio-titulo">Aprende y domina <span class="gradient-text">Precálculo y Cálculo</span></h1>
           <p class="lead">Precálculo de 1.º y 2.º año, y Cálculo de 3.er año. En cada tema: teoría clara, <strong>video explicativo</strong>, gráficos que puedes mover, ejemplos paso a paso, práctica por niveles, calculadora y examen que se corrige solo.</p>
           <div class="hero-actions">
-            <span class="stretch" data-variant="primary" data-symbiote="150"><svg class="stretch-stage" aria-hidden="true"></svg><button type="button" class="stretch-btn" data-go="segundo">Empezar 2.º año <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span>
-            <button class="btn btn-ghost" data-s2act="exams">Modo examen</button>
+            <details class="nav-group hero-years" id="heroYears"><summary class="yr-btn">Elige tu año <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
+              <button type="button" data-go="primero">1.er año · Precálculo</button>
+              <button type="button" data-go="segundo">2.º año · Precálculo</button>
+              <button type="button" data-go="tercero">3.er año · Cálculo</button></div></details>
           </div>
           <div class="stats">
             <div><span class="stat-num" data-count="64">0</span><span class="stat-label">Temas</span></div>
@@ -97,13 +92,12 @@
             <div><span class="stat-num" data-count="64">0</span><span class="stat-label">Calculadoras y gráficos</span></div>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Los cuatro períodos">
-          <span class="eyebrow">Un vistazo al año</span>
-          <h3 class="mt-1">2.º año: 4 períodos, 8 unidades</h3>
-          <div class="row"><span>Período I</span><span>Ecuaciones, recta, parábola</span></div>
-          <div class="row"><span>Período II</span><span>Cónicas y exponenciales</span></div>
-          <div class="row"><span>Período III</span><span>Funciones, trigonometría, sucesiones</span></div>
-          <div class="row"><span>Período IV</span><span>Conteo y probabilidad</span></div>
+        <aside class="hero-card" aria-label="Los tres años">
+          <span class="eyebrow">Tres años, una misma metodología</span>
+          <h3 class="mt-1">64 temas, del álgebra al cálculo</h3>
+          <div class="row"><span>1.er año</span><span>Álgebra, funciones, trigonometría, vectores</span></div>
+          <div class="row"><span>2.º año</span><span>Ecuaciones, cónicas, logaritmos, probabilidad</span></div>
+          <div class="row"><span>3.er año</span><span>Límites, derivadas, integrales, discreta</span></div>
         </aside>
       </div>
     </div>
@@ -135,85 +129,6 @@
       <button class="period-card u3 reveal" data-s2act="period:II"><span class="period-num">II</span><h3>Período II</h3><p>Circunferencia, elipse e hipérbola · Potencias y funciones exponenciales</p><span class="topic-meta">Temas 1.8 a 1.12 <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></button>
       <button class="period-card u4 reveal" data-s2act="period:III"><span class="period-num">III</span><h3>Período III</h3><p>Funciones, inversa y logaritmos · Trigonometría · Sucesiones</p><span class="topic-meta">Temas 1.13 a 1.18 <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></button>
       <button class="period-card u8 reveal" data-s2act="period:IV"><span class="period-num">IV</span><h3>Período IV</h3><p>Conjuntos e intervalos · Conteo y combinaciones · Probabilidad y Bayes</p><span class="topic-meta">Temas 1.19 a 1.24 <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></button>
-    </div>
-
-    <div class="legacy-sep"><span>Material anterior</span></div>
-
-    <div class="section-head" id="temas">
-      <div>
-        <span class="eyebrow">1.er año · IV período</span>
-        <h2>Precálculo base: seis temas, una misma lógica</h2>
-        <p>Es el material con el que arrancó esta página. Empieza por la teoría del tema que necesites, compruébalo con la calculadora y consolídalo con los bancos de práctica.</p>
-      </div>
-    </div>
-
-    <div class="grid grid-3" id="topicGrid">
-      <button class="topic-card tone-vectores reveal" data-go="vectores">
-        <span class="topic-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        <h3>Vectores</h3>
-        <p>Segmentos dirigidos, componentes, norma, producto escalar y proyecciones.</p>
-        <span class="topic-meta">Calculadora + gráfico <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-      <button class="topic-card tone-complejos reveal" data-go="complejos">
-        <span class="topic-icon">i</span>
-        <h3>Números complejos</h3>
-        <p>Forma binómica, conjugado, módulo, forma polar y potencias.</p>
-        <span class="topic-meta">Calculadora + plano <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-      <button class="topic-card tone-trigo reveal" data-go="trigonometria">
-        <span class="topic-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/></svg></span>
-        <h3>Trigonometría</h3>
-        <p>Ley del seno, ley del coseno, caso ambiguo e identidades.</p>
-        <span class="topic-meta">Resuelve triángulos <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-      <button class="topic-card tone-estadistica reveal" data-go="estadistica">
-        <span class="topic-icon">x̄</span>
-        <h3>Estadística</h3>
-        <p>Media, mediana y moda: calcula y compara medidas de tendencia central.</p>
-        <span class="topic-meta">Calculadora + gráfico <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-      <button class="topic-card tone-vectores reveal" data-go="ejercicios">
-        <span class="topic-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
-        <h3>Ejercicios resueltos</h3>
-        <p>30 ejercicios paso a paso de vectores y complejos, con niveles.</p>
-        <span class="topic-meta">5 juegos × 6 <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-      <button class="topic-card tone-identidades reveal" data-go="bancos">
-        <span class="topic-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg></span>
-        <h3>Bancos de práctica</h3>
-        <p>24 prácticos, 8 de Moivre y 60 preguntas teóricas con respuesta modelo.</p>
-        <span class="topic-meta">92 recursos <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
-      </button>
-    </div>
-
-    <div class="grid grid-2 mt-4" style="align-items:start">
-      <div class="card reveal">
-        <span class="eyebrow">Método</span>
-        <h2 class="mt-1">Cómo aprovechar la guía</h2>
-        <div class="steps mt-3">
-          <div class="step"><p><strong>1. Entiende el concepto.</strong> Lee la teoría y localiza la fórmula clave del tema.</p></div>
-          <div class="step"><p><strong>2. Comprueba con números.</strong> Usa la calculadora y observa cómo cambia el resultado en el gráfico.</p></div>
-          <div class="step"><p><strong>3. Resuelve sin mirar.</strong> Intenta el ejercicio y solo después despliega la solución paso a paso.</p></div>
-          <div class="step"><p><strong>4. Autoevalúate.</strong> Cierra con el modo examen o el banco de 60 preguntas teóricas.</p></div>
-        </div>
-      </div>
-
-      <div class="card reveal">
-        <span class="eyebrow">Contenido de las guías</span>
-        <h2 class="mt-1">Todo integrado</h2>
-        <p class="small muted">Los tres bancos originales ahora forman parte de la web, con filtros, progreso y respuestas explicadas.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Banco</th><th class="num">Ítems</th><th>Formato</th></tr></thead>
-            <tbody>
-              <tr><td>Ejercicios prácticos</td><td class="num">24</td><td>Resolución paso a paso</td></tr>
-              <tr><td>Teorema de Moivre</td><td class="num">8</td><td>Polar <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg> binómica</td></tr>
-              <tr><td>Preguntas teóricas</td><td class="num">60</td><td>Pregunta + respuesta modelo</td></tr>
-              <tr><td>Ejercicios base</td><td class="num">30</td><td>5 niveles progresivos</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -976,20 +891,9 @@
         <div>
           <h2>Estudiar</h2>
           <ul>
-            <li><button type="button" data-go="segundo">2.º año de Bachillerato</button></li>
-            <li><button type="button" data-go="teoria">Teoría</button></li>
-            <li><button type="button" data-go="vectores">Vectores</button></li>
-            <li><button type="button" data-go="complejos">Complejos</button></li>
-            <li><button type="button" data-go="trigonometria">Trigonometría</button></li>
-            <li><button type="button" data-go="estadistica">Estadística</button></li>
-          </ul>
-        </div>
-        <div>
-          <h2>Practicar</h2>
-          <ul>
-            <li><button type="button" data-go="ejercicios">Ejercicios</button></li>
-            <li><button type="button" data-go="bancos">Bancos</button></li>
-            <li><button type="button" data-go="examen">Examen</button></li>
+            <li><button type="button" data-go="primero">1.er año · Precálculo</button></li>
+            <li><button type="button" data-go="segundo">2.º año · Precálculo</button></li>
+            <li><button type="button" data-go="tercero">3.er año · Cálculo</button></li>
           </ul>
         </div>
         <div>
@@ -1068,6 +972,6 @@
 <script>if(window.Tercero)Tercero.mount(document.getElementById("s3Root"));</script>
 <script>if(window.Primero)Primero.mount(document.getElementById("s1Root"));</script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=11"></script>
+<script src="assets/js/app.js?v=12"></script>
 </body>
 </html>

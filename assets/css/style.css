@@ -2203,3 +2203,14 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .s2-sol .s2-acc-body { padding: .6rem; }
 .years-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 .period-card[disabled] { opacity: .6; cursor: not-allowed; }
+.hero-years { position: relative; display: inline-block; }
+.hero-years > summary { display: inline-flex; align-items: center; gap: .5rem; list-style: none; cursor: pointer; }
+.hero-years .nav-pop { left: 0; right: auto; min-width: 230px; display: grid; gap: .2rem; }
+.hero-years .nav-pop button { text-align: left; padding: .6rem .8rem; border-radius: 10px; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; }
+.hero-years .nav-pop button:hover { background: hsl(var(--muted)); }
+.yr-btn { padding: .8rem 1.4rem; border-radius: 999px; font-weight: 700; color: hsl(var(--primary-foreground)); background: hsl(var(--primary)); box-shadow: 0 8px 22px -10px hsl(var(--primary)); user-select: none; }
+.yr-btn:hover { filter: brightness(1.08); }
+.yr-btn::-webkit-details-marker { display: none; }
+.hero-years .nav-pop { position: absolute; top: calc(100% + 8px); left: 0; right: auto; z-index: 30; background: hsl(var(--card)); border: 1px solid hsl(var(--line)); border-radius: 14px; padding: .4rem; box-shadow: 0 18px 40px -16px rgb(0 0 0 / .35); }
+.hero-years .nav-pop { background: hsl(var(--background)); opacity: 1; backdrop-filter: none; }
+.hero-years .nav-pop button { color: hsl(var(--foreground)); }
