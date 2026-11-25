@@ -80,10 +80,10 @@
           <h1 id="inicio-titulo">Aprende y domina <span class="gradient-text">Precálculo y Cálculo</span></h1>
           <p class="lead">Precálculo de 1.º y 2.º año, y Cálculo de 3.er año. En cada tema: teoría clara, <strong>video explicativo</strong>, gráficos que puedes mover, ejemplos paso a paso, práctica por niveles, calculadora y examen que se corrige solo.</p>
           <div class="hero-actions">
-            <details class="nav-group hero-years" id="heroYears"><summary class="yr-btn">Elige tu año <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
+            <div class="hero-years" id="heroYears"><span class="stretch" data-variant="primary" data-symbiote="150"><svg class="stretch-stage" aria-hidden="true"></svg><button type="button" class="stretch-btn" id="heroYearsBtn" aria-haspopup="true" aria-expanded="false">Elige tu año <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span><div class="nav-pop" id="heroYearsPop" hidden>
               <button type="button" data-go="primero">1.er año · Precálculo</button>
               <button type="button" data-go="segundo">2.º año · Precálculo</button>
-              <button type="button" data-go="tercero">3.er año · Cálculo</button></div></details>
+              <button type="button" data-go="tercero">3.er año · Cálculo</button></div></div>
           </div>
           <div class="stats">
             <div><span class="stat-num" data-count="64">0</span><span class="stat-label">Temas</span></div>
@@ -972,6 +972,6 @@
 <script>if(window.Tercero)Tercero.mount(document.getElementById("s3Root"));</script>
 <script>if(window.Primero)Primero.mount(document.getElementById("s1Root"));</script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=12"></script>
+<script src="assets/js/app.js?v=13"></script>
 </body>
 </html>

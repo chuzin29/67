@@ -1713,4 +1713,8 @@ document.addEventListener('click', function (e) { var d = document.getElementByI
   window.addEventListener('scroll', function () { if (d.open) d.open = false; }, { passive: true });
 })();
 
-document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#heroYears .nav-pop [data-go]");if(b){var d=document.getElementById("heroYears");if(d)d.open=false;}});
+(function(){var btn=document.getElementById("heroYearsBtn"),pop=document.getElementById("heroYearsPop");if(!btn||!pop)return;
+function set(o){pop.hidden=!o;btn.setAttribute("aria-expanded",o?"true":"false");}
+btn.addEventListener("click",function(e){e.stopPropagation();set(pop.hidden);});
+document.addEventListener("click",function(e){if(!pop.hidden&&!e.target.closest("#heroYears")||e.target.closest("#heroYearsPop [data-go]"))set(false);});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false);});})();

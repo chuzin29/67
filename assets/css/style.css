@@ -2214,3 +2214,5 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .hero-years .nav-pop { position: absolute; top: calc(100% + 8px); left: 0; right: auto; z-index: 30; background: hsl(var(--card)); border: 1px solid hsl(var(--line)); border-radius: 14px; padding: .4rem; box-shadow: 0 18px 40px -16px rgb(0 0 0 / .35); }
 .hero-years .nav-pop { background: hsl(var(--background)); opacity: 1; backdrop-filter: none; }
 .hero-years .nav-pop button { color: hsl(var(--foreground)); }
+.hero-years { position: relative; display: inline-block; }
+.hero-years .nav-pop[hidden] { display: none; }
