@@ -278,7 +278,7 @@ window.CURSO_1A = window.CURSO_1A || { temas: {} };
       { q: '¿En qué consiste la forma binomial de un número complejo?', a: 'En expresarlo como la suma algebraica z = a + bi, donde a es la parte real y b la parte imaginaria.' },
       { q: '¿Qué relación existe entre un número complejo z y su conjugado z̄?', a: 'Tienen la misma parte real y sus partes imaginarias son de igual magnitud pero signo opuesto (z = a + bi, z̄ = a - bi).' },
       { q: '¿Qué representa geométricamente el módulo |z| de un número complejo?', a: 'Representa la distancia euclidiana desde el origen hasta el punto (a, b) en el plano complejo de Argand.' },
-      { q: '¿Qué establece el teorema de Moivre para la potencia n-ésima de un complejo?', a: 'Que la potencia n-ésima de un complejo en forma polar r(cos θ + i sen θ) se obtiene elevando el módulo a la potencia n y multiplicando el argumento por n: r^n[cos(nθ) + i sen(nθ)].' },
+      { q: '¿Qué establece el teorema de Moivre para la potencia n-ésima de un complejo?', a: 'Que la potencia n-ésima de un complejo en forma polar r(cos θ + i sen θ) se obtiene elevando el módulo a la potencia n y multiplicando el argumento por n: rⁿ[cos(nθ) + i sen(nθ)].' },
       { q: '¿Cómo se interpreta el producto de dos complejos en forma trigonométrica?', a: 'Se interpreta multiplicando sus módulos y sumando sus argumentos angulares.' }
     ],
     errores: [
@@ -299,7 +299,7 @@ window.CURSO_1A = window.CURSO_1A || { temas: {} };
       { tipo: 'opt', q: '¿Cuánto vale i<sup>2</sup>?', opciones: ['1', '-1', 'i', '0'], correcta: 1, pasos: ['Por definición i = √(-1).', 'Elevando al cuadrado: i² = -1.'] },
       { tipo: 'num', q: 'Calcula la parte real del producto (2 + i)(2 - i).', r: 5, tol: 0.01, pasos: ['Distribuye: 4 - 2i + 2i - i<sup>2</sup>.', 'Sustituye i² = -1: 4 + 1 = 5.'] },
       { tipo: 'par', q: 'Calcula el resultado de dividir (4 + 2i) entre 2 (da parte real e imaginaria).', r: [2, 1], tol: 0.01, pasos: ['Divide cada parte entre el denominador real.', '(4/2) + (2/2)i = 2 + i.'] },
-      { tipo: 'opt', q: 'Según el teorema de Moivre, al calcular z<sup>n</sup> con z = r(cos θ + i sen θ), ¿qué le ocurre al argumento θ?', opciones: ['Se divide entre n', 'Se multiplica por n', 'No cambia', 'Se eleva a la potencia n'], correcta: 1, pasos: ['El teorema establece z^n = r^n[cos(nθ) + i sen(nθ)].', 'El argumento se multiplica por n; el módulo se eleva a la potencia n.'] },
+      { tipo: 'opt', q: 'Según el teorema de Moivre, al calcular z<sup>n</sup> con z = r(cos θ + i sen θ), ¿qué le ocurre al argumento θ?', opciones: ['Se divide entre n', 'Se multiplica por n', 'No cambia', 'Se eleva a la potencia n'], correcta: 1, pasos: ['El teorema establece zⁿ = rⁿ[cos(nθ) + i sen(nθ)].', 'El argumento se multiplica por n; el módulo se eleva a la potencia n.'] },
       { tipo: 'num', q: 'Calcula el módulo de z = (1 + i)<sup>4</sup> usando que |z1·z2| = |z1||z2|.', r: 4, tol: 0.01, pasos: ['|1 + i| = √2.', 'Elevado a la cuarta: (√2)<sup>4</sup> = 4.'] },
       { tipo: 'par', q: 'Calcula z = i<sup>4</sup>·(2 + 3i) (da parte real e imaginaria).', r: [2, 3], tol: 0.01, pasos: ['i<sup>4</sup> = (i<sup>2</sup>)<sup>2</sup> = (-1)<sup>2</sup> = 1.', 'Multiplica: 1·(2 + 3i) = 2 + 3i.'] },
       { tipo: 'num', q: 'Usando Moivre, calcula z = (√2(cos 90° + i sen 90°))<sup>2</sup> y da su parte real.', r: -2, tol: 0.01, pasos: ['Módulo al cuadrado: (√2)<sup>2</sup> = 2.', 'Ángulo: 2·90° = 180°.', 'z = 2[cos 180° + i sen 180°] = 2(-1 + 0i) = -2; parte real = -2.'] }

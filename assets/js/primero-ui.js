@@ -404,7 +404,7 @@
     h += '<header class="s2-head"><span class="s2-tile big"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z"/></svg></span><div><h2 id="s1-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
     h += '<h3 class="s2-h">Por período</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>Período ' + p.id + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Por unidad</h3><div class="s2-modes">' + Object.keys(UN).map(function (u) { var b = store.best['u:' + u]; return '<button class="s2-mode u' + u + '" data-exam-mode="u:' + u + '"><strong>Unidad ' + u + '</strong><span>' + UN[u] + '</span><em>10 preguntas' + (b != null ? ' · mejor ' + b + '/10' : '') + '</em></button>'; }).join('') + '</div>';
-    h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 24 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
+    h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 19 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
     h += '<h3 class="s2-h">Por tema</h3><div class="s2-chiprow">' + all.map(function (id) { var b = store.best['t:' + id]; return '<button class="chip" data-exam-mode="t:' + id + '" title="' + esc(T()[id].titulo) + '">' + id + (b != null ? ' · ' + b + '/10' : '') + '</button>'; }).join('') + '</div>';
     h += '<div id="s1Exam" class="s2-exam-hub"></div>';
     root.innerHTML = h;
@@ -436,8 +436,8 @@
     else if (d.acc) { $$('#s1Panel details.s2-acc:not(.s2-sol)').forEach(function (x) { x.open = d.acc === 'open'; }); }
     else if (b.hasAttribute('data-all')) { view.all = !view.all; renderTab(); }
     else if (d.open) { go(function () { view.mode = 'tema'; view.id = d.open; view.tab = 'teoria'; view.nivel = 'todos'; view.pend = false; renderTopic(); }); }
-    else if (d.t3 === 'home') { go(function () { view.mode = 'home'; renderHome(); }); }
-    else if (d.t3 === 'examenes') { go(function () { view.mode = 'examenes'; renderExamHub(); }); }
+    else if (d.t1 === 'home') { go(function () { view.mode = 'home'; renderHome(); }); }
+    else if (d.t1 === 'examenes') { go(function () { view.mode = 'examenes'; renderExamHub(); }); }
     else if (b.hasAttribute('data-sinver')) { view.sinver = !view.sinver; renderHome(); }
     else if (d.per) { view.per = d.per; renderHome(); }
     else if (d.tab) { if (view.all && $('#s3sec-' + d.tab)) { $('#s3sec-' + d.tab).scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } view.tab = d.tab; renderTab(); var tb = $('.s2-tabs'); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
@@ -458,7 +458,7 @@
     else if (e.target.closest('#s1Form')) { clearTimeout(onInput.t); onInput.t = setTimeout(runCalc, 160); }
   }
   function onKey(e) {
-    if (!root || view.mode !== 'tema' || !$('#tercero.active')) return;
+    if (!root || view.mode !== 'tema' || !$('#primero.active')) return;
     if (e.key === 'Escape') { drawer(false); return; }
     if (e.target.matches('input, textarea, select') || e.ctrlKey || e.metaKey) return;
     var all = ids(), ix = all.indexOf(view.id), ti = TABS.map(function (x) { return x[0]; }).indexOf(view.tab);

@@ -190,7 +190,13 @@
   };
 
   global.T1Graf = {
-    draw: function (key, v) { var g = G[key]; if (!g) return null; try { return g(v); } catch (e) { return null; } },
+    draw: function (key, v) {
+      var g = G[key], r; if (!g) return null;
+      try { r = g(v); } catch (e) { return null; }
+      /* p. ej. a = 0: las fórmulas dividen entre a y no hay nada que dibujar */
+      if (/NaN|Infinity/.test(r.svg)) { var P = new Plot([-6, 6], [-6, 6]); return ret(P, 'Con a = 0 esta gráfica no está definida: mueve a a un valor distinto de cero.'); }
+      return r;
+    },
     has: function (key) { return !!G[key]; }
   };
 })(window);

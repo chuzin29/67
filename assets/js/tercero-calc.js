@@ -5,6 +5,8 @@
    ============================================================ */
 var T3Calc = (function () {
   'use strict';
+  /* exponente en superíndice (texto plano: sirve también dentro de un svg) */
+  function sup(x) { return String(x).replace(/[0-9+\-−().]/g, function (c) { return { '+': '⁺', '-': '⁻', '−': '⁻', '(': '⁽', ')': '⁾', '.': '·' }[c] || '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
 
   function f(n, d) {
     if (typeof n !== 'number' || !isFinite(n)) return '—';
@@ -158,7 +160,7 @@ var T3Calc = (function () {
   /* ---- Complejos ---- */
 
   CALCS['complejo-polar'] = {
-    titulo: 'Convertir (a, b) a forma polar r·e^(iθ)',
+    titulo: 'Convertir (a, b) a forma polar r·eⁱᶿ',
     vars: [
       { id: 'a', label: 'Parte real a', min: -10, max: 10, step: 0.5, def: 3 },
       { id: 'b', label: 'Parte imag b', min: -10, max: 10, step: 0.5, def: 4 }
@@ -176,7 +178,7 @@ var T3Calc = (function () {
   };
 
   CALCS['moivre'] = {
-    titulo: 'Teorema de De Moivre: (r·e^(iθ))^n',
+    titulo: 'Teorema de De Moivre: (r·eⁱᶿ)ⁿ',
     vars: [
       { id: 'r', label: 'Módulo r', min: 0.1, max: 10, step: 0.1, def: 2 },
       { id: 'theta', label: 'Ángulo θ (grados)', min: 0, max: 360, step: 5, def: 45 },
@@ -191,7 +193,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(re, 4) + (im >= 0 ? ' + ' : ' − ') + f(Math.abs(im), 4) + 'i',
-        extra: 'r^n = ' + f(rn, 4) + '  nθ = ' + f(thetan, 2) + '°'
+        extra: 'rⁿ = ' + f(rn, 4) + '  nθ = ' + f(thetan, 2) + '°'
       };
     }
   };
@@ -231,7 +233,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(deriv, 4),
-        extra: 'd/dx(x^' + f(n) + ') = ' + f(n) + '·x^' + f(n - 1) + '  en x=' + f(x) + ' → ' + f(deriv, 4)
+        extra: 'd/dx(x' + sup(f(n)) + ') = ' + f(n) + '·x' + sup(f(n - 1)) + '  en x=' + f(x) + ' → ' + f(deriv, 4)
       };
     }
   };
@@ -347,7 +349,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(val, 4),
-        extra: '∫x^' + f(n, 2) + ' dx = x^' + f(n + 1, 2) + '/' + f(n + 1, 2) + '  evaluado en x=' + f(x) + ' da ' + f(val, 4)
+        extra: '∫x' + sup(f(n, 2)) + ' dx = x' + sup(f(n + 1, 2)) + '/' + f(n + 1, 2) + '  evaluado en x=' + f(x) + ' da ' + f(val, 4)
       };
     }
   };
@@ -365,7 +367,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(val, 4),
-        extra: 'u = x²+1 · límites u: 1 → ' + f(u2, 4) + '  → [u³/3]₁^{' + f(u2, 4) + '} = ' + f(val, 4)
+        extra: 'u = x²+1 · límites u: 1 → ' + f(u2, 4) + '  → [u³/3] de 1 a ' + f(u2, 4) + ' = ' + f(val, 4)
       };
     }
   };
@@ -384,7 +386,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(val, 4),
-        extra: '[x^' + (n + 1) + '/' + (n + 1) + ']_' + f(a) + '^' + f(b) + ' = (' + f(Math.pow(b, n + 1), 4) + '−' + f(Math.pow(a, n + 1), 4) + ')/' + (n + 1)
+        extra: '[x' + sup(n + 1) + '/' + (n + 1) + '] de ' + f(a) + ' a ' + f(b) + ' = (' + f(Math.pow(b, n + 1), 4) + '−' + f(Math.pow(a, n + 1), 4) + ')/' + (n + 1)
       };
     }
   };
@@ -412,7 +414,7 @@ var T3Calc = (function () {
       return {
         tipo: 'valor',
         resultado: f(val, 6),
-        extra: 'u = x, dv = sin x dx  →  [−x·cos x + sin x]₀^π = π ≈ ' + f(val, 6)
+        extra: 'u = x, dv = sin x dx  →  [−x·cos x + sin x] de 0 a π = π ≈ ' + f(val, 6)
       };
     }
   };

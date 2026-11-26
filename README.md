@@ -44,6 +44,21 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 > **Regla del proyecto:** cada vez que alguien (con o sin Claude) cambie algo, debe dejar anotado el cambio en esta sección «Cambios», con fecha, quién lo hizo, qué archivos tocó y qué quedó pendiente. Así el resto del equipo siempre sabe qué hay de nuevo. Las entradas nuevas van arriba.
 
+### Correcciones del 26/11/2026
+
+**Quién:** Jimena, con ayuda de Claude.
+
+**Qué se arregló:**
+- 1.er año: no funcionaban los botones «Modo examen» y «volver», ni las flechas del teclado.
+- 1.er año: gráficos que fallaban con a = 0, y preguntas que mostraban comillas invertidas.
+- Se reemplazó `^` por superíndices o texto en calculadoras, gráficos y datos.
+- 3.er año: títulos de teoría que mostraban etiquetas HTML y el gráfico 1.17 con exponentes negativos.
+- Textos con cantidades atrasadas (1.er año tiene 19 temas; simulacro de 3.er año, 27).
+
+**Archivos:** `index.html`, `README.md` y los JS de `assets/js` con su `?v=` actualizado.
+
+**Pendiente:** revisión matemática del contenido por un docente.
+
 ### Cambios del 26/11/2026 · 9.º grado (Nivelación)
 
 **Quién:** Jimena, con ayuda de Claude.
@@ -52,7 +67,7 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 **Archivos:** nuevos `assets/js/data-9-base.js`, `data-9-u1.js` a `data-9-u3.js`, `noveno-ui.js`, `noveno-calc.js`, `noveno-graf.js`; cambiados `index.html`, `assets/css/style.css`, `assets/js/app.js`, `assets/js/mascotas.js`, `CLAUDE.md`, `README.md`.
 
-**Pendiente:** que un docente revise el contenido; 9.º no tiene videos ni pizarras dibujadas a mano (usa la pizarra automática de los ejemplos). La tarjeta de 1.er año de la portada todavía dice «18 temas» (son 19).
+**Pendiente:** que un docente revise el contenido; 9.º no tiene videos ni pizarras dibujadas a mano (usa la pizarra automática de los ejemplos).
 
 ### Cambios anteriores (25/11/2026)
 

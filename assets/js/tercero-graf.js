@@ -2,6 +2,8 @@
    T3Graf.draw(clave, v) → { svg, nota } ; la clave es la misma de T3Calc.CALCS. */
 (function (global) {
   'use strict';
+  /* exponente en superíndice (texto plano: sirve también dentro de un svg) */
+  function sup(x) { return String(x).replace(/[0-9+\-−().]/g, function (c) { return { '+': '⁺', '-': '⁻', '−': '⁻', '(': '⁽', ')': '⁾', '.': '·' }[c] || '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
   var W = 640, H = 360, PAD = 34;
   var COL = { a: 'hsl(var(--primary))', b: 'hsl(var(--success))', c: 'hsl(25 90% 48%)', d: 'hsl(340 70% 48%)', g: 'hsl(var(--muted-foreground))' };
   function n2(x, d) { var k = Math.pow(10, d == null ? 3 : d), s = String(Math.round(x * k) / k); return s.replace('-', '−'); }
@@ -125,7 +127,7 @@
     var r = v.r, t = v.theta * Math.PI / 180, n = v.n, rn = Math.pow(r, n), m = Math.max(r, Math.min(rn, 400)) * 1.25, P = new Plot([-m, m], [-m, m], { eq: 1 });
     var z = [r * Math.cos(t), r * Math.sin(t)], w = [rn * Math.cos(n * t), rn * Math.sin(n * t)];
     P.line(0, 0, z[0], z[1], COL.a, { arrow: 1 }); P.pt(z[0], z[1], COL.a, 'z');
-    if (rn <= 400) { P.line(0, 0, w[0], w[1], COL.d, { arrow: 1 }); P.pt(w[0], w[1], COL.d, 'z^' + n); }
+    if (rn <= 400) { P.line(0, 0, w[0], w[1], COL.d, { arrow: 1 }); P.pt(w[0], w[1], COL.d, 'z' + sup(n)); }
     return ret(P, 'z tiene módulo ' + n2(r, 2) + ' y ángulo ' + n2(v.theta, 0) + '°. zⁿ tiene módulo ' + n2(rn, 2) + ' y ángulo ' + n2((n * v.theta) % 360, 0) + '° (el módulo se eleva, el ángulo se multiplica).');
   };
   function tangentPlot(f, df, x0, xr, extra) {
@@ -143,7 +145,7 @@
     var n = v.n, x0 = Math.abs(v.x) < 0.05 ? 0.05 : v.x, f = function (x) { return n % 1 === 0 || x > 0 ? Math.pow(x, n) : NaN; }, df = function (x) { return n * Math.pow(x, n - 1); };
     var xr = [-5, 5], P = new Plot(xr, yrange([function (x) { var y = f(x); return Math.abs(y) < 60 ? y : NaN; }], xr, 0.1)), m = df(x0), y0 = f(x0);
     P.curve(f, COL.a); if (isFinite(m) && isFinite(y0)) { P.curve(function (x) { return y0 + m * (x - x0); }, COL.c, { dash: 1 }); P.pt(x0, y0, COL.d, 'pendiente ' + n2(m, 3)); }
-    return ret(P, 'f(x) = x^' + n2(n, 2) + '. En x = ' + n2(x0, 2) + ' la pendiente es n·x^(n−1) = ' + n2(m, 3) + '.');
+    return ret(P, 'f(x) = x' + sup(n2(n, 2)) + '. En x = ' + n2(x0, 2) + ' la pendiente es n·xⁿ⁻¹ = ' + n2(m, 3) + '.');
   };
   G['cadena'] = function (v) {
     var o = tangentPlot(function (x) { return (x + 1) * (x + 1); }, function (x) { return 2 * (x + 1); }, v.x0, [v.x0 - 4, v.x0 + 4]);
@@ -174,8 +176,8 @@
   G['antiderivada'] = function (v) {
     var n = v.n, x0 = v.x, f = function (x) { return Math.pow(x, n); }, F = function (x) { return Math.pow(x, n + 1) / (n + 1); }, xr = [0, Math.max(10, x0 * 1.2)];
     var P = new Plot(xr, ext(yrange([f, F], xr, 0.08), [0]));
-    P.area(f, function () { return 0; }, 0, x0, COL.a); P.curve(f, COL.a); P.curve(F, COL.c, { dash: 1 }); P.pt(x0, F(x0), COL.d, 'F(x) = ' + n2(F(x0), 3));
-    P.legend([[COL.a, 'f(x) = x^' + n2(n, 2)], [COL.c, 'F(x) = x^' + n2(n + 1, 2) + '/' + n2(n + 1, 2)]]);
+    P.area(f, function () { return 0; }, n < 0 ? 0.02 : 0, x0, COL.a); P.curve(f, COL.a); P.curve(F, COL.c, { dash: 1 }); P.pt(x0, F(x0), COL.d, 'F(x) = ' + n2(F(x0), 3));
+    P.legend([[COL.a, 'f(x) = x' + sup(n2(n, 2))], [COL.c, 'F(x) = x' + sup(n2(n + 1, 2)) + '/' + n2(n + 1, 2)]]);
     return ret(P, 'La antiderivada F acumula el área bajo f: entre 0 y ' + n2(x0, 2) + ' el área es ' + n2(F(x0), 3) + '.');
   };
   G['sustitucion'] = function (v) {
@@ -186,7 +188,7 @@
   G['integral-def'] = function (v) {
     var n = v.n, a = Math.min(v.a, v.b - 0.1), b = v.b, f = function (x) { return Math.pow(x, n); }, xr = [0, Math.max(b * 1.15, 3)], P = new Plot(xr, ext(yrange([f], xr, 0.08), [0])), val = (Math.pow(b, n + 1) - Math.pow(a, n + 1)) / (n + 1);
     P.area(f, function () { return 0; }, a, b, COL.a); P.curve(f, COL.a); P.line(a, 0, a, f(a), COL.g, { dash: 1 }); P.line(b, 0, b, f(b), COL.g, { dash: 1 });
-    return ret(P, '∫ de ' + n2(a, 2) + ' a ' + n2(b, 2) + ' de x^' + n + ' dx = ' + n2(val, 3) + ' (área sombreada).');
+    return ret(P, '∫ de ' + n2(a, 2) + ' a ' + n2(b, 2) + ' de x' + sup(n) + ' dx = ' + n2(val, 3) + ' (área sombreada).');
   };
   G['area-curvas'] = function () {
     var P = new Plot([-0.2, 1.3], [-0.15, 1.3]);
@@ -197,7 +199,7 @@
   G['partes'] = function () {
     var f = function (x) { return x * Math.sin(x); }, P = new Plot([-0.3, 3.6], [-0.4, 2]);
     P.area(f, function () { return 0; }, 0, Math.PI, COL.a); P.curve(f, COL.a);
-    return ret(P, '∫₀^π x·sen x dx = π ≈ 3.1416 (área sombreada), resuelta por partes con u = x, dv = sen x dx.');
+    return ret(P, '∫ de 0 a π de x·sen x dx = π ≈ 3.1416 (área sombreada), resuelta por partes con u = x, dv = sen x dx.');
   };
   function iso(x, y, z) { return [x - 0.45 * y, z - 0.35 * y]; }
   G['vector3'] = function (v) {

@@ -12,7 +12,7 @@ window.CURSO_1A = window.CURSO_1A || { temas: {} };
       formulas: o.formulas.map(function (x) { return { label: x[0], html: x[1] }; }),
       ejemplos: o.ejemplos.map(function (x) { return { titulo: x[0], enunciado: m(x[1]), pasos: pasos(x[2]), respuesta: m(x[3]) }; }),
       ejercicios: o.ejercicios.map(function (x) { return { nivel: { f: 'facil', i: 'intermedio', d: 'dificil' }[x[0]], enunciado: m(x[1]), pasos: pasos(x[2]), respuesta: m(x[3]) }; }),
-      teoricas: o.teoricas.map(function (x) { return { q: x[0], a: m(x[1]) }; }),
+      teoricas: o.teoricas.map(function (x) { return { q: m(x[0]), a: m(x[1]) }; }),
       errores: o.errores.map(m), aplicacion: { titulo: o.aplicacion[0], html: '<p>' + m(o.aplicacion[1]) + '</p>' }, calc: o.calc,
       /* [pregunta, número, pasos]  o  [pregunta, [4 opciones], correcta, pasos] */
       examen: o.examen.map(function (x) {

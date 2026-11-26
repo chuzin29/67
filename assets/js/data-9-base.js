@@ -35,7 +35,7 @@ window.N9 = (function () {
       formulas: o.formulas.map(function (x) { return { label: x[0], html: x[1] }; }),
       ejemplos: o.ejemplos.map(function (x) { var e = item(o.gen[x[1]], x[2]); e.titulo = x[0]; return e; }),
       ejercicios: ejercicios,
-      teoricas: o.teoricas.map(function (x) { return { q: x[0], a: m(x[1]) }; }),
+      teoricas: o.teoricas.map(function (x) { return { q: m(x[0]), a: m(x[1]) }; }),
       errores: o.errores.map(m), aplicacion: { titulo: o.aplicacion[0], html: '<p>' + m(o.aplicacion[1]) + '</p>' }, calc: o.calc, examen: examen
     };
   }

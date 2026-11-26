@@ -5,6 +5,8 @@
    ============================================================ */
 (function (global) {
   'use strict';
+  /* exponente en superíndice (texto plano: sirve también dentro de un svg) */
+  function sup(x) { return String(x).replace(/[0-9+\-−().]/g, function (c) { return { '+': '⁺', '-': '⁻', '−': '⁻', '(': '⁽', ')': '⁾', '.': '·' }[c] || '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
 
   /* ---------- utilidades ---------- */
   function f(n, d) {
@@ -617,7 +619,7 @@
       if (n >= 1) st.push('Permutaciones circulares de n elementos: ' + m('(n − 1)! = ' + big(factB(N - 1n))) + '.');
       var items = [{ l: 'n!', v: Math.log10(Number(factB(N)) || 1) + 0.0001, c: 1 }, { l: 'nʳ', v: Math.log10(Number(N ** R) || 1) + 0.0001, c: 2 }];
       if (r <= n) items.splice(1, 0, { l: 'P(n, r)', v: Math.log10(Number(permB(N, R)) || 1) + 0.0001, c: 3 });
-      return { steps: st, res: res, plot: bars(items, null, function (x) { return '10^' + f(x, 1); }), note: 'Longitud de barra = exponente de 10 (cantidad de cifras), para comparar magnitudes enormes.' };
+      return { steps: st, res: res, plot: bars(items, null, function (x) { return '10' + sup(f(x, 1)); }), note: 'Longitud de barra = exponente de 10 (cantidad de cifras), para comparar magnitudes enormes.' };
     }
   };
 
