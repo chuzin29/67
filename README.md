@@ -27,7 +27,7 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 **Resúmenes de video (v5):** `assets/js/resumenes-video.js` guarda lo que explica cada video (clave = id de YouTube). Por ahora hay resumen de `BuCSeFMTiOE` (1.er año, 1.8) y `PbvKVSWyvpI` (1.er año, 1.10); los demás muestran solo el resumen del tema.
 
-**Temas nuevos de 1.er año:** 1.14 a 1.18 (estadística, cónicas, exponenciales y logaritmos, sucesiones, combinatoria y probabilidad) en `data-1a-u5.js`, con calculadora y gráfico. No venían desarrollados en las fuentes del curso: **conviene que un docente los revise**. Aún no tienen video ni pizarra hecha a mano.
+**Temas de 1.er año:** esta nota quedó reemplazada por la sección «Cambios del 25/11/2026» de más abajo (los temas 1.15 a 1.18 que se habían puesto aquí ahora son otros).
 
 **Archivos**
 
@@ -40,13 +40,48 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 - La ayuda de Rockytos en el examen no resta puntos.
 - Rovin es el siamés de la mancha blanca en la cara; Manchita, el de la nariz y cara más oscuras. Si cambias un retrato, sube el `?v=` de la imagen en `mascotas.js`.
 
+## 🔄 Cambios del 25/11/2026 (Brandon y Claude) — para Jimena y quien siga
+
+Resumen de lo que se modificó después de las mascotas. Si vas a tocar algo de esto, léelo primero.
+
+**1.er año alineado con el programa del MINED** (se comparó con el índice del libro ESMATE de 1.º de bachillerato)
+- **Se quitaron** los temas 1.15 a 1.18 que había (cónicas, exponenciales y logaritmos, sucesiones, combinatoria y probabilidad): son de 2.º año y ya están allí. Se quitaron también sus videos y pizarras.
+- **Temas nuevos** (con teoría, ejemplos, práctica, pizarra a mano, calculadora/gráfico y examen):
+  - 1.15 Ecuación cuadrática y números complejos (`data-1a-u6a.js`, `pizarra-1a-6a.js`)
+  - 1.16 Razones trigonométricas de ángulos no agudos (`…6b`)
+  - 1.17 Ecuaciones trigonométricas (`…6c`)
+  - 1.18 Producto escalar de vectores (`…6d`)
+  - 1.19 Muestreo, estadísticos y parámetros (`…6e`)
+- 1.14 (estadística descriptiva) se mantiene en `data-1a-u5.js`. Los períodos de 1.er año están en `PER` de `primero-ui.js`: I álgebra (1.1–1.4, 1.15, 1.5), II funciones, III trigonometría (1.9–1.11, 1.16, 1.17), IV vectores y complejos (1.12, 1.18, 1.13), V estadística (1.14, 1.19).
+- **Videos:** 1.1 a 1.15 tienen video (1.14 y 1.15 son de Matemáticas profe Alex). **Faltan 1.16 a 1.19**: no se encontró un ID verificable; no inventar enlaces, mostrar el enlace de búsqueda.
+- 2.º año se verificó contra el índice del libro de 2.º y coincide (24 temas), sin cambios.
+
+**3.er año reordenado** (los 27 temas y sus números no cambian, solo el orden y los nombres)
+- Ciclo I · Cálculo diferencial: 1.1–1.7 y 1.10–1.16.
+- Ciclo II · Cálculo integral: 1.17–1.24, más 1.8 y 1.9 (complejos).
+- Software · Matemática discreta para software: 1.25–1.27.
+- Se cambió la palabra «período» por «ciclo» en la vista de 3.er año (`PER` en `tercero-ui.js`).
+
+**Pizarra con nuevo diseño** (`pizarra.js`, `style.css`)
+- Marco de madera, bandeja con tizas y borrador, puntos de progreso y globo del profe.
+- Las soluciones de ejemplos y ejercicios (`Pizarra.auto`) ahora tienen pasos numerados, flechas entre líneas, botón ▶ Reproducir (avanza solo) y flechas del teclado.
+- En 1.er año, un tema sin pizarra hecha a mano muestra la pizarra automática de sus ejemplos.
+
+**Créditos:** ya no dice «Colegio Don Bosco»; dice «basada en el programa de estudio del MINED de El Salvador» (portada, pie y este README). No se afirma que el MINED la avale.
+
+**Otros:** se añadió `CLAUDE.md` con la guía para trabajar con Claude Code (estructura, contrato de datos, reglas de escritura). Total: 70 temas (19 + 24 + 27).
+
+**Pendiente**
+- Videos de 1.16 a 1.19 y, si se quiere, las versiones más nuevas de Profe Alex en 3.er año.
+- Un docente debería revisar los temas nuevos de 1.er año (1.15 a 1.19) antes de usarlos en clase.
+
 ## Qué incluye
 
-Tres años, una misma metodología (69 temas):
+Tres años, una misma metodología (70 temas):
 
 | Año | Curso | Temas |
 | --- | --- | --- |
-| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 19 (1.1–1.19) |
+| 1.er año | Precálculo (programa MINED): álgebra, ecuación cuadrática, funciones, trigonometría, vectores, complejos y estadística | 19 (1.1–1.19) |
 | 2.º año | Precálculo: ecuaciones, rectas, cónicas, funciones, logaritmos, sucesiones, conteo y probabilidad | 24 (1.1–1.24) |
 | 3.er año | Cálculo de ingeniería: Ciclo I (cálculo diferencial), Ciclo II (cálculo integral) y módulo de matemática discreta para software | 27 (1.1–1.27) |
 
