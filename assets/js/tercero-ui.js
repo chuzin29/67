@@ -8,11 +8,11 @@
   'use strict';
 
   var PER = [
-    { id: 'I', temas: ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9'], resumen: 'Límites, continuidad, trigonometría y números complejos' },
-    { id: 'II', temas: ['1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16'], resumen: 'Derivadas: definición, reglas y aplicaciones' },
-    { id: 'III', temas: ['1.17', '1.18', '1.19', '1.20', '1.21'], resumen: 'Integración: indefinida, definida y aplicaciones' },
-    { id: 'IV', temas: ['1.22', '1.23', '1.24', '1.25', '1.26', '1.27'], resumen: 'Álgebra vectorial y matemática discreta' }
+    { id: 'I', nombre: 'Ciclo I', sub: 'Cálculo diferencial', temas: ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16'], resumen: 'Cálculo de ingeniería I: límites, continuidad, trigonometría y derivadas con sus aplicaciones' },
+    { id: 'II', nombre: 'Ciclo II', sub: 'Cálculo integral y vectorial', temas: ['1.17', '1.18', '1.19', '1.20', '1.21', '1.22', '1.23', '1.24', '1.8', '1.9'], resumen: 'Cálculo de ingeniería II: integrales, vectores en ℝ³, rectas y planos, y números complejos' },
+    { id: 'S', nombre: 'Software', sub: 'Matemática discreta', temas: ['1.25', '1.26', '1.27'], resumen: 'Ingeniería de software: lógica, conjuntos y relaciones, inducción, combinatoria y grafos' }
   ];
+  function lbl(p) { return p.nombre; }
   var UN = { 1: 'Límites y continuidad', 2: 'Trigonometría y complejos', 3: 'Derivadas', 4: 'Integrales', 5: 'Álgebra vectorial', 6: 'Matemática discreta' };
   var TABS = [['teoria', 'Teoría'], ['pizarra', 'Pizarra'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
@@ -101,13 +101,13 @@
     var tt = totals(), pct = Math.round(100 * (tt.seen / tt.temas * 0.4 + tt.ej / tt.ejT * 0.6)), html = '', n = 0;
     var last = store.last && T()[store.last] ? store.last : null;
     html += '<div class="s2-hero"><div class="s2-hero-text"><span class="eyebrow">Cálculo · Bachillerato</span><h2 id="s3-title">3.er año · Cálculo</h2>' +
-      '<p class="lead">27 temas en 6 unidades y 4 períodos. En cada tema: teoría, fórmulas, ejemplos que se revelan paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
+      '<p class="lead">27 temas en 2 ciclos de cálculo de ingeniería y un módulo de software. En cada tema: teoría, fórmulas, ejemplos que se revelan paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
       '<div class="hero-actions"><button class="btn btn-primary" data-open="' + (last || '1.1') + '">' + (last ? 'Continuar: tema ' + last : 'Empezar por el tema 1.1') + '</button>' +
       '<button class="btn btn-ghost" data-t3="examenes">Modo examen</button></div></div>' +
       '<div class="s2-hero-stats">' + ring(pct, 'Avance general') + '<ul><li><b>' + tt.seen + '</b>/' + tt.temas + ' temas vistos</li><li><b>' + tt.ej + '</b>/' + tt.ejT + ' ejercicios dominados</li><li><b>' + tt.ex + '</b>/' + tt.temas + ' mini‑exámenes hechos</li></ul></div></div>';
     html += '<div class="s2-toolbar"><div class="seg-tabs" role="tablist" aria-label="Períodos">' +
       '<button class="s2-tab' + (view.per === 'all' ? ' active' : '') + '" data-per="all">Todo el año</button>' +
-      PER.map(function (p) { return '<button class="s2-tab' + (view.per === p.id ? ' active' : '') + '" data-per="' + p.id + '">Período ' + p.id + '</button>'; }).join('') + '</div>' +
+      PER.map(function (p) { return '<button class="s2-tab' + (view.per === p.id ? ' active' : '') + '" data-per="' + p.id + '">' + lbl(p) + '</button>'; }).join('') + '</div>' +
       '<button class="chip' + (view.sinver ? ' active' : '') + '" data-sinver aria-pressed="' + view.sinver + '">Solo sin ver</button>' +
       '<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="s3Search" placeholder="Buscar tema… (parábola, logaritmo, Bayes)" value="' + esc(view.q) + '" autocomplete="off" aria-label="Buscar tema"></div></div>';
     var q = view.q.trim().toLowerCase(), shown = 0;
@@ -116,7 +116,7 @@
       var list = p.temas.filter(function (id) { var t = T()[id]; return t && (!view.sinver || !store.seen[id]) && (!q || (t.titulo + ' ' + t.resumen + ' ' + id).toLowerCase().indexOf(q) >= 0); });
       if (!list.length) return;
       shown += list.length;
-      html += '<section class="s2-period"><header class="s2-period-head"><span class="s2-pnum">' + p.id + '</span><div><h3>Período ' + p.id + '</h3><p>' + p.resumen + '</p></div></header>';
+      html += '<section class="s2-period"><header class="s2-period-head"><span class="s2-pnum">' + p.id + '</span><div><h3>' + lbl(p) + ' · ' + p.sub + '</h3><p>' + p.resumen + '</p></div></header>';
       var cur = null;
       list.forEach(function (id) {
         var u = T()[id].unidad;
@@ -132,7 +132,7 @@
   function drawerHtml(cur) {
     var h = '<div class="s2-scrim" data-drawer-close hidden></div><aside class="s2-drawer" id="s3Drawer" aria-label="Todos los temas" hidden><header><strong>Ir a otro tema</strong><button class="btn btn-ghost btn-sm" data-drawer-close aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header><div class="s2-drawer-body">';
     PER.forEach(function (p) {
-      h += '<h4>Período ' + p.id + '</h4>';
+      h += '<h4>' + lbl(p) + '</h4>';
       p.temas.forEach(function (id) { var t = T()[id]; h += '<button class="s2-dr-item u' + t.unidad + (id === cur ? ' current' : '') + '" data-jump="' + id + '"><i>' + id + '</i><span>' + esc(t.titulo) + '</span>' + (store.seen[id] ? '<b aria-label="visto"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></b>' : '') + '</button>'; });
     });
     return h + '</div></aside><button class="s2-fab" data-drawer aria-label="Abrir lista de temas"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Temas</button>';
@@ -151,7 +151,7 @@
   /* ---------- tema ---------- */
   function renderTopic() {
     var id = view.id, t = T()[id], p = perOf(id), all = ids(), ix = all.indexOf(id), html = '';
-    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-t3="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> 3.er año</button><button class="btn btn-ghost btn-sm" data-drawer><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Todos los temas</button><span>Período ' + p.id + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
+    html += '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-t3="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> 3.er año</button><button class="btn btn-ghost btn-sm" data-drawer><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Todos los temas</button><span>' + lbl(p) + ' · Unidad ' + t.unidad + ' · ' + UN[t.unidad] + '</span></div>';
     html += '<header class="s2-head u' + t.unidad + '"><span class="s2-tile big">' + id + '</span><div><h2 id="s3-title">' + esc(t.titulo) + '</h2><p class="lead">' + M(t.resumen) + '</p></div></header>';
     html += '<div class="s2-goals"><strong>Al terminar sabrás:</strong><ul>' + t.objetivos.map(function (o) { return '<li>' + M(o) + '</li>'; }).join('') + '</ul></div>';
     html += '<div class="s2-tabs" role="tablist">' + TABS.map(function (x) { return '<button class="s2-tab' + (view.tab === x[0] ? ' active' : '') + '" role="tab" aria-selected="' + (view.tab === x[0]) + '" data-tab="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '<button class="s2-tab s2-all' + (view.all ? ' active' : '') + '" data-all aria-pressed="' + !!view.all + '" title="Muestra todas las secciones en una sola página">Ver todo <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>';
@@ -397,7 +397,7 @@
   function renderExamHub() {
     var all = ids(), h = '<div class="s2-crumbs"><button class="btn btn-ghost btn-sm" data-t3="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> 3.er año</button><span>Modo examen</span></div>';
     h += '<header class="s2-head"><span class="s2-tile big"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z"/></svg></span><div><h2 id="s3-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
-    h += '<h3 class="s2-h">Por período</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>Período ' + p.id + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
+    h += '<h3 class="s2-h">Por ciclo</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>' + lbl(p) + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Por unidad</h3><div class="s2-modes">' + Object.keys(UN).map(function (u) { var b = store.best['u:' + u]; return '<button class="s2-mode u' + u + '" data-exam-mode="u:' + u + '"><strong>Unidad ' + u + '</strong><span>' + UN[u] + '</span><em>10 preguntas' + (b != null ? ' · mejor ' + b + '/10' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 24 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
     h += '<h3 class="s2-h">Por tema</h3><div class="s2-chiprow">' + all.map(function (id) { var b = store.best['t:' + id]; return '<button class="chip" data-exam-mode="t:' + id + '" title="' + esc(T()[id].titulo) + '">' + id + (b != null ? ' · ' + b + '/10' : '') + '</button>'; }).join('') + '</div>';
@@ -409,7 +409,7 @@
     if (mode === 'all') { tIds = all; n = 20; title = 'Simulacro mixto'; }
     else {
       var kind = mode.split(':')[0], v = mode.split(':')[1];
-      if (kind === 'p') { tIds = PER.filter(function (p) { return p.id === v; })[0].temas; n = 15; title = 'Período ' + v; }
+      if (kind === 'p') { tIds = PER.filter(function (p) { return p.id === v; })[0].temas; n = 15; title = lbl(PER.filter(function (p) { return p.id === v; })[0]); }
       else if (kind === 'u') { tIds = all.filter(function (id) { return String(T()[id].unidad) === v; }); n = 10; title = 'Unidad ' + v + ' · ' + UN[v]; }
       else { tIds = [v]; n = 10; title = 'Tema ' + v + ' · ' + T()[v].titulo; }
     }
