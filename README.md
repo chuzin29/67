@@ -45,6 +45,11 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 > **Regla del proyecto:** cada vez que alguien (con o sin Claude) cambie algo, debe dejar anotado el cambio en esta sección «Cambios», con fecha, quién lo hizo, qué archivos tocó y qué quedó pendiente. Así el resto del equipo siempre sabe qué hay de nuevo. Las entradas nuevas van arriba.
 
 
+### Cambios del 26/11/2026 (tarde) · Mascotas con respuestas en pizarra (Brandon y Claude)
+- Las respuestas de las mascotas (`assets/js/mascotas.js`, `style.css`) ahora se ven como una **mini pizarra** con marco de madera y tiza: **Mamoi** muestra cada fórmula centrada y grande en su recuadro; **Rovin** la pista con los datos en tiza; **Pugsito** los pasos numerados (cada bloque nuevo se escribe solo); **Manchita** la lista de control, el error común en rojo y la **respuesta en recuadro con ✓**; **Rockytos** los errores comunes con ✗.
+- Las líneas se «escriben» con la misma animación de la pizarra (`PZ.escribir()` en `pizarra.js`, con límite de 1,6 s para no hacer esperar).
+- **Pendiente:** que las mascotas puedan «hablar» (voz) como el botón 🔊 de la pizarra.
+
 ### Cambios del 26/11/2026 · Pizarra animada y verificación de 9.º (Brandon y Claude)
 - **Pizarra mejorada en todos los años** (`assets/js/pizarra.js` y `style.css`; afecta a 9.º, 1.º, 2.º y 3.er año):
   - Cada línea se «escribe» con tiza, una tras otra; las figuras SVG se dibujan trazo a trazo y la respuesta brilla.

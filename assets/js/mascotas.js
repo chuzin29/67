@@ -96,27 +96,33 @@
 
   /* ---------- ayudas ---------- */
   function lista(a) { return '<ul>' + a.map(function (x) { return '<li>' + M(x) + '</li>'; }).join('') + '</ul>'; }
+  /* ---- respuestas con aspecto de pizarra: líneas de tiza que se escriben solas ---- */
+  function say(t, col) { return '<div class="mb-say pz-' + (col || 'w') + '">' + t + '</div>'; }
+  function mat(h, col) { return '<div class="mb-m pz-' + (col || 'w') + '">' + M(h) + '</div>'; }
+  function box(h) { return '<div class="mb-m"><span class="pz-box">' + M(h) + '</span></div>'; }
   function receta(t) {
-    return '<p>Ingredientes de «' + t.titulo + '». Elige los que pide este problema:</p>' +
-      lista(t.formulas.map(function (f) { return '<b>' + f.label + ':</b> <span class="math">' + f.html + '</span>'; }));
+    return say('¿Qué fórmula necesitas? Elige la que pide el problema:', 'y') +
+      t.formulas.map(function (f) { return '<div class="mb-f"><span class="mb-l pz-p">' + f.label + '</span>' + mat('<span class="math">' + f.html + '</span>', 'w') + '</div>'; }).join('');
   }
   function pista(it) {
     var datos = String(it.enunciado).match(/<span class="math">[\s\S]*?<\/span>/g);
-    return '<p><b>Caso:</b> ¿qué te piden exactamente? Subráyalo en tu cuaderno.</p>' +
-      (datos ? '<p><b>Datos a la vista:</b></p>' + lista(datos) : '<p>Anota cada dato del enunciado antes de operar.</p>') +
-      (it.pasos && it.pasos[0] ? '<details><summary>Abrir la primera pista</summary><p>' + M(it.pasos[0]) + '</p></details>' : '');
+    return say('① ¿Qué te piden exactamente? Subráyalo en tu cuaderno.', 'y') +
+      (datos ? say('② Datos a la vista:', 'p') + datos.map(function (d) { return mat(d, 'b'); }).join('') : say('② Anota cada dato del enunciado antes de operar.', 'p')) +
+      (it.pasos && it.pasos[0] ? '<details class="mb-det"><summary>③ Abrir la primera pista</summary>' + say(M(it.pasos[0]), 'g') + '</details>' : '');
   }
   function revision(t) {
-    return '<p>Antes de mirar la respuesta, marca lo que ya revisaste:</p><div class="masc-check">' +
+    return say('Antes de mirar la respuesta, marca lo que ya revisaste:', 'y') + '<div class="masc-check">' +
       ['Respondí justo lo que se pedía.', 'Revisé signos y operaciones.', 'Comprobé el resultado (sustituyendo o estimando).', 'Escribí unidades o condiciones si hacían falta.']
         .map(function (x) { return '<label><input type="checkbox"> ' + x + '</label>'; }).join('') +
-      '</div>' + (t.errores && t.errores.length ? '<p><b>Ojo con esto:</b></p>' + lista([azar(t.errores)]) : '');
+      '</div>' + (t.errores && t.errores.length ? say('Ojo con esto:', 'r') + say('✗ ' + M(azar(t.errores)), 'r') : '');
   }
 
   function decir(panel, k, html) {
     panel.hidden = false; panel.setAttribute('data-pet', k);
-    panel.innerHTML = '<img src="' + img(k) + '" alt=""><div class="masc-txt"><strong>' + PETS[k].n + '</strong>' + html + '</div><button type="button" class="masc-x" aria-label="Cerrar ayuda">×</button>';
+    panel.innerHTML = '<img src="' + img(k) + '" alt=""><div class="masc-txt pz-board"><strong class="mb-name">' + PETS[k].n + '</strong>' + html + '</div><button type="button" class="masc-x" aria-label="Cerrar ayuda">×</button>';
     panel.querySelector('.masc-x').onclick = function () { panel.hidden = true; sonar('cerrar'); };
+    var tx = panel.querySelector('.masc-txt');
+    if (global.PZ && global.PZ.escribir) { var u = tx.querySelectorAll('.mb-say,.mb-f,.mb-m:not(.mb-f .mb-m),.mb-step'); u.length && tx.classList.add('mb-live'); global.PZ.escribir(tx); }
   }
 
   function boton(donde, texto, fn) { var b = el('button', 'chip masc-accion', texto); b.type = 'button'; b.onclick = function (e) { e.stopPropagation(); fn(); }; donde.appendChild(b); return b; }
@@ -130,7 +136,7 @@
     });
     var ver = boton(txt, 'Comparar con la respuesta', function () {
       ver.remove(); sonar('lupa');
-      txt.appendChild(el('p', '', '<b>Respuesta:</b> ' + M(data.item.respuesta)));
+      txt.insertAdjacentHTML('beforeend', say('✓ Respuesta', 'g') + box(data.item.respuesta)); if (global.PZ && global.PZ.escribir) { var ul = txt.lastElementChild; global.PZ.escribir(ul.parentNode); }
       var fila = el('div', 'masc-fila', '<span>¿Te salió igual?</span>'); txt.appendChild(fila);
       boton(fila, 'Sí, me salió', function () {
         sonar('fiesta');
@@ -156,9 +162,9 @@
     if (k === 'pugsito') {
       var n = abierto ? +panel.getAttribute('data-n') + 1 : 1, total = it.pasos.length;
       n = Math.min(n, total); panel.setAttribute('data-n', n);
-      decir(panel, k, '<p>Bloque ' + n + ' de ' + total + '. Intenta el siguiente antes de pedirlo.</p><ol>' +
-        it.pasos.slice(0, n).map(function (p) { return '<li>' + M(p) + '</li>'; }).join('') + '</ol>' +
-        (n < total ? '' : '<p>¡Obra terminada! Escribe tú la respuesta final y compárala.</p>'));
+      decir(panel, k, say('Bloque ' + n + ' de ' + total + ' — intenta el siguiente antes de pedirlo.', 'y') +
+        it.pasos.slice(0, n).map(function (p, i) { return '<div class="mb-step"><span class="pz-num">' + (i + 1) + '</span><div>' + M(p) + '</div></div>'; }).join('') +
+        (n < total ? '' : say('★ ¡Obra terminada! Escribe tú la respuesta final y compárala.', 'g')));
       var txt = panel.querySelector('.masc-txt');
       if (n < total) boton(txt, 'Poner el siguiente bloque', function () { ayudar('pugsito', host, panel, data); });
       else boton(txt, 'Revisar con Manchita', function () { ayudar('manchita', host, panel, data); });
@@ -170,11 +176,11 @@
       if (q.tipo === 'opt') {
         var ops = Array.prototype.filter.call(host.querySelectorAll('.s2-opt'), function (b, i) { return i !== q.correcta; });
         ops.sort(function () { return Math.random() - 0.5; }).slice(0, 2).forEach(function (b) { b.disabled = true; b.classList.add('masc-apagada'); });
-        return decir(panel, k, '<p>¡Apagamos dos opciones incorrectas! Quedan dos: decide tú.</p>');
+        return decir(panel, k, say('¡Apagamos dos opciones incorrectas!', 'y') + say('Quedan dos: decide tú.', 'w'));
       }
-      return decir(panel, k, '<p>¡Escalera de rescate! Empieza así:</p><p>' + M(q.pasos[0]) + '</p>');
+      return decir(panel, k, say('¡Escalera de rescate! Empieza así:', 'y') + '<div class="mb-step"><span class="pz-num">1</span><div>' + M(q.pasos[0]) + '</div></div>');
     }
-    return decir(panel, k, '<p>¡Tranquilidad! Evita estos incendios comunes:</p>' + lista(t.errores || []) + '<p>Si sigues atascado, pide una pista a Rovin o los pasos a Pugsito.</p>');
+    return decir(panel, k, say('¡Tranquilidad! Evita estos incendios comunes:', 'y') + (t.errores || []).map(function (e) { return say('✗ ' + M(e), 'r'); }).join('') + say('Si sigues atascado, pide una pista a Rovin o los pasos a Pugsito.', 'b'));
   }
 
   function barra(host, keys, data, antes) {

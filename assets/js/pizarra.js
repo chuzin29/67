@@ -106,10 +106,11 @@
 
   var REDUCE = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var STEP = 0.55; /* segundos entre líneas */
-  function animate(stepEl) {
+  function animate(stepEl, cap) {
     var kids = Array.prototype.slice.call(stepEl.children), d = 0;
     function flat(el) { return el.classList && el.classList.contains('pz-paso') ? Array.prototype.slice.call(el.children) : [el]; }
     var lines = []; kids.forEach(function (k) { flat(k).forEach(function (x) { lines.push(x); }); });
+    var stp = cap ? Math.min(0.3, cap / Math.max(1, lines.length)) : STEP;
     lines.forEach(function (el) {
       el.classList.remove('pz-wr'); void el.offsetWidth;
       el.style.setProperty('--pz-d', d.toFixed(2) + 's'); el.classList.add('pz-wr');
@@ -124,7 +125,7 @@
           sh.style.setProperty('--pz-sd', (d + 0.15 * (k++)).toFixed(2) + 's');
         });
       });
-      d += STEP;
+      d += stp;
     });
     return d;
   }
@@ -235,6 +236,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-pz]'), function (r) { r.setAttribute('data-io', '1'); io.observe(r); });
   }
 
+  PZ.escribir = function (c) { if (c && !REDUCE) { c.classList.remove('pz-new'); animate(c, 1.6); } };
   global.PZ = PZ;
   global.Pizarra = {
     /* pizarra de un solo ejercicio/ejemplo (usa sus pasos y respuesta) */

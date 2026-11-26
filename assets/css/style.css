@@ -2371,3 +2371,26 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .pz-recap li::before { content: counter(r) '. '; color: #ffe27a; }
 .pz-ctrl [data-pz-act="voz"][aria-pressed="true"] { background: hsl(var(--primary) / .16); border-color: hsl(var(--primary)); }
 @media (prefers-reduced-motion: reduce) { .pz-wr, .pz-dr, .pz-po, .pz-say-in p, .pz-prof.pz-talk { animation: none !important; opacity: 1; stroke-dashoffset: 0; } }
+
+/* ---- Mascotas: respuestas en pizarra ---- */
+.masc-panel { align-items: center; background: linear-gradient(135deg, #c79a64, #8d6238 60%, #b07f4d); border: 0; padding: 12px; box-shadow: 0 10px 22px -12px rgb(0 0 0 / .6), inset 0 2px 0 rgb(255 255 255 / .3); }
+.masc-panel > img { background: #fff; border: 3px solid #fff; box-shadow: 0 3px 8px rgb(0 0 0 / .35); }
+.masc-txt.pz-board { min-height: 0; padding: .9rem 1.1rem 1rem; font-size: 1.05rem; text-align: center; overflow-x: auto; }
+.masc-txt.pz-board p, .masc-txt.pz-board li { text-align: left; }
+.mb-name { display: inline-block; margin-bottom: .35rem; padding: .05rem .7rem; border: 2px solid #ffe27a; border-radius: 999px; color: #ffe27a; font-weight: 400; letter-spacing: .02em; }
+.mb-say { margin: .35rem 0; font-size: 1.05em; }
+.mb-m { margin: .25rem 0; font-size: 1.12em; }
+.mb-m .math { color: inherit; }
+.mb-f { margin: .55rem 0; padding: .35rem .5rem .45rem; border: 2px dashed #f4f6ef33; border-radius: 10px; }
+.mb-l { display: block; font-size: .92em; }
+.mb-step { display: flex; align-items: baseline; gap: .6rem; margin: .45rem 0; text-align: left; padding-bottom: .4rem; border-bottom: 2px dashed #f4f6ef26; }
+.mb-step:last-of-type { border-bottom: 0; }
+.mb-step > div { flex: 1; }
+.mb-det { margin: .4rem 0; text-align: left; }
+.mb-det summary { cursor: pointer; color: #9af0b0; }
+.masc-txt.pz-board .masc-check { display: grid; gap: .3rem; text-align: left; margin: .3rem auto; width: fit-content; max-width: 100%; }
+.masc-txt.pz-board .masc-check label { display: flex; gap: .5rem; align-items: center; }
+.masc-txt.pz-board .masc-check input { accent-color: #9af0b0; width: 1.1rem; height: 1.1rem; }
+.masc-txt.pz-board .masc-fila { margin-top: .6rem; color: #f4f6ef; }
+.masc-txt.pz-board .masc-accion { background: #f4f6ef; color: #1b3a2e; border-color: transparent; text-shadow: none; }
+.masc-x { color: #fff; }
