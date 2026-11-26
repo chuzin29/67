@@ -72,7 +72,7 @@
   }
 
   /* ---------- datos del tema abierto ---------- */
-  var CURSOS = { primero: 'CURSO_1A', segundo: 'CURSO_2A', tercero: 'CURSO_3A' };
+  var CURSOS = { noveno: 'CURSO_9', primero: 'CURSO_1A', segundo: 'CURSO_2A', tercero: 'CURSO_3A' };
   function curso(node) { var v = node.closest('section.view'); return v && global[CURSOS[v.id]]; }
   function temaDe(node) {
     var c = curso(node), v = node.closest('section.view'), t = v && v.querySelector('.s2-head .s2-tile');

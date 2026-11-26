@@ -119,7 +119,7 @@
   /* ---------------------------------------------------------
      Navegación
      --------------------------------------------------------- */
-  var sections = ['inicio', 'segundo', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen', 'tercero', 'primero'];
+  var sections = ['inicio', 'segundo', 'teoria', 'vectores', 'complejos', 'trigonometria', 'estadistica', 'ejercicios', 'bancos', 'examen', 'tercero', 'primero', 'noveno'];
   var rendered = { ejercicios: false, bancos: false, examen: false };
 
   function showSection(id, options) {

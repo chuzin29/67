@@ -3,7 +3,8 @@
 Sitio estático (HTML + CSS + JS vanilla, sin build ni dependencias). Idioma de todo el contenido: **español**. Probar en local: `python3 -m http.server 8000`.
 
 ## Estructura
-- `index.html`: portada, menú, una `<section id="primero|segundo|tercero" class="view">` por año y los `<script>` en orden. Al cambiar un JS/CSS, sube el número `?v=N` de su `<script>`/`<link>` para evitar la caché de GitHub Pages.
+- `index.html`: portada, menú, una `<section id="noveno|primero|segundo|tercero" class="view">` por año y los `<script>` en orden. Al cambiar un JS/CSS, sube el número `?v=N` de su `<script>`/`<link>` para evitar la caché de GitHub Pages.
+- **9.º grado** (nivelación, 13 temas, `#noveno`): `data-9-*`, `noveno-ui.js`, `noveno-calc.js` (`T9Calc`), `noveno-graf.js` (`T9Graf`), `Noveno.mount`, datos en `window.CURSO_9`. Los temas se arman con `N9.tema()` de `data-9-base.js` (las claves `calc` pueden tener una herramienta propia `custom(caja)`). Filtro Básico/Avanzado y progreso en `localStorage` (`c9.v1`).
 - Tres años: **1.er** (`primero-*`, `data-1a-*`, 19 temas), **2.º** (`segundo*`, `data-2a-*`, 24 temas), **3.er** (`tercero-*`, `data-3a-*`, 27 temas). Cada uno se monta una vez al cargar: `Primero.mount(...)`, `Segundo`, `Tercero` (script inline al final de `index.html`).
 - `assets/js/pizarra.js`: motor de la pizarra (`PZ.*`) y `Pizarra.auto(ejercicio)`, que arma una pizarra con los `pasos` de cualquier ejemplo o ejercicio.
 

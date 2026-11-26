@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Precálculo 67 · Vectores, Complejos, Trigonometría y Estadística</title>
-<meta name="description" content="Curso interactivo de Precálculo (1.º y 2.º año) y Cálculo (3.er año): 70 temas con teoría, pizarra paso a paso, gráficos, calculadoras, más de 750 ejercicios resueltos y exámenes.">
+<meta name="description" content="Curso interactivo de nivelación de 9.º grado, Precálculo (1.º y 2.º año) y Cálculo (3.er año): 83 temas con teoría, pizarra paso a paso, gráficos, calculadoras, más de 900 ejercicios resueltos y exámenes.">
 <meta name="theme-color" content="#f7f4ed">
 <meta property="og:title" content="Precálculo y Cálculo 67 · Aprende resolviendo">
-<meta property="og:description" content="70 temas de Precálculo y Cálculo con pizarra paso a paso, gráficos, calculadoras, ejercicios resueltos y exámenes.">
+<meta property="og:description" content="83 temas de 9.º grado, Precálculo y Cálculo con pizarra paso a paso, gráficos, calculadoras, ejercicios resueltos y exámenes.">
 <meta property="og:type" content="website">
 <script>
 /* Aplica el tema guardado (o el del sistema) antes de pintar para evitar parpadeos. */
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233f4fd9'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3E67%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/css/style.css?v=36">
+<link rel="stylesheet" href="assets/css/style.css?v=37">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
 </head>
 <body>
@@ -33,7 +33,7 @@
 
 <div class="announce">
   <div class="wrap announce-inner">
-    <p>Precálculo de 1.º y 2.º año y Cálculo de 3.er año: 70 temas con teoría, pizarra, práctica y examen. Gratis y sin instalar nada.</p>
+    <p>9.º grado, Precálculo de 1.º y 2.º año y Cálculo de 3.er año: 83 temas con teoría, pizarra, práctica y examen. Gratis y sin instalar nada.</p>
     <button type="button" data-go="primero">Empezar
       <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10 10 2M4 2h6v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -52,6 +52,7 @@
     <nav class="nav" id="nav" aria-label="Navegación principal">
       <button class="nav-link active" data-section="inicio">Inicio</button>
       <details class="nav-group" id="navYears"><summary class="nav-sum">Elige tu año <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="nav-pop">
+        <button class="nav-link" data-section="noveno">9.º grado · Nivelación</button>
         <button class="nav-link" data-section="primero">1.er año · Precálculo</button>
         <button class="nav-link" data-section="segundo">2.º año · Precálculo</button>
         <button class="nav-link" data-section="tercero">3.er año · Cálculo</button></div></details>
@@ -81,20 +82,22 @@
           <p class="lead">Precálculo de 1.º y 2.º año, y Cálculo de 3.er año. En cada tema: teoría clara, <strong>video explicativo</strong>, gráficos que puedes mover, ejemplos paso a paso, práctica por niveles, calculadora y examen que se corrige solo.</p>
           <div class="hero-actions">
             <div class="hero-years" id="heroYears"><span class="stretch" data-variant="primary" data-symbiote="150"><svg class="stretch-stage" aria-hidden="true"></svg><button type="button" class="stretch-btn" id="heroYearsBtn" aria-haspopup="true" aria-expanded="false">Elige tu año <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span><div class="nav-pop" id="heroYearsPop" hidden>
+              <button type="button" data-go="noveno">9.º grado · Nivelación</button>
               <button type="button" data-go="primero">1.er año · Precálculo</button>
               <button type="button" data-go="segundo">2.º año · Precálculo</button>
               <button type="button" data-go="tercero">3.er año · Cálculo</button></div></div>
           </div>
           <div class="stats">
-            <div><span class="stat-num" data-count="70">0</span><span class="stat-label">Temas</span></div>
-            <div><span class="stat-num" data-count="718">0</span><span class="stat-label">Ejercicios resueltos</span></div>
-            <div><span class="stat-num" data-count="690">0</span><span class="stat-label">Preguntas de examen</span></div>
-            <div><span class="stat-num" data-count="70">0</span><span class="stat-label">Calculadoras y gráficos</span></div>
+            <div><span class="stat-num" data-count="83">0</span><span class="stat-label">Temas</span></div>
+            <div><span class="stat-num" data-count="915">0</span><span class="stat-label">Ejercicios resueltos</span></div>
+            <div><span class="stat-num" data-count="830">0</span><span class="stat-label">Preguntas de examen</span></div>
+            <div><span class="stat-num" data-count="83">0</span><span class="stat-label">Calculadoras y gráficos</span></div>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Los tres años">
-          <span class="eyebrow">Tres años, una misma metodología</span>
-          <h3 class="mt-1">70 temas, del álgebra al cálculo</h3>
+        <aside class="hero-card" aria-label="Los cuatro niveles">
+          <span class="eyebrow">Cuatro niveles, una misma metodología</span>
+          <h3 class="mt-1">83 temas, del álgebra al cálculo</h3>
+          <div class="row"><span>9.º grado</span><span>Nivelación: factorización, cuadráticas, geometría</span></div>
           <div class="row"><span>1.er año</span><span>Álgebra, funciones, trigonometría, vectores</span></div>
           <div class="row"><span>2.º año</span><span>Ecuaciones, cónicas, logaritmos, probabilidad</span></div>
           <div class="row"><span>3.er año</span><span>Cálculo diferencial, integral y discreta (software)</span></div>
@@ -112,6 +115,7 @@
       </div>
     </div>
     <div class="period-grid years-grid">
+      <button class="period-card u2 reveal" data-go="noveno"><span class="period-num">9.º</span><h3>9.º grado · Nivelación</h3><p>13 temas en 3 trimestres: álgebra, función cuadrática, semejanza, geometría y dispersión.</p><span class="topic-meta">Temas 1.1 a 1.13</span></button>
       <button class="period-card u1 reveal" data-go="primero"><span class="period-num">1.º</span><h3>1.er año · Precálculo</h3><p>18 temas en 5 períodos: álgebra, funciones, trigonometría, vectores, complejos y temas complementarios.</p><span class="topic-meta">Temas 1.1 a 1.18</span></button>
       <button class="period-card u3 reveal" data-go="segundo"><span class="period-num">2.º</span><h3>2.º año · Precálculo</h3><p>24 temas en 4 períodos: ecuaciones, rectas, cónicas, funciones, sucesiones, conteo y probabilidad.</p><span class="topic-meta">Temas 1.1 a 1.24</span></button>
       <button class="period-card u4 reveal" data-go="tercero"><span class="period-num">3.º</span><h3>3.er año · Cálculo</h3><p>27 temas en 2 ciclos de cálculo (diferencial e integral) y un módulo de matemática discreta para desarrollo de software.</p><span class="topic-meta">Temas 1.1 a 1.27</span></button>
@@ -716,6 +720,9 @@
 <section id="segundo" class="view" aria-label="2.º año de Bachillerato">
   <div class="wrap" id="s2Root"><p class="muted">Cargando 2.º año…</p></div>
 </section>
+<section id="noveno" class="view" aria-label="9.º grado, nivelación">
+  <div class="wrap" id="s9Root"><p class="muted">Cargando 9.º grado…</p></div>
+</section>
 <section id="primero" class="view" aria-label="1.er año de Precálculo">
   <div class="wrap" id="s1Root"><p class="muted">Cargando 1.er año…</p></div>
 </section>
@@ -883,7 +890,7 @@
           <span class="brand-mark">67</span>
           <span class="brand-text"><strong>Precálculo</strong></span>
         </a>
-        <p>Teoría, calculadoras y práctica de precálculo y de 2.º año de Bachillerato en una sola página.</p>
+        <p>Teoría, calculadoras y práctica de 9.º grado, Precálculo y Cálculo en una sola página.</p>
         <p class="footer-credit">Esta página está basada en el programa de estudio del MINED de El Salvador, con el fin de ayudar a los estudiantes a aprender más fácilmente la materia de matemática. Creada por Brandon de Jesús y Jimena con ayuda de Claude.</p>
         <p class="footer-credit">Esta página no contiene respuestas ni soluciones de exámenes: solo busca ayudar a aprender los temas.</p>
       </div>
@@ -891,6 +898,7 @@
         <div>
           <h2>Estudiar</h2>
           <ul>
+            <li><button type="button" data-go="noveno">9.º grado · Nivelación</button></li>
             <li><button type="button" data-go="primero">1.er año · Precálculo</button></li>
             <li><button type="button" data-go="segundo">2.º año · Precálculo</button></li>
             <li><button type="button" data-go="tercero">3.er año · Cálculo</button></li>
@@ -983,9 +991,17 @@
 <script src="assets/js/tercero-ui.js?v=9"></script>
 <script>if(window.Tercero)Tercero.mount(document.getElementById("s3Root"));</script>
 <script>if(window.Primero)Primero.mount(document.getElementById("s1Root"));</script>
+<script src="assets/js/data-9-base.js?v=1"></script>
+<script src="assets/js/data-9-u1.js?v=1"></script>
+<script src="assets/js/data-9-u2.js?v=1"></script>
+<script src="assets/js/data-9-u3.js?v=1"></script>
+<script src="assets/js/noveno-calc.js?v=1"></script>
+<script src="assets/js/noveno-graf.js?v=1"></script>
+<script src="assets/js/noveno-ui.js?v=1"></script>
+<script>if(window.Noveno)Noveno.mount(document.getElementById("s9Root"));</script>
 <script src="assets/js/symbiote.js?v=9"></script>
-<script src="assets/js/app.js?v=14"></script>
+<script src="assets/js/app.js?v=15"></script>
 <script src="assets/js/resumenes-video.js?v=1"></script>
-<script src="assets/js/mascotas.js?v=5"></script>
+<script src="assets/js/mascotas.js?v=6"></script>
 </body>
 </html>
