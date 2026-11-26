@@ -28,3 +28,6 @@ Examen: `{tipo:'opt',q,opciones[4],correcta,pasos[≥2]}`, `{tipo:'num',q,r,tol,
 1. Carga la página en local y revisa la consola (sin errores) y que cada pestaña del tema abra.
 2. Comprueba a mano la matemática de cualquier ejemplo que cambies.
 3. Sube los `?v=` de lo modificado.
+
+## Registro de cambios (obligatorio)
+Cada vez que cambies algo, agrega una entrada al principio de la sección «Cambios» del `README.md`: fecha, quién (persona y si fue con Claude), qué se cambió, archivos tocados y pendientes. Hazlo en el mismo commit que el cambio.

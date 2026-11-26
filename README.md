@@ -40,7 +40,9 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 - La ayuda de Rockytos en el examen no resta puntos.
 - Rovin es el siamés de la mancha blanca en la cara; Manchita, el de la nariz y cara más oscuras. Si cambias un retrato, sube el `?v=` de la imagen en `mascotas.js`.
 
-## 🔄 Cambios del 25/11/2026 (Brandon y Claude) — para Jimena y quien siga
+## 🔄 Cambios (registro) — 25/11/2026 (Brandon y Claude), para Jimena y quien siga
+
+> **Regla del proyecto:** cada vez que alguien (con o sin Claude) cambie algo, debe dejar anotado el cambio en esta sección «Cambios», con fecha, quién lo hizo, qué archivos tocó y qué quedó pendiente. Así el resto del equipo siempre sabe qué hay de nuevo. Las entradas nuevas van arriba.
 
 Resumen de lo que se modificó después de las mascotas. Si vas a tocar algo de esto, léelo primero.
 
