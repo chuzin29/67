@@ -48,7 +48,7 @@ Tres años, una misma metodología (69 temas):
 | --- | --- | --- |
 | 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 19 (1.1–1.19) |
 | 2.º año | Precálculo: ecuaciones, rectas, cónicas, funciones, logaritmos, sucesiones, conteo y probabilidad | 24 (1.1–1.24) |
-| 3.er año | Cálculo de ingeniería: Ciclo I (diferencial), Ciclo II (integral y vectorial) y módulo de software (matemática discreta) | 27 (1.1–1.27) |
+| 3.er año | Cálculo de ingeniería: Ciclo I (cálculo diferencial), Ciclo II (cálculo integral) y módulo de matemática discreta para software | 27 (1.1–1.27) |
 
 Cada tema tiene:
 

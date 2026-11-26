@@ -9,8 +9,8 @@
 
   var PER = [
     { id: 'I', nombre: 'Ciclo I', sub: 'Cálculo diferencial', temas: ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16'], resumen: 'Cálculo de ingeniería I: límites, continuidad, trigonometría y derivadas con sus aplicaciones' },
-    { id: 'II', nombre: 'Ciclo II', sub: 'Cálculo integral y vectorial', temas: ['1.17', '1.18', '1.19', '1.20', '1.21', '1.22', '1.23', '1.24', '1.8', '1.9'], resumen: 'Cálculo de ingeniería II: integrales, vectores en ℝ³, rectas y planos, y números complejos' },
-    { id: 'S', nombre: 'Software', sub: 'Matemática discreta', temas: ['1.25', '1.26', '1.27'], resumen: 'Ingeniería de software: lógica, conjuntos y relaciones, inducción, combinatoria y grafos' }
+    { id: 'II', nombre: 'Ciclo II', sub: 'Cálculo integral', temas: ['1.17', '1.18', '1.19', '1.20', '1.21', '1.22', '1.23', '1.24', '1.8', '1.9'], resumen: 'Cálculo integral: antiderivadas, integrales y sus aplicaciones, más vectores en ℝ³, rectas y planos, y números complejos' },
+    { id: 'S', nombre: 'Software', sub: 'Matemática discreta para software', temas: ['1.25', '1.26', '1.27'], resumen: 'Ingeniería de software: lógica, conjuntos y relaciones, inducción, combinatoria y grafos' }
   ];
   function lbl(p) { return p.nombre; }
   var UN = { 1: 'Límites y continuidad', 2: 'Trigonometría y complejos', 3: 'Derivadas', 4: 'Integrales', 5: 'Álgebra vectorial', 6: 'Matemática discreta' };
