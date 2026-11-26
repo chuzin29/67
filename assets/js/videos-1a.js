@@ -14,4 +14,5 @@ window.VIDEOS_1A = {
   '1.12': { id: 'rtxUMjExgKk', t: 'Vectores en el plano: suma, resta y multiplicación por un escalar' },
   '1.13': { id: 'KchkttM-9-M', t: 'Potencia de números complejos: teorema de De Moivre' },
   '1.14': { id: 'dfxCsCZ1c3A', t: 'Medidas de tendencia central: media, mediana y moda (Matemáticas profe Alex)' },
+  '1.15': { id: 'BxrJmKdPHRs', t: 'Ecuación cuadrática por fórmula general (Matemáticas profe Alex)' },
 };

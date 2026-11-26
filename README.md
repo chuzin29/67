@@ -46,7 +46,7 @@ Tres años, una misma metodología (69 temas):
 
 | Año | Curso | Temas |
 | --- | --- | --- |
-| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 18 (1.1–1.18) |
+| 1.er año | Precálculo: álgebra, funciones, trigonometría, vectores y complejos | 19 (1.1–1.19) |
 | 2.º año | Precálculo: ecuaciones, rectas, cónicas, funciones, logaritmos, sucesiones, conteo y probabilidad | 24 (1.1–1.24) |
 | 3.er año | Cálculo: límites, trigonometría y complejos, derivadas, integrales, vectores y matemática discreta | 27 (1.1–1.27) |
 
@@ -73,8 +73,8 @@ Cada tema tiene:
         ├── pizarra.js               # Motor de la pizarra (PZ.*) y pizarra automática
         ├── symbiote.js              # Botones con efecto líquido
         ├── mascotas.js              # Equipo de mascotas (ayudas y sonidos)
-        ├── data-1a-u1…u6d.js        # Contenido de 1.er año
-        ├── pizarra-1a-1…5, 6a…6d.js # Pizarras hechas a mano de 1.er año
+        ├── data-1a-u1…u6e.js        # Contenido de 1.er año
+        ├── pizarra-1a-1…5, 6a…6e.js # Pizarras hechas a mano de 1.er año
         ├── primero-ui.js, primero-calc.js, primero-graf.js, videos-1a.js
         ├── data-2a-u1…u8.js, pizarra-2a-1…6.js
         ├── segundo.js, segundo-calc.js, videos-2a.js

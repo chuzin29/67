@@ -12,7 +12,7 @@
     { id: 'II', temas: ['1.6', '1.7', '1.8'], resumen: 'Familia de funciones reales: lineales, cuadráticas, racionales, raíz y cúbica' },
     { id: 'III', temas: ['1.9', '1.10', '1.11', '1.16', '1.17'], resumen: 'Trigonometría: triángulo rectángulo, identidades, triángulos oblicuángulos, ángulos no agudos y ecuaciones trigonométricas' },
     { id: 'IV', temas: ['1.12', '1.18', '1.13'], resumen: 'Vectores en el plano, producto escalar y números complejos' },
-    { id: 'V', temas: ['1.14'], resumen: 'Estadística descriptiva: medidas de posición y dispersión' }
+    { id: 'V', temas: ['1.14', '1.19'], resumen: 'Estadística descriptiva: medidas de posición y dispersión, muestreo, estadísticos y parámetros' }
   ];
   var UN = { 1: 'Álgebra y números reales', 2: 'Familia de funciones reales', 3: 'Trigonometría e identidades', 4: 'Vectores y números complejos', 5: 'Estadística descriptiva' };
   var TABS = [['teoria', 'Teoría'], ['pizarra', 'Pizarra'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
@@ -102,7 +102,7 @@
     var tt = totals(), pct = Math.round(100 * (tt.seen / tt.temas * 0.4 + tt.ej / tt.ejT * 0.6)), html = '', n = 0;
     var last = store.last && T()[store.last] ? store.last : null;
     html += '<div class="s2-hero"><div class="s2-hero-text"><span class="eyebrow">Precálculo · Bachillerato</span><h2 id="s1-title">1.er año · Precálculo</h2>' +
-      '<p class="lead">18 temas en 5 unidades y 5 períodos. En cada tema: teoría, fórmulas, ejemplos que se revelan paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
+      '<p class="lead">19 temas en 5 unidades y 5 períodos. En cada tema: teoría, fórmulas, ejemplos que se revelan paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
       '<div class="hero-actions"><button class="btn btn-primary" data-open="' + (last || '1.1') + '">' + (last ? 'Continuar: tema ' + last : 'Empezar por el tema 1.1') + '</button>' +
       '<button class="btn btn-ghost" data-t1="examenes">Modo examen</button></div></div>' +
       '<div class="s2-hero-stats">' + ring(pct, 'Avance general') + '<ul><li><b>' + tt.seen + '</b>/' + tt.temas + ' temas vistos</li><li><b>' + tt.ej + '</b>/' + tt.ejT + ' ejercicios dominados</li><li><b>' + tt.ex + '</b>/' + tt.temas + ' mini‑exámenes hechos</li></ul></div></div>';
