@@ -8,13 +8,13 @@
   'use strict';
 
   var PER = [
-    { id: 'I', temas: ['1.1', '1.2', '1.3', '1.4', '1.5'], resumen: 'Álgebra y números reales: radicales, productos notables, factorización, división y desigualdades' },
+    { id: 'I', temas: ['1.1', '1.2', '1.3', '1.4', '1.15', '1.5'], resumen: 'Álgebra y números reales: radicales, productos notables, factorización, división, ecuación cuadrática y desigualdades' },
     { id: 'II', temas: ['1.6', '1.7', '1.8'], resumen: 'Familia de funciones reales: lineales, cuadráticas, racionales, raíz y cúbica' },
-    { id: 'III', temas: ['1.9', '1.10', '1.11'], resumen: 'Trigonometría: triángulo rectángulo, identidades y triángulos oblicuángulos' },
-    { id: 'IV', temas: ['1.12', '1.13'], resumen: 'Vectores en el plano y números complejos' },
-    { id: 'V', temas: ['1.14', '1.15', '1.16', '1.17', '1.18'], resumen: 'Complementarios: estadística, cónicas, exponenciales y logaritmos, sucesiones y probabilidad' }
+    { id: 'III', temas: ['1.9', '1.10', '1.11', '1.16', '1.17'], resumen: 'Trigonometría: triángulo rectángulo, identidades, triángulos oblicuángulos, ángulos no agudos y ecuaciones trigonométricas' },
+    { id: 'IV', temas: ['1.12', '1.18', '1.13'], resumen: 'Vectores en el plano, producto escalar y números complejos' },
+    { id: 'V', temas: ['1.14'], resumen: 'Estadística descriptiva: medidas de posición y dispersión' }
   ];
-  var UN = { 1: 'Álgebra y números reales', 2: 'Familia de funciones reales', 3: 'Trigonometría e identidades', 4: 'Vectores y números complejos', 5: 'Temas complementarios' };
+  var UN = { 1: 'Álgebra y números reales', 2: 'Familia de funciones reales', 3: 'Trigonometría e identidades', 4: 'Vectores y números complejos', 5: 'Estadística descriptiva' };
   var TABS = [['teoria', 'Teoría'], ['pizarra', 'Pizarra'], ['video', 'Video'], ['explora', 'Gráficos'], ['formulas', 'Fórmulas'], ['ejemplos', 'Ejemplos'], ['practica', 'Práctica'], ['preguntas', 'Preguntas'], ['errores', 'Errores y uso'], ['calc', 'Calculadora'], ['examen', 'Mini‑examen']];
   var LVL = { facil: 'Fácil', intermedio: 'Intermedio', dificil: 'Difícil' };
 

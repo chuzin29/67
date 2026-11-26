@@ -73,8 +73,8 @@ Cada tema tiene:
         ├── pizarra.js               # Motor de la pizarra (PZ.*) y pizarra automática
         ├── symbiote.js              # Botones con efecto líquido
         ├── mascotas.js              # Equipo de mascotas (ayudas y sonidos)
-        ├── data-1a-u1…u4.js         # Contenido de 1.er año
-        ├── pizarra-1a-1…4.js        # Pizarras hechas a mano de 1.er año
+        ├── data-1a-u1…u6d.js        # Contenido de 1.er año
+        ├── pizarra-1a-1…5, 6a…6d.js # Pizarras hechas a mano de 1.er año
         ├── primero-ui.js, primero-calc.js, primero-graf.js, videos-1a.js
         ├── data-2a-u1…u8.js, pizarra-2a-1…6.js
         ├── segundo.js, segundo-calc.js, videos-2a.js
