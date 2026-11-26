@@ -8,14 +8,14 @@
 
   var PER = [
     { id: 'I', titulo: 'Álgebra fundamental (base para límites)', temas: ['1.1', '1.2', '1.3', '1.4', '1.5'], resumen: 'Productos notables, factorización, radicales y racionalización' },
-    { id: 'II', titulo: 'Ecuaciones, función cuadrática y semejanza', temas: ['1.6', '1.7', '1.8', '1.9', '1.10'], resumen: 'Ecuación y función cuadrática, Teorema de Tales y semejanza' },
+    { id: 'II', titulo: 'Ecuaciones, función cuadrática y semejanza', temas: ['1.6', '1.7', '1.14', '1.8', '1.9', '1.10'], resumen: 'Ecuación y función cuadrática, Teorema de Tales y semejanza' },
     { id: 'III', titulo: 'Geometría métrica y dispersión', temas: ['1.11', '1.12', '1.13'], resumen: 'Pitágoras, circunferencia y medidas de dispersión' }
   ];
   var UN = { 1: 'Álgebra fundamental', 2: 'Cuadráticas y semejanza', 3: 'Geometría métrica y dispersión' };
   /* Selector de nivel para FESA */
-  var BASICO = ['1.1', '1.2', '1.4', '1.6', '1.7', '1.9', '1.11', '1.13'];
+  var BASICO = ['1.1', '1.2', '1.4', '1.6', '1.7', '1.14', '1.9', '1.11', '1.13'];
   var NIVELES = {
-    todos: { nombre: 'Todos', sug: null, nota: 'Ves los 13 temas sin destacar ninguno.' },
+    todos: { nombre: 'Todos', sug: null, nota: 'Ves los 14 temas sin destacar ninguno.' },
     basico: { nombre: '9.º Básico', sug: ['facil', 'intermedio'], nota: 'Se destacan los temas base. Practica primero los ejercicios Fácil e Intermedio.' },
     avanzado: { nombre: '9.º Avanzado', sug: ['intermedio', 'dificil'], nota: 'Ves todos los temas y se destacan los de «Ruta al Cálculo». Apunta a los ejercicios Intermedio y Difícil.' }
   };
@@ -110,7 +110,7 @@
     var tt = totals(), pct = Math.round(100 * (tt.seen / tt.temas * 0.4 + tt.ej / tt.ejT * 0.6)), html = '', n = 0;
     var last = store.last && T()[store.last] ? store.last : null;
     html += '<div class="s2-hero"><div class="s2-hero-text"><span class="eyebrow">Nivelación · ESMATE MINED</span><h2 id="s9-title">9.º grado · Nivelación</h2>' +
-      '<p class="lead">13 temas en 3 trimestres para llegar con buena base a Bachillerato. En cada tema: teoría, fórmulas, ejemplos paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
+      '<p class="lead">14 temas en 3 trimestres para llegar con buena base a Bachillerato. En cada tema: teoría, fórmulas, ejemplos paso a paso, práctica por niveles, calculadora con gráfica y mini‑examen que se corrige solo.</p>' +
       '<div class="hero-actions"><button class="btn btn-primary" data-open="' + (last || '1.1') + '">' + (last ? 'Continuar: tema ' + last : 'Empezar por el tema 1.1') + '</button>' +
       '<button class="btn btn-ghost" data-t9="examenes">Modo examen</button></div></div>' +
       '<div class="s2-hero-stats">' + ring(pct, 'Avance general') + '<ul><li><b>' + tt.seen + '</b>/' + tt.temas + ' temas vistos</li><li><b>' + tt.ej + '</b>/' + tt.ejT + ' ejercicios dominados</li><li><b>' + tt.ex + '</b>/' + tt.temas + ' mini‑exámenes hechos</li></ul></div></div>';
@@ -408,7 +408,7 @@
     h += '<header class="s2-head"><span class="s2-tile big"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z"/></svg></span><div><h2 id="s9-title">Modo examen</h2><p class="lead">Elige qué quieres evaluar. Cada pregunta se corrige sola y explica la solución paso a paso. Las preguntas se mezclan en cada intento.</p></div></header>';
     h += '<h3 class="s2-h">Por trimestre</h3><div class="s2-modes">' + PER.map(function (p) { var b = store.best['p:' + p.id]; return '<button class="s2-mode" data-exam-mode="p:' + p.id + '"><strong>Trimestre ' + p.id + '</strong><span>' + p.resumen + '</span><em>15 preguntas' + (b != null ? ' · mejor ' + b + '/15' : '') + '</em></button>'; }).join('') + '</div>';
     h += '<h3 class="s2-h">Por unidad</h3><div class="s2-modes">' + Object.keys(UN).map(function (u) { var b = store.best['u:' + u]; return '<button class="s2-mode u' + u + '" data-exam-mode="u:' + u + '"><strong>Unidad ' + u + '</strong><span>' + UN[u] + '</span><em>10 preguntas' + (b != null ? ' · mejor ' + b + '/10' : '') + '</em></button>'; }).join('') + '</div>';
-    h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 13 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
+    h += '<h3 class="s2-h">Todo el año</h3><div class="s2-modes"><button class="s2-mode" data-exam-mode="all"><strong>Simulacro mixto</strong><span>20 preguntas al azar de los 14 temas</span><em>' + (store.best.all != null ? 'mejor ' + store.best.all + '/20' : 'Reto final') + '</em></button></div>';
     h += '<h3 class="s2-h">Por tema</h3><div class="s2-chiprow">' + all.map(function (id) { var b = store.best['t:' + id]; return '<button class="chip" data-exam-mode="t:' + id + '" title="' + esc(T()[id].titulo) + '">' + id + (b != null ? ' · ' + b + '/10' : '') + '</button>'; }).join('') + '</div>';
     h += '<div id="s9Exam" class="s2-exam-hub"></div>';
     root.innerHTML = h;

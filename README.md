@@ -44,6 +44,25 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 
 > **Regla del proyecto:** cada vez que alguien (con o sin Claude) cambie algo, debe dejar anotado el cambio en esta sección «Cambios», con fecha, quién lo hizo, qué archivos tocó y qué quedó pendiente. Así el resto del equipo siempre sabe qué hay de nuevo. Las entradas nuevas van arriba.
 
+
+### Cambios del 26/11/2026 · Pizarra animada y verificación de 9.º (Brandon y Claude)
+- **Pizarra mejorada en todos los años** (`assets/js/pizarra.js` y `style.css`; afecta a 9.º, 1.º, 2.º y 3.er año):
+  - Cada línea se «escribe» con tiza, una tras otra; las figuras SVG se dibujan trazo a trazo y la respuesta brilla.
+  - Cada lección termina con un paso automático **«Repasemos lo que hicimos»** (lista numerada de los pasos). Se desactiva con `sinRepaso: true`.
+  - Botón **🔊 Voz**: el profe lee cada nota en voz alta (Web Speech, español); con ▶ Reproducir avanza cuando termina de hablar.
+  - ▶ Reproducir ahora espera según el largo de cada paso; «Ver todo» no anima; respeta `prefers-reduced-motion`.
+- **9.º grado comparado con el MINED** (guía metodológica y libro ESMATE de 9.º): las 8 unidades (polinomios, raíz cuadrada, ecuación cuadrática, función ax²+c, figuras semejantes, Pitágoras, ángulo inscrito y central, medidas de dispersión) están cubiertas. Faltaba la lección «Aplicaciones de la ecuación cuadrática»: se agregó como 1.14 (ver abajo). Portada: 84 temas.
+- **Pendiente:** videos de 9.º y de 1.16–1.19; pizarras hechas a mano para 9.º (hoy usa la automática).
+
+### Cambios del 26/11/2026 · 9.º grado, tema 1.14
+
+**Quién:** Brandon, con ayuda de Claude.
+
+**Qué se cambió:** nuevo tema 1.14 «Aplicaciones de la ecuación cuadrática» (Unidad 3 MINED, lección 2; trimestre II, después de 1.7): consecutivos, áreas y perímetros, cuadrado de un número. Usa la calculadora `cuadformula`. Textos «13 temas» pasan a 14.
+
+**Archivos:** nuevo `assets/js/data-9-u4.js`; cambiados `index.html` (script `data-9-u4.js?v=1`, `noveno-ui.js?v=2`) y `assets/js/noveno-ui.js`.
+
+**Pendiente:** pizarra propia y video del 1.14 (por ahora la pizarra se arma sola con los ejemplos).
 ### Correcciones del 26/11/2026
 
 **Quién:** Jimena, con ayuda de Claude.

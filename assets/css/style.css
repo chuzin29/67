@@ -2351,3 +2351,23 @@ details.nav-group > summary { list-style: none; cursor: pointer; } details.nav-g
 .n9-leyenda { display: flex; flex-wrap: wrap; gap: .8rem; font-size: .8rem; font-weight: 700; }
 .n9-leyenda .v { color: #ea7a12; } .n9-leyenda .r { color: #16a34a; } .n9-leyenda .y { color: #db2777; } .n9-leyenda .s { color: #2563eb; }
 .t9g { max-width: 100%; }
+
+/* ---- Pizarra: animación al explicar ---- */
+.pz-step.pz-new { animation: none !important; }
+.pz-wr { animation: pz-line .8s cubic-bezier(.3, .7, .3, 1) var(--pz-d, 0s) both; }
+@keyframes pz-line { 0% { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-6px); } 15% { opacity: 1; } 100% { opacity: 1; clip-path: inset(-10px -10px -10px -10px); transform: none; } }
+.pz-wr .pz-main.pz-y, .pz-wr.pz-say.pz-y, .pz-wr .pz-box, .pz-wr.pz-say .pz-box { animation: pz-glow 1.4s ease calc(var(--pz-d, 0s) + .7s) 1 both; }
+@keyframes pz-glow { 0%, 100% { text-shadow: 0 0 1px currentColor, 0 0 6px rgb(255 255 255 / .12); } 40% { text-shadow: 0 0 2px #ffe27a, 0 0 18px #ffe27a; } }
+.pz-dr { stroke-dasharray: 1; stroke-dashoffset: 1; animation: pz-draw 1.1s ease var(--pz-sd, 0s) forwards; }
+@keyframes pz-draw { to { stroke-dashoffset: 0; } }
+.pz-po { opacity: 0; animation: pz-pop .5s ease var(--pz-sd, 0s) forwards; }
+@keyframes pz-pop { from { opacity: 0; transform: scale(.85); transform-origin: center; transform-box: fill-box; } to { opacity: 1; transform: none; } }
+.pz-say-in p { animation: pz-nota-in .55s ease both; }
+@keyframes pz-nota-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.pz-prof.pz-talk { animation: pz-talk .45s ease-in-out infinite alternate; }
+@keyframes pz-talk { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-3px) rotate(3deg); } }
+.pz-recap { margin: .3rem auto 0; padding: 0 0 0 1.6rem; max-width: 36rem; text-align: left; counter-reset: r; list-style: none; }
+.pz-recap li { counter-increment: r; margin: .28rem 0; font-size: .95em; opacity: .95; }
+.pz-recap li::before { content: counter(r) '. '; color: #ffe27a; }
+.pz-ctrl [data-pz-act="voz"][aria-pressed="true"] { background: hsl(var(--primary) / .16); border-color: hsl(var(--primary)); }
+@media (prefers-reduced-motion: reduce) { .pz-wr, .pz-dr, .pz-po, .pz-say-in p, .pz-prof.pz-talk { animation: none !important; opacity: 1; stroke-dashoffset: 0; } }

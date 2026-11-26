@@ -73,7 +73,17 @@
 
   /* ---------- render de lecciones ---------- */
   var uid = 0;
+  function repaso(L) {
+    var items = L.pasos.map(function (p, i) { return { i: i, t: plainNote(p.nota) }; }).filter(function (x) { return x.t; });
+    if (L.sinRepaso || L.pasos.length < 3 || items.length < 3) return L;
+    var h = PZ.say('<span class="pz-num">★</span> Repasemos lo que hicimos', 'y') + '<ol class="pz-recap">' + items.map(function (x) { return '<li>' + esc(cutSentence(x.t)) + '</li>'; }).join('') + '</ol>';
+    return { titulo: L.titulo, intro: L.intro, pasos: L.pasos.concat([{ nota: 'Repasemos: mira los pasos en orden. Si entiendes por qué hicimos cada uno, ya dominas el método.', html: h }]) };
+  }
+  function plainNote(h) { return String(h || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function cutSentence(t) { var m = t.match(/^(.+?[.!?])(\s|$)/), x = m ? m[1] : t; return x.length > 110 ? x.slice(0, 107).replace(/\s+\S*$/, '') + '…' : x; }
+
   function lessonHtml(L) {
+    L = repaso(L);
     var id = 'pz' + (++uid), n = L.pasos.length;
     var steps = L.pasos.map(function (p, i) {
       return '<div class="pz-step" data-i="' + i + '"' + (p.reemplaza ? ' data-rep="1"' : '') + (i ? ' hidden' : '') + '>' + MS(p.html) + '</div>';
@@ -90,29 +100,84 @@
       '<span class="pz-count"><b data-pz-n>1</b> / ' + n + '</span>' +
       '<button class="btn btn-primary btn-sm" type="button" data-pz-act="next">Siguiente paso →</button>' +
       '<button class="btn btn-ghost btn-sm" type="button" data-pz-act="play">▶ Reproducir</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-pz-act="voz" aria-pressed="false" title="El profe lee cada paso en voz alta">🔊 Voz</button>' +
       '<button class="btn btn-ghost btn-sm" type="button" data-pz-act="all">Ver todo</button></div></article>';
   }
 
-  function show(root, cur) {
-    var n = +root.getAttribute('data-n');
+  var REDUCE = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var STEP = 0.55; /* segundos entre líneas */
+  function animate(stepEl) {
+    var kids = Array.prototype.slice.call(stepEl.children), d = 0;
+    function flat(el) { return el.classList && el.classList.contains('pz-paso') ? Array.prototype.slice.call(el.children) : [el]; }
+    var lines = []; kids.forEach(function (k) { flat(k).forEach(function (x) { lines.push(x); }); });
+    lines.forEach(function (el) {
+      el.classList.remove('pz-wr'); void el.offsetWidth;
+      el.style.setProperty('--pz-d', d.toFixed(2) + 's'); el.classList.add('pz-wr');
+      var shapes = el.querySelectorAll ? el.querySelectorAll('svg') : [];
+      Array.prototype.forEach.call(shapes, function (sv) {
+        var k = 0;
+        Array.prototype.forEach.call(sv.querySelectorAll('path,line,circle,ellipse,rect,polyline,polygon,text'), function (sh) {
+          var fill = sh.getAttribute('fill'), stroke = sh.getAttribute('stroke'), tag = sh.tagName.toLowerCase();
+          sh.classList.remove('pz-dr', 'pz-po'); void sh.getBoundingClientRect;
+          if (tag !== 'text' && stroke && stroke !== 'none' && (!fill || fill === 'none')) { sh.setAttribute('pathLength', '1'); sh.classList.add('pz-dr'); }
+          else sh.classList.add('pz-po');
+          sh.style.setProperty('--pz-sd', (d + 0.15 * (k++)).toFixed(2) + 's');
+        });
+      });
+      d += STEP;
+    });
+    return d;
+  }
+
+  function show(root, cur, quiet) {
+    var n = +root.getAttribute('data-n'), prev = +root.getAttribute('data-cur');
     cur = Math.max(0, Math.min(n - 1, cur)); root.setAttribute('data-cur', cur);
-    var st = root.querySelectorAll('.pz-step');
+    var st = root.querySelectorAll('.pz-step'), dur = 0;
     Array.prototype.forEach.call(st, function (s) {
       var i = +s.getAttribute('data-i'), nx = st[i + 1], rep = nx && nx.getAttribute('data-rep') && cur >= i + 1;
       s.hidden = i > cur || !!rep; s.classList.toggle('pz-new', i === cur && cur > 0); s.classList.toggle('pz-old', i < cur);
+      if (i === cur && !s.hidden && !quiet && !REDUCE && (cur !== prev || !s.getAttribute('data-shown'))) { s.setAttribute('data-shown', '1'); dur = animate(s); }
     });
-    Array.prototype.forEach.call(root.querySelectorAll('.pz-nota'), function (s) { s.hidden = +s.getAttribute('data-i') !== cur; });
+    var notas = root.querySelectorAll('.pz-nota');
+    Array.prototype.forEach.call(notas, function (s) { var on = +s.getAttribute('data-i') === cur; s.hidden = !on; if (on && !quiet) { s.classList.remove('pz-say-in'); void s.offsetWidth; s.classList.add('pz-say-in'); } });
     Array.prototype.forEach.call(root.querySelectorAll('.pz-dots i'), function (d) { var i = +d.getAttribute('data-d'); d.className = i < cur ? 'on' : i === cur ? 'now' : ''; });
     root.querySelector('[data-pz-n]').textContent = cur + 1;
     root.querySelector('[data-pz-act="prev"]').disabled = cur === 0;
     var nx = root.querySelector('[data-pz-act="next"]'); nx.disabled = cur === n - 1; nx.textContent = cur === n - 1 ? 'Listo ✓' : 'Siguiente paso →';
+    root.setAttribute('data-dur', dur.toFixed(2));
+    if (!quiet && root.getAttribute('data-voz') === '1') hablar(root, cur);
+    return dur;
+  }
+
+  /* ---------- voz del profe ---------- */
+  var SYN = global.speechSynthesis, VOZ_OK = !!(SYN && global.SpeechSynthesisUtterance);
+  function aVoz(h) {
+    return String(h || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ')
+      .replace(/(\d)\s*\/\s*(\d)/g, '$1 sobre $2').replace(/√/g, ' raíz de ').replace(/²/g, ' al cuadrado ').replace(/³/g, ' al cubo ')
+      .replace(/[−–]/g, ' menos ').replace(/[·×]/g, ' por ').replace(/÷/g, ' entre ').replace(/≈/g, ' aproximadamente ')
+      .replace(/≤/g, ' menor o igual que ').replace(/≥/g, ' mayor o igual que ').replace(/=/g, ' igual a ').replace(/π/g, ' pi ')
+      .replace(/°/g, ' grados ').replace(/⇒|→/g, ' entonces ').replace(/\+/g, ' más ').replace(/\s+/g, ' ').trim();
+  }
+  function hablar(root, cur) {
+    if (!VOZ_OK) return; SYN.cancel();
+    var nota = root.querySelector('.pz-nota[data-i="' + cur + '"] p'); if (!nota) return;
+    var u = new global.SpeechSynthesisUtterance(aVoz(nota.innerHTML)); u.lang = 'es-419'; u.rate = 0.95;
+    var prof = root.querySelector('.pz-nota[data-i="' + cur + '"] .pz-prof');
+    u.onstart = function () { if (prof) prof.classList.add('pz-talk'); };
+    u.onend = u.onerror = function () { if (prof) prof.classList.remove('pz-talk'); root.dispatchEvent(new CustomEvent('pz-voz-fin')); };
+    SYN.speak(u);
   }
 
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('[data-pz-act]'); if (!b) return;
     var root = b.closest('[data-pz]'); if (!root) return;
     var cur = +root.getAttribute('data-cur'), n = +root.getAttribute('data-n'), a = b.getAttribute('data-pz-act');
-    if (a === 'next') show(root, cur + 1); else if (a === 'prev') show(root, cur - 1); else if (a === 'all') show(root, n - 1);
+    if (a === 'next') show(root, cur + 1); else if (a === 'prev') show(root, cur - 1); else if (a === 'all') show(root, n - 1, true);
+    else if (a === 'voz') {
+      if (!VOZ_OK) { b.textContent = '🔇 Sin voz'; b.disabled = true; return; }
+      var on = root.getAttribute('data-voz') !== '1'; root.setAttribute('data-voz', on ? '1' : '0'); b.setAttribute('aria-pressed', on); b.textContent = on ? '🔊 Voz activada' : '🔊 Voz';
+      if (on) hablar(root, cur); else SYN.cancel();
+    }
   });
 
 
@@ -136,20 +201,26 @@
       pasos.push({ nota: t, html: h + '</div>' });
     });
     pasos.push({ nota: '<b>Respuesta:</b> ' + e.respuesta, html: PZ.say('<span class="pz-num">✓</span> Respuesta', 'g') + PZ.say(PZ.box(String(e.respuesta)), 'g') });
-    return { titulo: e.titulo || 'Resolución', pasos: pasos };
+    return { titulo: e.titulo || 'Resolución', pasos: pasos, sinRepaso: true };
   }
 
   /* reproducir solo + teclado */
   var timers = new WeakMap();
-  function stop(root) { var t = timers.get(root); if (t) { clearInterval(t); timers.delete(root); } var b = root.querySelector('[data-pz-act="play"]'); if (b) b.textContent = '▶ Reproducir'; }
+  function stop(root) { var t = timers.get(root); if (t) { clearTimeout(t.id); root.removeEventListener('pz-voz-fin', t.fin); timers.delete(root); } var b = root.querySelector('[data-pz-act="play"]'); if (b) b.textContent = '▶ Reproducir'; if (SYN) SYN.cancel(); }
+  function tick(root) {
+    var c = +root.getAttribute('data-cur'), n = +root.getAttribute('data-n'); if (c >= n - 1) { stop(root); return; }
+    var dur = show(root, c + 1), voz = root.getAttribute('data-voz') === '1' && VOZ_OK, rec = timers.get(root); if (!rec) return;
+    if (voz) { rec.fin = function () { root.removeEventListener('pz-voz-fin', rec.fin); rec.id = setTimeout(function () { tick(root); }, 900); }; root.addEventListener('pz-voz-fin', rec.fin); }
+    else rec.id = setTimeout(function () { tick(root); }, Math.max(2800, dur * 1000 + 2200));
+  }
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('[data-pz-act]'); if (!b) return;
     var root = b.closest('[data-pz]'); if (!root) return; var a = b.getAttribute('data-pz-act');
+    if (a === 'voz') return;
     if (a === 'play') {
       if (timers.get(root)) { stop(root); return; }
       var n = +root.getAttribute('data-n'); if (+root.getAttribute('data-cur') >= n - 1) show(root, 0);
-      b.textContent = '⏸ Pausa';
-      timers.set(root, setInterval(function () { var c = +root.getAttribute('data-cur'); if (c >= n - 1) stop(root); else show(root, c + 1); }, 2600));
+      b.textContent = '⏸ Pausa'; timers.set(root, { id: 0 }); timers.get(root).id = setTimeout(function () { tick(root); }, 1500);
     } else stop(root);
   }, true);
   document.addEventListener('keydown', function (e) {
@@ -157,6 +228,12 @@
     var cur = +root.getAttribute('data-cur');
     if (e.key === 'ArrowRight') { show(root, cur + 1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { show(root, cur - 1); e.preventDefault(); }
   });
+  /* la primera pizarra de cada lección se "escribe" al aparecer en pantalla */
+  if ('IntersectionObserver' in global) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var r = en.target; io.unobserve(r); var s0 = r.querySelector('.pz-step[data-i="0"]'); if (s0 && !s0.hidden && !s0.getAttribute('data-shown') && !REDUCE) { s0.setAttribute('data-shown', '1'); animate(s0); } } }); }, { threshold: 0.35 });
+    new MutationObserver(function () { Array.prototype.forEach.call(document.querySelectorAll('[data-pz]:not([data-io])'), function (r) { r.setAttribute('data-io', '1'); io.observe(r); }); }).observe(document.body, { childList: true, subtree: true });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pz]'), function (r) { r.setAttribute('data-io', '1'); io.observe(r); });
+  }
 
   global.PZ = PZ;
   global.Pizarra = {
