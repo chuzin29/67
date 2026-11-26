@@ -45,6 +45,12 @@ Se agregó un equipo de mascotas que ayudan en los tres años. Cheuscita se mant
 > **Regla del proyecto:** cada vez que alguien (con o sin Claude) cambie algo, debe dejar anotado el cambio en esta sección «Cambios», con fecha, quién lo hizo, qué archivos tocó y qué quedó pendiente. Así el resto del equipo siempre sabe qué hay de nuevo. Las entradas nuevas van arriba.
 
 
+### Cambios del 26/11/2026 (noche) · Las mascotas hablan y suenan como su animal (Brandon y Claude)
+- **Voz:** al abrir una respuesta, la mascota la lee en voz alta (Web Speech API, español), cada una con su tono: Pugsito grave, Rovin muy grave, Manchita aguda, Rockytos rápido y agudo, Mamoi muy aguda. Fórmulas, fracciones y potencias se leen con palabras («x al cuadrado», «6 sobre 2»). Botón **🔊 Escuchar otra vez** en cada panel; también hablan las frases de la casa y del dúo.
+- **Sonidos de animal:** al pedir ayuda siempre suena el animal de la mascota (Pugsito ladra, Rockytos/Rovin/Manchita maúllan con distinto tono, Mamoi hace chillidos de conejo con golpecito de pata); antes sonaban sirena, campana, lupa y martillo.
+- El botón de la casa pasó a «Sonido y voz encendidos/apagados» y apaga ambos. Archivos: `mascotas.js`, `pizarra.js` (`PZ.aVoz`).
+- **Pendiente:** la voz depende de las voces en español del dispositivo; con pocas voces, varias mascotas suenan parecidas (solo cambia el tono).
+
 ### Cambios del 26/11/2026 (tarde) · Mascotas con respuestas en pizarra (Brandon y Claude)
 - Las respuestas de las mascotas (`assets/js/mascotas.js`, `style.css`) ahora se ven como una **mini pizarra** con marco de madera y tiza: **Mamoi** muestra cada fórmula centrada y grande en su recuadro; **Rovin** la pista con los datos en tiza; **Pugsito** los pasos numerados (cada bloque nuevo se escribe solo); **Manchita** la lista de control, el error común en rojo y la **respuesta en recuadro con ✓**; **Rockytos** los errores comunes con ✗.
 - Las líneas se «escriben» con la misma animación de la pizarra (`PZ.escribir()` en `pizarra.js`, con límite de 1,6 s para no hacer esperar).

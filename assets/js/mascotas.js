@@ -14,7 +14,7 @@
     rockytos: { n: 'Rockytos', rol: 'Bomberos', v: 'maullan', boton: 'Rescate', plural: true,
       que: 'Te rescatan si te atascas: errores a evitar y, en el examen, apagan opciones incorrectas.',
       frases: ['¡Miau miau! Al rescate.', '¿Se quema el cerebro? Respira y relee.', 'Un error se apaga revisando los signos.'] },
-    mamoi: { n: 'Mamoi', rol: 'Cocinera', v: 'chilla', boton: 'Ver la receta',
+    mamoi: { n: 'Mamoi', rol: 'Cocinera', v: 'conejo', boton: 'Ver la receta',
       que: 'Te sirve la receta: las fórmulas del tema, que son los ingredientes.',
       frases: ['¡Ñic! Reúne los ingredientes primero.', 'Cada fórmula en su momento, como en la cocina.', 'Prueba el resultado antes de servirlo.'] },
     rovin: { n: 'Rovin', rol: 'Detective', v: 'grave', boton: 'Dame una pista',
@@ -47,6 +47,8 @@
   var VOZ = {
     ladra: function () { nota(0, 0.13, [260, 420, 130], 'sawtooth', 0.14, 1100); nota(0.18, 0.15, [240, 390, 110], 'sawtooth', 0.14, 1000); },
     maullan: function () { nota(0, 0.35, [600, 950, 620], 'triangle', 0.09, 2600); nota(0.25, 0.4, [720, 1120, 700], 'triangle', 0.08, 2800); },
+    /* conejo: dos chillidos suaves y nasales + golpecito de pata */
+    conejo: function () { nota(0, 0.09, [900, 1500, 1100], 'triangle', 0.07, 3200); nota(0.13, 0.09, [950, 1600, 1150], 'triangle', 0.07, 3200); nota(0.3, 0.08, [160, 110, 70], 'sine', 0.12, 500); },
     chilla: function () { [0, 0.1, 0.2].forEach(function (t) { nota(t, 0.07, [1300, 1900, 1500], 'sine', 0.07); }); },
     grave: function () { nota(0, 0.5, [420, 640, 360], 'sawtooth', 0.06, 1700); },
     fino: function () { nota(0, 0.42, [700, 1050, 560], 'triangle', 0.09, 3000); },
@@ -70,6 +72,26 @@
       VOZ[v]();
     } catch (e) { /* silencio */ }
   }
+
+  /* ---------- voz: cada mascota habla con su propio tono ---------- */
+  var SYN = global.speechSynthesis, PERFIL = {
+    pugsito: { pitch: 0.7, rate: 0.92, vi: 0 }, rockytos: { pitch: 1.15, rate: 1.1, vi: 1 }, mamoi: { pitch: 1.7, rate: 1.05, vi: 2 },
+    rovin: { pitch: 0.55, rate: 0.88, vi: 0 }, manchita: { pitch: 1.35, rate: 1, vi: 1 }, duo: { pitch: 1, rate: 1, vi: 0 } };
+  function vozEs(i) {
+    var vs = (SYN && SYN.getVoices ? SYN.getVoices() : []).filter(function (v) { return /^es/i.test(v.lang); });
+    return vs.length ? vs[i % vs.length] : null;
+  }
+  function hablar(k, html, retraso) {
+    if (mudo || !SYN || !global.SpeechSynthesisUtterance) return;
+    var t = (global.PZ && global.PZ.aVoz ? global.PZ.aVoz(html) : String(html).replace(/<[^>]+>/g, ' ')).trim();
+    if (t.length > 380) { t = t.slice(0, 380); t = t.slice(0, Math.max(t.lastIndexOf('.'), t.lastIndexOf(':'), 120)); }
+    if (!t) return;
+    SYN.cancel();
+    var pf = PERFIL[k] || PERFIL.duo, u = new global.SpeechSynthesisUtterance(t), v = vozEs(pf.vi);
+    u.lang = 'es-419'; if (v) u.voice = v; u.pitch = pf.pitch; u.rate = pf.rate; u.volume = 0.95;
+    setTimeout(function () { if (!mudo) SYN.speak(u); }, retraso == null ? 650 : retraso);
+  }
+  function callar() { if (SYN) SYN.cancel(); }
 
   /* ---------- datos del tema abierto ---------- */
   var CURSOS = { noveno: 'CURSO_9', primero: 'CURSO_1A', segundo: 'CURSO_2A', tercero: 'CURSO_3A' };
@@ -120,8 +142,11 @@
   function decir(panel, k, html) {
     panel.hidden = false; panel.setAttribute('data-pet', k);
     panel.innerHTML = '<img src="' + img(k) + '" alt=""><div class="masc-txt pz-board"><strong class="mb-name">' + PETS[k].n + '</strong>' + html + '</div><button type="button" class="masc-x" aria-label="Cerrar ayuda">×</button>';
-    panel.querySelector('.masc-x').onclick = function () { panel.hidden = true; sonar('cerrar'); };
+    panel.querySelector('.masc-x').onclick = function () { panel.hidden = true; callar(); sonar('cerrar'); };
     var tx = panel.querySelector('.masc-txt');
+    var qv = tx.cloneNode(true); Array.prototype.forEach.call(qv.querySelectorAll('.mb-name,.masc-accion,.masc-check,summary'), function (x) { x.remove(); });
+    hablar(k, qv.innerHTML);
+    boton(tx, '🔊 Escuchar otra vez', function () { hablar(k, qv.innerHTML, 100); });
     if (global.PZ && global.PZ.escribir) { var u = tx.querySelectorAll('.mb-say,.mb-f,.mb-m:not(.mb-f .mb-m),.mb-step'); u.length && tx.classList.add('mb-live'); global.PZ.escribir(tx); }
   }
 
@@ -150,7 +175,7 @@
 
   function ayudar(k, host, panel, data) {
     var sigue = k === 'pugsito' && !panel.hidden && panel.getAttribute('data-pet') === k;
-    sonar(sigue ? 'martillo' : k === 'rockytos' ? 'sirena' : k === 'mamoi' ? 'campana' : k === 'rovin' ? 'lupa' : PETS[k].v);
+    sonar(PETS[k].v);
     var it = data.item, t = data.tema, abierto = !panel.hidden && panel.getAttribute('data-pet') === k;
     if (k === 'mamoi') return decir(panel, k, receta(t));
     if (k === 'rovin') {
@@ -229,7 +254,7 @@
       q.setAttribute('data-masc', '');
       var f = preguntaDe(q); if (!f) return;
       var cab = el('div', 'masc-duo', '<button type="button" aria-label="Saludar a Manchita y Rovin"><img src="' + img('duo') + '" alt=""></button><span>' + azar(PETS.duo.frases) + '</span>');
-      cab.querySelector('button').onclick = function () { sonar('duo'); cab.querySelector('span').textContent = azar(PETS.duo.frases); };
+      cab.querySelector('button').onclick = function () { sonar('duo'); var fr = azar(PETS.duo.frases); cab.querySelector('span').textContent = fr; hablar('duo', fr); };
       q.insertBefore(cab, q.firstChild);
       barra(q, ['rockytos', 'mamoi'], { examen: true, q: f.q, tema: f.tema });
     });
@@ -304,14 +329,14 @@
     var inicio = document.getElementById('inicio'); if (!inicio) return;
     var s = el('div', 'wrap masc-casa', '<div class="masc-casa-head"><div><h2>Tu equipo de estudio</h2><p>Tócalas para saludarlas. Te esperan en los ejemplos, ejercicios y exámenes de cada año.</p></div><button type="button" class="chip masc-mute"></button></div><div class="masc-grid"></div>');
     var mute = s.querySelector('.masc-mute');
-    function pintar() { mute.textContent = mudo ? 'Sonido apagado' : 'Sonido encendido'; mute.setAttribute('aria-pressed', String(!mudo)); }
-    mute.onclick = function () { mudo = !mudo; try { localStorage.setItem('masc.mudo', mudo ? '1' : '0'); } catch (e) { /* ignorar */ } pintar(); };
+    function pintar() { mute.textContent = mudo ? 'Sonido y voz apagados' : 'Sonido y voz encendidos'; mute.setAttribute('aria-pressed', String(!mudo)); }
+    mute.onclick = function () { mudo = !mudo; if (mudo) callar(); try { localStorage.setItem('masc.mudo', mudo ? '1' : '0'); } catch (e) { /* ignorar */ } pintar(); };
     pintar();
     Object.keys(PETS).forEach(function (k) {
       var p = PETS[k], c = el('button', 'masc-card', '<img src="' + img(k) + '" alt="" width="112" height="112"><strong>' + p.n + '</strong><em>' + p.rol + '</em><small>' + p.que + '</small><span class="masc-dice" aria-live="polite"></span>');
       c.type = 'button';
       c.onclick = function () {
-        sonar(p.v); c.querySelector('.masc-dice').textContent = azar(p.frases);
+        sonar(p.v); var fr = azar(p.frases); c.querySelector('.masc-dice').textContent = fr; hablar(k, fr);
         c.classList.remove('salta'); void c.offsetWidth; c.classList.add('salta');
         var h = el('i', 'masc-corazon', '♥'); h.setAttribute('aria-hidden', 'true'); c.appendChild(h); setTimeout(function () { h.remove(); }, 900);
       };

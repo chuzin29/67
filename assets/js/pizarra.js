@@ -153,7 +153,10 @@
   /* ---------- voz del profe ---------- */
   var SYN = global.speechSynthesis, VOZ_OK = !!(SYN && global.SpeechSynthesisUtterance);
   function aVoz(h) {
-    return String(h || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ')
+    return String(h || '')
+      .replace(/<span class="frac">\s*<span class="num">([\s\S]*?)<\/span>\s*<span class="den">([\s\S]*?)<\/span>\s*<\/span>/g, ' $1 sobre $2 ')
+      .replace(/<sup>\s*2\s*<\/sup>/g, ' al cuadrado ').replace(/<sup>\s*3\s*<\/sup>/g, ' al cubo ').replace(/<sup>([^<]*)<\/sup>/g, ' a la $1 ')
+      .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ')
       .replace(/(\d)\s*\/\s*(\d)/g, '$1 sobre $2').replace(/√/g, ' raíz de ').replace(/²/g, ' al cuadrado ').replace(/³/g, ' al cubo ')
       .replace(/[−–]/g, ' menos ').replace(/[·×]/g, ' por ').replace(/÷/g, ' entre ').replace(/≈/g, ' aproximadamente ')
       .replace(/≤/g, ' menor o igual que ').replace(/≥/g, ' mayor o igual que ').replace(/=/g, ' igual a ').replace(/π/g, ' pi ')
@@ -236,6 +239,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-pz]'), function (r) { r.setAttribute('data-io', '1'); io.observe(r); });
   }
 
+  PZ.aVoz = aVoz;
   PZ.escribir = function (c) { if (c && !REDUCE) { c.classList.remove('pz-new'); animate(c, 1.6); } };
   global.PZ = PZ;
   global.Pizarra = {
